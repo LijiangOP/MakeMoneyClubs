@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/smartRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/re_title_bar"
+        android:background="@color/color_f5f5f5">
+
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/multiStateView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_f5f5f5"
+            app:msv_emptyView="@layout/layout_empty"
+            app:msv_errorView="@layout/layout_error"
+            app:msv_loadingView="@layout/layout_loading">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycle_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:divider="@null"
+                android:dividerHeight="5dp"
+                />
+        </com.kennyc.view.MultiStateView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+
+    <RelativeLayout
+        android:id="@+id/re_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/main"
+        >
+
+        <ImageView
+            android:id="@+id/iv_title_bar_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:paddingBottom="18dp"
+            android:paddingLeft="17dp"
+            android:paddingTop="18dp"
+            android:rotation="180"
+            android:src="@drawable/arrow_white"
+            />
+
+        <TextView
+            android:id="@+id/tv_title_bar_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="这是标题"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            />
+
+        <ImageView
+            android:id="@+id/iv_inputed"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="13dp"
+            android:padding="4dp"
+            android:src="@drawable/input_information_add"
+            />
+    </RelativeLayout>
+</RelativeLayout>

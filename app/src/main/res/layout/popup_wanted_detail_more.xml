@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_rect_five_gray"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_only_not_top_gray"
+            android:drawableLeft="@drawable/icon_m_index"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="63dp"
+            android:paddingTop="10dp"
+            android:text="首页"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_help"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_only_not_top_gray"
+            android:drawableLeft="@drawable/icon_m_help"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="63dp"
+            android:paddingTop="10dp"
+            android:text="帮助"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_report"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_only_not_top_gray"
+            android:drawableLeft="@drawable/icon_m_report"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="63dp"
+            android:paddingTop="10dp"
+            android:text="举报"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_collect"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_only_not_top_gray"
+            android:drawableLeft="@drawable/icon_m_collect"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="63dp"
+            android:paddingTop="10dp"
+            android:text="收藏"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_only_not_top_gray"
+            android:drawableLeft="@drawable/icon_m_share"
+            android:drawablePadding="15dp"
+            android:gravity="center"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="63dp"
+            android:paddingTop="10dp"
+            android:text="分享"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+    </LinearLayout>
+</LinearLayout>

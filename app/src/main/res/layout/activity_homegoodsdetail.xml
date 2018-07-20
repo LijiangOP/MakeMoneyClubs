@@ -1,0 +1,472 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_bar_more_three_point"/>
+
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/multiStateView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:background="@color/color_f5f5f5"
+        app:msv_emptyView="@layout/layout_empty"
+        app:msv_errorView="@layout/layout_error"
+        app:msv_loadingView="@layout/layout_loading">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="horizontal"
+                        android:paddingBottom="5dp"
+                        android:paddingLeft="13dp"
+                        android:paddingTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/iv_logo"
+                                android:layout_width="90dp"
+                                android:layout_height="90dp"/>
+
+                            <TextView
+                                android:id="@+id/tv_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
+                                android:maxLength="7"
+                                android:textColor="@color/color_3a8dde"
+                                android:textSize="13sp"/>
+
+                            <TextView
+                                android:id="@+id/tv_id"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLength="15"
+                                android:textColor="@color/color_666666"
+                                android:textSize="11sp"/>
+
+                            <LinearLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="5dp"
+                                android:orientation="horizontal"
+                                android:visibility="gone">
+
+                                <ImageView
+                                    android:id="@+id/iv_phone"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingBottom="3dp"
+                                    android:paddingRight="3dp"
+                                    android:paddingTop="3dp"
+                                    android:src="@drawable/btn_money_p"/>
+
+                                <ImageView
+                                    android:id="@+id/iv_message"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:paddingBottom="3dp"
+                                    android:paddingRight="3dp"
+                                    android:paddingTop="3dp"
+                                    android:src="@drawable/btn_money_message"/>
+
+                                <ImageView
+                                    android:id="@+id/iv_attention"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="6dp"
+                                    android:paddingBottom="3dp"
+                                    android:paddingRight="3dp"
+                                    android:paddingTop="3dp"
+                                    android:src="@drawable/btn_monet_c"/>
+
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="13dp"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:id="@+id/tv_price"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/color_fc3135"
+                                    android:textSize="10sp"/>
+
+                                <TextView
+                                    android:id="@+id/tv_news"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginLeft="5dp"
+                                    android:background="@drawable/shape_rect_home_item_news"
+                                    android:gravity="center"
+                                    android:paddingBottom="1dp"
+                                    android:paddingLeft="5dp"
+                                    android:paddingRight="5dp"
+                                    android:paddingTop="1dp"
+                                    android:text="新品"
+                                    android:textColor="@color/color_00b9fd"
+                                    android:textSize="9sp"
+                                    android:visibility="gone"
+                                    />
+
+                                <View
+                                    android:layout_width="0dp"
+                                    android:layout_height="1dp"
+                                    android:layout_weight="1"/>
+
+                                <TextView
+                                    android:id="@+id/tv_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="left"
+                                    android:textColor="@color/color_fc3135"
+                                    android:textSize="10sp"/>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal">
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:text="悬赏金额"
+                                    android:textColor="@color/text_999999"
+                                    android:textSize="11sp"/>
+
+                                <TextView
+                                    android:id="@+id/tv_check_time"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:drawablePadding="3dp"
+                                    android:drawableRight="@drawable/btn_money_w"
+                                    android:text="审核时间"
+                                    android:textColor="@color/text_999999"
+                                    android:textSize="11sp"/>
+
+                            </LinearLayout>
+
+                            <TextView
+                                android:id="@+id/tv_wanted_title"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:ellipsize="end"
+                                android:maxLines="2"
+                                android:textColor="@color/text_333333"
+                                android:textSize="@dimen/official_list_title"/>
+
+                            <com.fynn.fluidlayout.FluidLayout
+                                android:id="@+id/fluid_layout"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="5dp">
+
+                            </com.fynn.fluidlayout.FluidLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="7dp"
+                                android:orientation="horizontal">
+
+
+                                <TextView
+                                    android:id="@+id/tv_wanted_tag1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/shape3"
+                                    android:gravity="center"
+                                    android:paddingBottom="1dp"
+                                    android:paddingLeft="5dp"
+                                    android:paddingRight="5dp"
+                                    android:paddingTop="1dp"
+                                    android:textColor="@color/color_6f717f"
+                                    android:textSize="9sp"
+                                    android:visibility="gone"/>
+
+                                <TextView
+                                    android:id="@+id/tv_wanted_tag2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:background="@drawable/shape3"
+                                    android:gravity="center"
+                                    android:paddingBottom="1dp"
+                                    android:paddingLeft="5dp"
+                                    android:paddingRight="5dp"
+                                    android:paddingTop="1dp"
+                                    android:textColor="@color/color_6f717f"
+                                    android:textSize="9sp"
+                                    android:visibility="gone"/>
+
+                                <TextView
+                                    android:id="@+id/tv_wanted_tag3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="7dp"
+                                    android:background="@drawable/shape3"
+                                    android:gravity="center"
+                                    android:paddingBottom="1dp"
+                                    android:paddingLeft="5dp"
+                                    android:paddingRight="5dp"
+                                    android:paddingTop="1dp"
+                                    android:textColor="@color/color_6f717f"
+                                    android:textSize="9sp"
+                                    android:visibility="gone"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="7dp"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="10dp"
+                            android:text="领取条件及限制"
+                            android:textColor="@color/color_fd5a5e"
+                            android:textSize="@dimen/official_list_title"
+                            />
+
+                        <TextView
+                            android:id="@+id/tv_wanted_limit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/color_5c5c5c"
+                            android:textIsSelectable="true"
+                            android:textSize="@dimen/official_list_title"
+                            android:visibility="gone"
+                            />
+
+                        <RelativeLayout
+                            android:id="@+id/re_task_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:id="@+id/tv_task_link"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="13sp"
+                                android:background="@drawable/selector_login_btn"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="35dp"
+                                android:paddingRight="35dp"
+                                android:paddingTop="5dp"
+                                android:text="前 往 任 务 链 接"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/official_list_title"
+                                android:textStyle="bold"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="7dp"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="10dp"
+                            android:text="流程说明"
+                            android:textColor="@color/color_fd5a5e"
+                            android:textSize="@dimen/official_list_title"/>
+
+                        <TextView
+                            android:id="@+id/tv_wanted_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/color_5c5c5c"
+                            android:textSize="@dimen/official_list_title"
+                            android:visibility="gone"
+                            />
+
+                        <LinearLayout
+                            android:id="@+id/ll_flow_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+
+                            <include
+                                layout="@layout/upload_pic_recycleview"/>
+
+                            <TextView
+                                android:id="@+id/tv_addUserInfo_input"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="10dp"
+                                android:text="用户提交信息"
+                                android:textColor="@color/color_fd5a5e"
+                                android:textSize="@dimen/official_list_title"
+                                android:visibility="gone"
+                                />
+
+                            <com.zhengdao.zqb.customview.ReuseListView
+                                android:id="@+id/listView"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:divider="@null"
+                                android:dividerHeight="5dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="10dp"
+                                android:visibility="gone"
+                                >
+                            </com.zhengdao.zqb.customview.ReuseListView>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/white"
+                                android:lineSpacingExtra="2dp"
+                                android:paddingBottom="7dp"
+                                android:paddingLeft="13dp"
+                                android:paddingTop="10dp"
+                                android:text="免责声明"
+                                android:textColor="@color/color_fd5a5e"
+                                android:textSize="@dimen/official_list_title"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_statement"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:lineSpacingExtra="2dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="@string/app_statement"
+                                android:textColor="@color/color_666666"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/official_list_title"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_fc3135"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
+
+                <TextView
+                    android:id="@+id/tv_get"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="领取悬赏令"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/official_reb_bottom"/>
+
+                <cn.iwgang.countdownview.CountdownView
+                    android:id="@+id/countDownView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="1dp"
+                    android:visibility="gone"
+                    app:isShowHour="true"
+                    app:isShowMinute="true"
+                    app:isShowSecond="true"
+                    app:suffixDay="天"
+                    app:suffixHour="时"
+                    app:suffixMinute="分"
+                    app:suffixSecond="秒）"
+                    app:suffixTextColor="@color/white"
+                    app:suffixTextSize="12sp"
+                    app:timeTextColor="@color/white"
+                    app:timeTextSize="@dimen/home_detail_bottom_button"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.kennyc.view.MultiStateView>
+</LinearLayout>

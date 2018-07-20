@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_EFEEF0"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_commit">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:text="流程说明"
+                    android:textColor="@color/main"
+                    android:textSize="12sp"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:paddingRight="@dimen/market_comment_pic_left">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="1、打开您手机上的应用市场，或点击"
+                        android:textColor="@color/text_333333"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:id="@+id/tv_flow1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/shape_rect_zero_blue"
+                        android:paddingBottom="1dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="1dp"
+                        android:text="应用市场"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="打开。"
+                        android:textColor="@color/text_333333"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:paddingRight="@dimen/market_comment_pic_left">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="2、搜索"
+                        android:textColor="@color/text_333333"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/market_comment_appname"
+                        android:textColor="@color/main"
+                        android:textIsSelectable="true"
+                        android:textSize="12sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="打开。"
+                        android:textColor="@color/text_333333"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:paddingRight="@dimen/market_comment_pic_left"
+                    android:text="3、对个人评论内容及应用市场个人账户中心进行截图，如下图："
+                    android:textColor="@color/text_333333"
+                    android:textSize="12sp"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:paddingRight="@dimen/market_comment_pic_left">
+
+                    <ImageView
+                        android:id="@+id/iv_example_left"
+                        android:layout_width="168dp"
+                        android:layout_height="230dp"
+                        android:src="@drawable/net_less_vertical"/>
+
+                    <ImageView
+                        android:id="@+id/iv_example_right"
+                        android:layout_width="168dp"
+                        android:layout_height="230dp"
+                        android:layout_alignParentRight="true"
+                        android:src="@drawable/net_less_vertical"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:text="4、上传指定截图,完成任务。"
+                    android:textColor="@color/text_333333"
+                    android:textSize="12sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:background="@color/color_f5f5f5"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:text="上传截图"
+                    android:textColor="@color/main"
+                    android:textSize="12sp"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycle_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:paddingLeft="@dimen/market_comment_pic_left"
+                    android:paddingRight="@dimen/market_comment_pic_left">
+
+                </android.support.v7.widget.RecyclerView>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <TextView
+            android:id="@+id/tv_commit"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/main"
+            android:gravity="center"
+            android:text="提交"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+    </RelativeLayout>
+</LinearLayout>

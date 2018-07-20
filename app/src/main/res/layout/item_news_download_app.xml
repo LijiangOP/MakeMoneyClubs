@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_only_bottom_gray"
+                android:paddingBottom="7dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:paddingTop="7dp">
+
+    <ImageView
+        android:id="@+id/iv_goods"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_centerVertical="true"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_item"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="50dp"
+        android:layout_toRightOf="@+id/iv_goods"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_333333"
+            android:textSize="14sp"/>
+
+        <TextView
+            android:id="@+id/tv_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:lines="2"
+            android:textColor="@color/text_999999"
+            android:textSize="11sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_install"
+        android:layout_width="45dp"
+        android:layout_height="25dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/selector_find_download"
+        android:gravity="center"
+        android:text="安装"
+        android:textColor="@color/selector_find_install"
+        android:textSize="11sp"/>
+
+</RelativeLayout>

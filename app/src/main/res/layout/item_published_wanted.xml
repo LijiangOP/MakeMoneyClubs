@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_recommend"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@drawable/recommend_bg_no"
+              android:orientation="horizontal"
+              android:paddingTop="5dp">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="95dp"
+        android:layout_height="95dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/blue"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingRight="10dp"
+        android:paddingTop="5dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_descibe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="宝象金融60天理财产品/10000元起 多档可选，奖励多多"
+            android:textColor="@color/color_424242"
+            android:textSize="13sp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:gravity="top"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="赏¥"
+                android:textColor="@color/color_fc3135"
+                android:textSize="13sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="189.9"
+                android:textColor="@color/color_fc3135"
+                android:textSize="18sp"
+                />
+
+            <com.fynn.fluidlayout.FluidLayout
+                android:id="@+id/fluid_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="5dp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_cancle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:background="@drawable/selector_login_btn"
+            android:clickable="true"
+            android:gravity="center"
+            android:paddingBottom="1dp"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp"
+            android:paddingTop="1dp"
+            android:text="申请下架"
+            android:textColor="@color/white"
+            android:textSize="12sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_join_num"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="215人参与"
+                android:textColor="#b3b3b3"
+                android:textSize="11sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_pay_state"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="left|center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="支付成功"
+                android:textColor="@color/color_fc3135"
+                android:textSize="11sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_look_similarity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:text="暂存"
+                android:textColor="@color/color_fc3135"
+                android:textSize="11sp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

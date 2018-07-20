@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/color_f5f5f5"
+              android:orientation="vertical">
+
+    <include layout="@layout/white_title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_user_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingLeft="15dp"
+                android:paddingRight="10dp"
+                android:paddingTop="12dp">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/iv_user_icon"
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/user_head_icon_bg"
+                    />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_nickname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_333333"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <TextView
+                        android:id="@+id/tv_username"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="7dp"
+                        android:textColor="@color/color_b3b3b3"
+                        android:textSize="@dimen/official_list_desc"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_member_right"
+                style="@style/ll_user_setting"
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="会员权益"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="开启6大尊享特权"
+                    android:textColor="@color/color_b3b3b3"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_identity_certify"
+                style="@style/ll_user_setting"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_only_bottom_gray_tiny"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="实名认证"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="去完善信息"
+                    android:textColor="@color/color_b3b3b3"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_account_safe"
+                style="@style/ll_user_setting"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_only_bottom_gray_tiny">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="账户安全"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="密码/手机号等管理"
+                    android:textColor="@color/text_999999"
+                    android:textSize="@dimen/official_list_desc"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_relevance_account"
+                style="@style/ll_user_setting"
+                android:background="@drawable/shape_only_bottom_gray_tiny">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="关联帐号"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="第三方帐号绑定"
+                    android:textColor="@color/text_999999"
+                    android:textSize="@dimen/official_list_desc"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_bind_aliPay"
+                style="@style/ll_user_setting"
+                android:background="@drawable/shape_only_bottom_gray_tiny">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="绑定支付宝"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="绑定支付宝账号"
+                    android:textColor="@color/text_999999"
+                    android:textSize="@dimen/official_list_desc"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_advice_feedback"
+                style="@style/ll_user_setting"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_only_bottom_gray_tiny">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="意见反馈"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_about"
+                style="@style/ll_user_setting">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="关于"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/white"
+                android:gravity="center"
+                android:paddingBottom="15dp"
+                android:paddingTop="15dp"
+                android:text="退出登录"
+                android:textColor="@color/text_333333"
+                android:textSize="@dimen/official_list_title"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

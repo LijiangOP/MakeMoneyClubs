@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/white_title_bar"/>
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabLayout"
+        android:layout_width="match_parent"
+        android:layout_height="33dp"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/shape_home_tab_bg"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/color_fc3135"
+        app:tabMode="scrollable"
+        app:tabPaddingEnd="5dp"
+        app:tabSelectedTextColor="@color/color_fc3135"
+        app:tabTextAppearance="@style/home_tab_select_tv_style"
+        app:tabTextColor="@color/color_292929">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="全部"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未提交"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已提交"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="未完成"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已完成"/>
+
+    </android.support.design.widget.TabLayout>
+
+    <com.scwang.smartrefresh.layout.SmartRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ll_heard"
+        app:srlAccentColor="@android:color/white"
+        app:srlEnablePreviewInEditMode="true"
+        app:srlPrimaryColor="#444444">
+
+        <com.kennyc.view.MultiStateView
+            android:id="@+id/multiStateView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:msv_emptyView="@layout/layout_empty"
+            app:msv_errorView="@layout/layout_error"
+            app:msv_loadingView="@layout/layout_loading">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/color_f5f5f5"
+                android:divider="@color/colorBackground"
+                android:dividerHeight="2dp"
+                />
+        </com.kennyc.view.MultiStateView>
+    </com.scwang.smartrefresh.layout.SmartRefreshLayout>
+</LinearLayout>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/fl_adv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fl_adv"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="10dp"
+        android:paddingLeft="5dp"
+        android:paddingRight="5dp"
+        android:paddingTop="8dp"
+        >
+
+        <TextView
+            android:id="@+id/tv_calculate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/icon_jsq"
+            android:gravity="center"
+            android:text="计算器"
+            android:textColor="@color/color_292929"
+            android:textSize="11sp"/>
+
+        <TextView
+            android:id="@+id/tv_guide"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/icon_zqgl"
+            android:gravity="center"
+            android:text="新手指引"
+            android:textColor="@color/color_292929"
+            android:textSize="11sp"/>
+
+        <TextView
+            android:id="@+id/tv_info_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/icon_moneyl"
+            android:gravity="center"
+            android:text="信息录入"
+            android:textColor="@color/color_292929"
+            android:textSize="11sp"/>
+
+        <TextView
+            android:id="@+id/tv_records"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/icon_fljl"
+            android:gravity="center"
+            android:text="返利记录"
+            android:textColor="@color/color_292929"
+            android:textSize="11sp"/>
+
+        <TextView
+            android:id="@+id/tv_service"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawablePadding="3dp"
+            android:drawableTop="@drawable/icon_kf"
+            android:gravity="center"
+            android:text="联系客服"
+            android:textColor="@color/color_292929"
+            android:textSize="11sp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>

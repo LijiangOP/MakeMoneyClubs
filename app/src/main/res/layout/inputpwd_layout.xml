@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/myInputPwdBase_gray"
+                android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/MyPwdInput_close"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="15dp"
+        android:src="@drawable/btn_g"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:text="输入支付密码"
+        android:textColor="@color/text_333333"
+        android:textSize="16dp"
+        />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/MyPwdInput_close"
+        android:layout_marginTop="15dp"
+        android:background="#ccc"
+        android:id="@+id/view2"/>
+
+    <com.zhengdao.zqb.customview.PswInputView.InputPwdView_Pwd
+        android:id="@+id/MyPwdInput_inputpwd"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/myInputPwdBase_gray"
+        android:layout_below="@+id/view2"
+        android:layout_alignLeft="@+id/MyPwdInput_close"
+        android:layout_alignStart="@+id/MyPwdInput_close"/>
+
+    <TextView
+        android:id="@+id/MyPwdInput_forgetpwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/MyPwdInput_inputpwd"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="5dp"
+        android:padding="10dp"
+        android:text="忘记密码?"
+        android:textColor="@color/myInputPwdBase_blue"
+        android:textSize="12dp"
+
+        />
+
+    <GridView
+        android:id="@+id/MyPwdInput_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/MyPwdInput_forgetpwd"
+        android:layout_marginTop="30dp"
+        android:background="@color/myInputPwdBase_gray"
+        android:divider="#ccc"
+        android:dividerHeight="1dp"
+        android:horizontalSpacing="1dp"
+        android:numColumns="3"
+        android:padding="1dp"
+        android:verticalSpacing="1dp"
+        />
+
+</RelativeLayout>

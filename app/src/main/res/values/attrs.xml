@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--activity-->
+    <declare-styleable name="UST_activity">
+        <attr name="UST_edge_size" format="dimension"/>
+        <attr name="UST_edge_flag">
+            <enum name="left" value="0"/>
+            <enum name="right" value="1"/>
+            <enum name="bottom" value="2"/>
+            <enum name="top" value="3"/>
+            <enum name="all" value="4"/>
+        </attr>
+        <attr name="UST_shadow_left" format="reference"/>
+        <attr name="UST_shadow_right" format="reference"/>
+        <attr name="UST_shadow_bottom" format="reference"/>
+        <attr name="UST_shadow_top" format="reference"/>
+    </declare-styleable>
+
+    <attr name="UST_activity_style" format="reference"/>
+    <!--dialogFragment nothing-->
+    <!--cards-->
+    <declare-styleable name="UST_cards">
+        <attr name="UST_allowed_swipe_directions" format="integer">
+            <enum name="only_left" value="1"/>
+            <enum name="only_right" value="2"/>
+            <enum name="both" value="0"/>
+        </attr>
+        <attr name="UST_animation_duration" format="integer"/>
+        <attr name="UST_stack_size" format="integer"/>
+        <attr name="UST_stack_spacing" format="dimension"/>
+        <attr name="UST_stack_rotation" format="integer"/>
+        <attr name="UST_swipe_rotation" format="float"/>
+        <attr name="UST_swipe_opacity" format="float"/>
+        <attr name="UST_scale_factor" format="float"/>
+        <attr name="UST_disable_hw_acceleration" format="boolean"/>
+    </declare-styleable>
+
+    <!--views-->
+    <declare-styleable name="SwipeLayout">
+        <attr name="drag_edge">
+            <flag name="left" value="1"/>
+            <flag name="right" value="2"/>
+            <flag name="top" value="4"/>
+            <flag name="bottom" value="8"/>
+        </attr>
+        <attr name="leftEdgeSwipeOffset" format="dimension"/>
+        <attr name="rightEdgeSwipeOffset" format="dimension"/>
+        <attr name="topEdgeSwipeOffset" format="dimension"/>
+        <attr name="bottomEdgeSwipeOffset" format="dimension"/>
+        <attr name="show_mode" format="enum">
+            <enum name="lay_down" value="0"/>
+            <enum name="pull_out" value="1"/>
+        </attr>
+        <attr name="clickToClose" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="MarqueeView">
+        <attr name="interval" format="integer|reference"/>
+        <attr name="animDuration" format="integer|reference"/>
+        <attr name="orientation">
+            <enum name="horizontal" value="0"/>
+            <enum name="vertical" value="1"/>
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="MaterialHeader">
+        <attr name="mhPrimaryColor" format="color"/>
+        <attr name="mhShadowColor" format="color"/>
+        <attr name="mhShadowRadius" format="dimension"/>
+        <attr name="mhShowBezierWave" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AlignAtTextView">
+        <attr name="textColor" format="color"/>
+        <attr name="textSize" format="dimension"/>
+        <attr name="text" format="string"/>
+    </declare-styleable>
+
+    <declare-styleable name="CircleFragmentProgress">
+        <attr name="circle_fragment_indexColor" format="color"/>
+        <attr name="circle_fragment_baseColor" format="color"/>
+        <attr name="circle_fragment_textSize" format="dimension"/>
+        <attr name="circle_fragment_textColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="WaveProgress">
+        <!-- 是否开启抗锯齿 -->
+        <attr name="antiAlias" format="boolean"/>
+        <!-- 深色水波动画时间 -->
+        <attr name="darkWaveAnimTime" format="integer"/>
+        <!-- 浅色水波动画时间 -->
+        <attr name="lightWaveAnimTime" format="integer"/>
+        <!-- 最大值 -->
+        <attr name="maxValue" format="float"/>
+        <!-- 当前值 -->
+        <attr name="value" format="float"/>
+        <attr name="valueColor" format="color|reference"/>
+        <attr name="valueSize" format="dimension"/>
+        <!-- 绘制内容相应的提示语 -->
+        <attr name="hint" format="string"/>
+        <attr name="hintSize" format="dimension"/>
+        <attr name="hintColor" format="color|reference"/>
+        <!-- 圆环宽度 -->
+        <attr name="circleWidth" format="dimension"/>
+        <!-- 内部圆与外部圆环间距 -->
+        <attr name="inside_circle_margin" format="dimension"/>
+        <!-- 文字距中心点距离 -->
+        <attr name="text_margin" format="dimension"/>
+        <!-- 圆环颜色 -->
+        <attr name="circleColor" format="color|reference"/>
+        <!-- 背景圆环颜色 -->
+        <attr name="bgCircleColor" format="color|reference"/>
+        <!-- 锁定水波不随圆环进度改变，默认锁定在50%处 -->
+        <attr name="lockWave" format="boolean"/>
+        <!-- 水波数量 -->
+        <attr name="waveNum" format="integer"/>
+        <!-- 水波高度，峰值和谷值之和 -->
+        <attr name="waveHeight" format="dimension"/>
+        <!-- 深色水波颜色 -->
+        <attr name="darkWaveColor" format="color|reference"/>
+        <!-- 是否显示浅色水波 -->
+        <attr name="showLightWave" format="boolean"/>
+        <!-- 浅色水波颜色 -->
+        <attr name="lightWaveColor" format="color|reference"/>
+        <!-- 浅色水波的方向 -->
+        <attr name="lightWaveDirect" format="enum">
+            <enum name="L2R" value="0"/>
+            <enum name="R2L" value="1"/>
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="WaveCircleProgress">
+        <attr name="progress_bg_color" format="color"/>
+        <attr name="progress_color" format="color"/>
+        <attr name="progress_width" format="float"/>
+        <attr name="text_size" format="dimension"/>
+        <attr name="text_color" format="color"/>
+        <attr name="max_value" format="float"/>
+        <attr name="current_value" format="float"/>
+    </declare-styleable>
+
+</resources>

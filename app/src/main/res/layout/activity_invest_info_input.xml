@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical"
+    >
+
+    <include layout="@layout/title_bar"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@color/white"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="13dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="投资人姓名"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <EditText
+                        android:id="@+id/et_invset_name"
+                        style="@style/invest_input_et"
+                        android:hint="请输入投资人姓名"
+                        android:maxLength="5"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="13dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="手机号码"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <EditText
+                        android:id="@+id/et_invset_phone"
+                        style="@style/invest_input_et"
+                        android:hint="请输入投资人手机号码"
+                        android:inputType="number"
+                        android:maxLength="11"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="投资平台"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <TextView
+                        android:id="@+id/tv_invest_shops"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="15dp"
+                        android:text="请选择"
+                        android:textColor="@color/color_8f8f8f"
+                        android:textSize="13sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_invest_shops"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:rotation="-90"
+                        android:src="@drawable/licai_arrow"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="13dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="投资金额（元）"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <EditText
+                        android:id="@+id/et_invset_number"
+                        style="@style/invest_input_et"
+                        android:hint="请输入投资金额"
+                        android:inputType="number"
+                        android:maxLength="8"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="13dp">
+
+                    <TextView
+                        android:id="@+id/tv_invset_cycle_tag"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="投资周期（月）"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <EditText
+                        android:id="@+id/et_invset_cycle"
+                        style="@style/invest_input_et"
+                        android:hint="请输入投资的天数/月数"
+                        android:inputType="number"
+                        android:maxLength="5"
+                        />
+
+                    <RelativeLayout
+                        android:layout_width="42dp"
+                        android:layout_height="22dp"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/toggle_btn_bg">
+
+                        <Switch
+                            android:id="@+id/btn_switch"
+                            android:layout_width="40dp"
+                            android:layout_height="21dp"
+                            android:layout_centerVertical="true"
+                            android:thumb="@drawable/shape_toggle_thumb"
+                            android:track="@drawable/shape_toggle_bg"
+                            />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="5dp"
+                            android:text="月"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="5dp"
+                            android:text="天"
+                            android:textColor="@color/white"
+                            android:textSize="11sp"/>
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="13dp"
+                    android:layout_marginRight="13dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="投资日期"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <TextView
+                        android:id="@+id/tv_invest_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="15dp"
+                        android:paddingLeft="15dp"
+                        android:paddingRight="5dp"
+                        android:paddingTop="15dp"
+                        android:text="请选择"
+                        android:textColor="@color/color_8f8f8f"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <ImageView
+                        android:id="@+id/iv_invest_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:rotation="-90"
+                        android:src="@drawable/licai_arrow"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/gray_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="13dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:text="图形验证"
+                        android:textColor="@color/color_292929"
+                        android:textSize="@dimen/official_list_title"/>
+
+                    <EditText
+                        android:id="@+id/et_invset_code"
+                        style="@style/invest_input_et"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="3dp"
+                        android:hint="请输入图形验证码"
+                        android:inputType="text"
+                        android:maxLength="4"
+                        />
+
+                    <ImageView
+                        android:id="@+id/iv_invset_code"
+                        android:layout_width="60dp"
+                        android:layout_height="25dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="13dp"
+                        android:background="@drawable/shape_invest_input_code"
+                        android:padding="1dp"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_confirm"
+                android:layout_width="340dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/shape_button_bg"
+                android:gravity="center"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:textSize="17dp"/>
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

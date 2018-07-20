@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_recommend"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:background="@color/white"
+              android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:button="@drawable/selector_cb"
+        android:checked="false"
+        android:visibility="gone"/>
+
+    <FrameLayout
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/iv_icon"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <LinearLayout
+            android:id="@+id/ll_lucency"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.7"
+            android:background="@color/color_949494"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/shape_circle_gray_lucency"
+                android:gravity="center"
+                android:text="已结束"
+                android:textColor="@color/white"
+                android:textSize="11sp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/shape_only_bottom_gray"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingRight="10dp"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="赞蓝破洞牛仔外套女春季赞蓝破洞牛仔外套女春季赞蓝破洞牛仔外套女春季赞蓝破洞牛仔外套女春季"
+            android:textColor="@color/color_000000"
+            android:textSize="@dimen/official_list_title"/>
+
+        <com.fynn.fluidlayout.FluidLayout
+            android:id="@+id/fluid_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_content"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="35dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="赚¥"
+                android:textColor="@color/color_fc3135"
+                android:textSize="11sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:text="5666"
+                android:textColor="@color/color_fc3135"
+                android:textSize="17sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_join_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="15dp"
+                android:gravity="left|center"
+                android:text="21212"
+                android:textColor="#b3b3b3"
+                android:textSize="12sp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

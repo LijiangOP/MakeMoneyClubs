@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/re_top"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_invest_code_bg"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/textView_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="输入邀请码即可获得"
+            android:textColor="@color/white"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/textView_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="28dp"
+            android:text="0.1元邀请奖励"
+            android:textColor="@color/color_ffae00"
+            android:textSize="21sp"/>
+
+        <EditText
+            android:id="@+id/et_invest_code"
+            android:layout_width="wrap_content"
+            android:layout_height="33dp"
+            android:layout_below="@+id/textView_2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/shape_invest_code_et_bg"
+            android:digits="1234567890qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:hint="输入推荐码"
+            android:inputType="text"
+            android:maxLength="23"
+            android:maxLines="1"
+            android:maxWidth="200dp"
+            android:minWidth="155dp"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp"
+            android:textColor="@color/color_000000"
+            android:textColorHint="@color/color_999999"
+            android:textSize="13sp"/>
+
+        <TextView
+            android:id="@+id/textView_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/et_invest_code"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:text="-好友分享的链接中找到他的推荐码-"
+            android:textColor="@color/white"
+            android:textSize="12sp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_middle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView_3"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="http://app.zqb88.cm/i/"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="I4QX7f"
+                android:textColor="@color/color_ffae00"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_take"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ll_middle"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="36dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/shape_invest_code_chai_bg"
+            android:gravity="center"
+            android:text="拆"
+            android:textColor="@color/color_e54e51"
+            android:textSize="22sp"/>
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/re_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="22dp"
+        android:src="@drawable/img_big_close"/>
+
+</RelativeLayout>

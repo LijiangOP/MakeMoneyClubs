@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
+
+    <include layout="@layout/title_bar"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingTop="5dp">
+
+        <TextView
+            style="@style/calculate_result_tag"
+            android:text="实际利率（%）"
+            />
+
+        <TextView
+            style="@style/calculate_result_tag"
+            android:text="预期收益（元）"
+            />
+
+        <TextView
+            style="@style/calculate_result_tag"
+            android:text="本息合计（元）"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        >
+
+        <TextView
+            android:id="@+id/tv_nianhualv"
+            style="@style/calculate_result_value"
+            android:text="0.00"
+            />
+
+        <TextView
+            android:id="@+id/tv_total_earnings"
+            style="@style/calculate_result_value"
+            android:text="0.00"
+            android:textColor="@color/main"
+            />
+
+        <TextView
+            android:id="@+id/tv_total_benxi"
+            style="@style/calculate_result_value"
+            android:text="0.00"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_inputed"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/calculate_vertical_line"/>
+
+        <TextView
+            android:id="@+id/tv_inputed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="3dp"
+            android:text="请输入理财信息"
+            android:textColor="@color/color_5c5c5c"
+            android:textSize="15sp"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="投资本金（元）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_invest_number"
+                    style="@style/calculate_et_input"
+                    android:hint="请输入投资本金"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="投资周期（天）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_invest_cycle"
+                    style="@style/calculate_et_input"
+                    android:hint="请输入天数"
+                    android:maxLength="9"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="预期年化（%）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_nianhualv"
+                    style="@style/calculate_et_input"
+                    android:hint="请输入平台年化收益"
+                    android:maxLength="3"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="返利金额（元）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_rebate_number"
+                    style="@style/calculate_et_input"
+                    android:hint="请输入返利金额"
+                    />
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="可用红包（元）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_red_packet"
+                    style="@style/calculate_et_input"
+                    android:hint="红包选填"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/calculate_ll_">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="可用加息券（%）"
+                    android:textColor="@color/color_292929"
+                    android:textSize="@dimen/official_list_title"/>
+
+                <EditText
+                    android:id="@+id/et_jiaxiquan"
+                    style="@style/calculate_et_input"
+                    android:hint="加息券选填"
+                    android:maxLength="3"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
+

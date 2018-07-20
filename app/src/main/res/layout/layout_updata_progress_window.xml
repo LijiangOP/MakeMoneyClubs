@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="300dp"
+                android:layout_height="414dp"
+                android:background="@drawable/bg_990">
+
+    <TextView
+        android:id="@+id/tv_top"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:text="正在升级"
+        android:textColor="@color/white"
+        android:textSize="27sp"/>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_top"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="2dp"
+        android:text="APP升级中,请稍等片刻"
+        android:textColor="@color/white"
+        android:textSize="12sp"/>
+
+    <com.zhengdao.zqb.customview.WaveProgress
+        android:id="@+id/wave_progress_bar"
+        android:layout_width="178dp"
+        android:layout_height="178dp"
+        android:layout_below="@+id/tv_desc"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        app:bgCircleColor="#b3e6e6e6"
+        app:circleColor="@color/white"
+        app:circleWidth="2dp"
+        app:text_margin="35dp"
+        app:valueColor="@color/white"
+        app:inside_circle_margin="2dp"
+        app:darkWaveAnimTime="1000"
+        app:darkWaveColor="#D4F4FF"
+        app:lightWaveAnimTime="4000"
+        app:lightWaveColor="#CDF1FE"
+        app:lightWaveDirect="R2L"
+        app:lockWave="false"
+        app:valueSize="30sp"
+        app:waveHeight="15dp"
+        app:waveNum="1"/>
+
+</RelativeLayout>

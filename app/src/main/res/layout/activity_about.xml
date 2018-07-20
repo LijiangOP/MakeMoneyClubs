@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/white_title_bar"/>
+
+    <ImageView
+        android:layout_width="65dp"
+        android:layout_height="65dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="30dp"
+        android:src="@mipmap/icon"/>
+
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_marginTop="2dp"
+        android:gravity="center"
+        />
+
+    <LinearLayout
+        android:id="@+id/ll_check_update"
+        style="@style/ll_user_setting"
+        android:background="@drawable/shape_only_bottom_gray">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="检测更新"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/official_list_title"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_r"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_version_desc"
+        style="@style/ll_user_setting"
+        android:background="@drawable/shape_only_bottom_gray">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="版本说明"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/official_list_title"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_r"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_give_a_mark"
+        style="@style/ll_user_setting"
+        android:background="@drawable/shape_only_bottom_gray">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="去评分"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/official_list_title"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_r"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_clear_cache"
+        style="@style/ll_user_setting">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="清除本地缓存"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/official_list_title"
+            />
+
+
+        <TextView
+            android:id="@+id/tv_cache"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/color_b3b3b3"
+            android:textSize="@dimen/official_list_title"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_r"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_serve_protocol"
+        style="@style/ll_user_setting"
+        android:layout_marginTop="10dp">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="服务协议"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/official_list_title"
+            />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/arrow_r"/>
+    </LinearLayout>
+</LinearLayout>

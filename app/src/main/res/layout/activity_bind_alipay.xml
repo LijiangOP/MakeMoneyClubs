@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical">
+
+    <include layout="@layout/white_title_bar"/>
+
+    <LinearLayout
+        style="@style/ll_user_info_01"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/shape_only_bottom_gray_tiny">
+
+        <com.zhengdao.zqb.customview.AlignAtTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:text="真实姓名:"
+            app:textColor="@color/text_333333"
+            app:textSize="15sp"
+            />
+
+        <EditText
+            android:id="@+id/et_real_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLength="7"
+            android:paddingLeft="3dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text_333333"
+            android:textColorHint="@color/color_8f8f8f"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        style="@style/ll_user_info_01"
+        android:layout_marginTop="1dp"
+        android:background="@drawable/shape_only_bottom_gray_tiny">
+
+        <com.zhengdao.zqb.customview.AlignAtTextView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            app:text="支付宝账号:"
+            app:textColor="@color/text_333333"
+            app:textSize="15sp"
+            />
+
+        <EditText
+            android:id="@+id/et_aliPay"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:background="@null"
+            android:inputType="text"
+            android:maxLength="30"
+            android:paddingLeft="3dp"
+            android:paddingRight="5dp"
+            android:singleLine="true"
+            android:textColor="@color/text_333333"
+            android:textColorHint="@color/color_8f8f8f"
+            android:textCursorDrawable="@drawable/cursor_color"
+            android:textSize="15sp"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_commit"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/selector_login_btn"
+        android:clickable="true"
+        android:gravity="center"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"/>
+
+</LinearLayout>

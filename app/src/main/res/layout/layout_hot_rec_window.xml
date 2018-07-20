@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/re_window"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/hot_rec_window_bg"/>
+
+    <ImageView
+        android:id="@+id/iv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="110dp"
+        android:src="@drawable/hot_rec_window_title"/>
+
+    <TextView
+        android:id="@+id/tv_award"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_title"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/hot_rec_window_award_bg"
+        android:gravity="center"
+        android:paddingBottom="7dp"
+        android:textColor="@color/white"
+        android:textSize="17sp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_title"
+        android:layout_marginTop="40dp"
+        android:layout_centerHorizontal="true"
+        android:text="奖励已入账"
+        android:textColor="#C8B2FE"
+        android:textSize="11sp"/>
+
+
+</RelativeLayout>

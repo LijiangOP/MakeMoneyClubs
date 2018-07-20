@@ -1,0 +1,570 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:focusable="true"
+              android:focusableInTouchMode="true"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_bar_with_right"/>
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="1dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/fl_wanted_goods_pic"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@color/white">
+
+                <ImageView
+                    android:id="@+id/iv_wanted_goods_pic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_goods_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="2dp"
+                    android:drawableTop="@drawable/img_take_pohoto"
+                    android:gravity="center"
+                    android:text="@string/publish_wanted_pic_desc"
+                    android:textColor="@color/color_666666"
+                    android:textSize="12sp"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_title"
+                style="@style/publish_wanted_ll_1"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/shape_only_bottom_gray"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="标题"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="简明扼要通俗易懂(5-50字)"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="赏金"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <EditText
+                    android:id="@+id/et_wanted_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请填写"
+                    android:inputType="phone"
+                    android:maxLength="30"
+                    android:maxLines="1"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/text_input_hint"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="7dp"
+                    android:text="元"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                android:paddingBottom="7dp"
+                android:paddingTop="7dp"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="名额"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"/>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="7dp"
+                    android:background="@drawable/shape_rect_sub_add_item"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingBottom="3dp"
+                    android:paddingLeft="7dp"
+                    android:paddingRight="7dp"
+                    android:paddingTop="3dp">
+
+
+                    <ImageView
+                        android:id="@+id/iv_number_sub"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginRight="5dp"
+                        android:src="@drawable/btn_sub_1"/>
+
+                    <EditText
+                        android:id="@+id/et_numbers"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:inputType="number"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:minWidth="20dp"
+                        android:textColor="@color/text_333333"
+                        android:textColorHint="@color/text_input_hint"
+                        android:textSize="13sp"/>
+
+                    <ImageView
+                        android:id="@+id/iv_number_add"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="5dp"
+                        android:src="@drawable/btn_add_1"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_checkTime"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="审核时间"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_checkTime"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请选择"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_business_category"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="业务分类"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_business_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请选择"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_reward_category"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="悬赏类别"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_reward_category"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请选择"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_ticket"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray"
+                android:visibility="gone"
+                >
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="票券面额"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <EditText
+                    android:id="@+id/et_wanted_ticket"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="例如10元券、8折券、2%加息券等"
+                    android:inputType="textMultiLine"
+                    android:maxLines="1"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/text_input_hint"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_limited_time"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray">
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="截止时间"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_limited_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请选择悬赏展示截止时间"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_key_word"
+                style="@style/publish_wanted_ll_1">
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="关键词"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_key_word"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请添加"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_get_condition"
+                style="@style/publish_wanted_ll_1"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_only_bottom_gray">
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="领取条件"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_get_condition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请填写领取条件及限制"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_flow_explain"
+                android:background="@drawable/shape_only_bottom_gray"
+                style="@style/publish_wanted_ll_1">
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="流程说明"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_flow_explain"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:hint="请填写完成悬赏任务的流程说明"
+                    android:singleLine="true"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_task_link"
+                style="@style/publish_wanted_ll_1">
+
+                <TextView
+                    android:layout_width="@dimen/publish_wanted_tv1"
+                    android:layout_height="wrap_content"
+                    android:text="任务链接"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <EditText
+                    android:id="@+id/et_wanted_task_link"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:ellipsize="end"
+                    android:hint="请填写任务的链接地址(选填)"
+                    android:inputType="textMultiLine"
+                    android:maxLines="3"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/text_input_hint"
+                    android:textSize="13sp"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="完成任务时要求用户提交的内容,默认不提交"
+                android:textColor="@color/text_999999"
+                android:textSize="12sp"/>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_commit_user_info"
+                style="@style/publish_wanted_ll_1"
+                android:background="@drawable/shape_only_bottom_gray">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="添加需要用户提交的信息(选填)"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_commit_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0项"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_wanted_commit_pic_info"
+                style="@style/publish_wanted_ll_1">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="添加需要用户提交的图片描述(选填)"
+                    android:textColor="@color/text_333333"
+                    android:textSize="13sp"/>
+
+                <TextView
+                    android:id="@+id/tv_wanted_commit_pic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:hint="0项"
+                    android:textColor="@color/text_333333"
+                    android:textColorHint="@color/color_d6d6d6"
+                    android:textSize="13sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:src="@drawable/arrow_r"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_only_top_white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:paddingTop="10dp">
+
+            <CheckBox
+                android:id="@+id/cb_state"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@drawable/selector_cb"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="我已阅读"
+                android:textColor="@color/text_333333"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="2dp"
+                android:text="风险提示及免责声明"
+                android:textColor="@color/color_75c0fa"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_publish"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/main"
+            android:gravity="center"
+            android:paddingBottom="13dp"
+            android:paddingTop="13dp"
+            android:text="确定发布"
+            android:textColor="@color/white"
+            android:textSize="15sp"/>
+    </LinearLayout>
+</LinearLayout>

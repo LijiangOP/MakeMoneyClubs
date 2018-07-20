@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/ll_recommend"
+              xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="125dp"
+              android:background="@color/white"
+              android:orientation="horizontal"
+              android:paddingLeft="10dp"
+              android:paddingRight="10dp">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="104dp"
+        android:layout_height="104dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="9dp"
+        />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:background="@drawable/shape_only_bottom_gray"
+        android:paddingTop="8dp">
+
+        <TextView
+            android:id="@+id/tv_descibe"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textColor="@color/color_000000"
+            android:textSize="@dimen/official_list_title"/>
+
+        <com.fynn.fluidlayout.FluidLayout
+            android:id="@+id/fluid_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_descibe"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="17dp"
+            android:gravity="bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_self_support"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="5dp"
+                android:background="@color/color_fc3135"
+                android:gravity="center"
+                android:text="自营"
+                android:textColor="@color/white"
+                android:textSize="10sp"
+                android:visibility="gone"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="赚¥"
+                android:textColor="@color/color_fc3135"
+                android:textSize="12sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:gravity="center"
+                android:text="128.00"
+                android:textColor="@color/color_fc3135"
+                android:textSize="18sp"
+                />
+
+            <TextView
+                android:id="@+id/tv_ticket"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/shape_rect_five_redsolid"
+                android:gravity="center"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="1dp"
+                android:textColor="@color/white"
+                android:textSize="9sp"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/tv_news"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/shape_rect_home_item_news"
+                android:gravity="center"
+                android:paddingBottom="1dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingTop="1dp"
+                android:text="新品"
+                android:textColor="@color/color_00b9fd"
+                android:textSize="9sp"
+                android:visibility="gone"
+                />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="10dp"
+                android:layout_weight="1"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+
+                <cn.iwgang.countdownview.CountdownView
+                    android:id="@+id/countDownView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    app:isHideTimeBackground="false"
+                    app:isShowDay="false"
+                    app:isShowHour="true"
+                    app:isShowMillisecond="false"
+                    app:isShowMinute="true"
+                    app:isShowSecond="true"
+                    app:isShowTimeBgDivisionLine="false"
+                    app:isTimeTextBold="true"
+                    app:suffixGravity="center"
+                    app:suffixTextColor="@color/text_999999"
+                    app:suffixTextSize="9sp"
+                    app:timeBgColor="@color/text_999999"
+                    app:timeBgRadius="2dp"
+                    app:timeBgSize="11dp"
+                    app:timeTextColor="@color/white"
+                    app:timeTextSize="9sp"/>
+
+                <TextView
+                    android:id="@+id/tv_finish_tag"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingRight="5dp"
+                    android:text="距结束还剩"
+                    android:textColor="#b3b3b3"
+                    android:textSize="10sp"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+</LinearLayout>

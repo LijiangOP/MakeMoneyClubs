@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <include layout="@layout/title_bar"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/re_bottom"
+        android:layout_below="@+id/re_title_bar"
+        android:background="@drawable/daily_wecaht_share">
+
+        <ImageView
+            android:id="@+id/iv_part1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/daily_wecaht_share_part1"/>
+
+        <TextView
+            android:id="@+id/tv_part2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/iv_part1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/daily_wecaht_share_part2"
+            android:gravity="center"
+            android:textColor="@color/color_e13c46"
+            android:textSize="15sp"/>
+
+        <ImageView
+            android:id="@+id/iv_part3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tv_part2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/daily_wecaht_share_part3"/>
+
+        <ImageView
+            android:id="@+id/iv_code"
+            android:layout_width="95dp"
+            android:layout_height="95dp"
+            android:layout_alignRight="@+id/iv_part3"
+            android:layout_below="@+id/tv_part2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="45dp"/>
+
+
+        <TextView
+            android:id="@+id/tv_hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="5dp"
+            android:gravity="center"
+            android:lineSpacingExtra="3dp"
+            android:textColor="@color/color_a30a14"
+            android:textIsSelectable="true"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/re_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:paddingBottom="5dp"
+        android:paddingTop="5dp">
+
+        <TextView
+            android:id="@+id/tv_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/selector_rect_twenty_red"
+            android:paddingBottom="10dp"
+            android:paddingLeft="55dp"
+            android:paddingRight="55dp"
+            android:paddingTop="10dp"
+            android:text="立即分享"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </RelativeLayout>
+
+</RelativeLayout>
