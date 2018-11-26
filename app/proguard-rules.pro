@@ -63,6 +63,7 @@
 # Gson
 -keep class com.google.gson.stream.** { *; }
 -keepattributes EnclosingMethod
+
 #这是你定义的实体类
 -keep class com.zhengdao.zqb.entity.**{*;}
 
@@ -151,6 +152,10 @@ public static ** valueOf(java.lang.String);
 -keep class android.support.v4.**{ public *;}
 -keep class android.support.v7.**{ public *;}
 
+#vivoSDK
+-keep class com.vivo.*.** { *; }
+-dontwarn com.androidquery.auth.**
+
 # 阿里百川电商
 -keepattributes Signature
 -keep class sun.misc.Unsafe { *; }
@@ -173,6 +178,47 @@ public static ** valueOf(java.lang.String);
  -keep class **.R$* {
        *;
   }
+
+# 安智广告
+-keep public class com.leedavid.adslib.comm.**
+-dontwarn com.leedavid.**
+-keepclassmembers public class com.leedavid.adslib.comm.** { public *** ***(...);}
+-keepclassmembers public class com.leedavid.adslib.comm.** { public <fields> ;}
+-keep class com.qq.e.** { public protected *;}
+-keep class android.support.v4.app.NotificationCompat**{ public *;}
+-keepclassmembers class * extends android.app.Activity { public void *(android.view.View);}
+-keepclassmembers enum * { public static **[] values(); public static ** valueOf(java.lang.String);
+}
+-keep class com.baidu.mobads.*.** { *; }
+-keep class com.afk.** {*;}
+-keep class com.google.protobuf.** {*;}
+-keepattributes *Annotation* -keepattributes *JavascriptInterface*
+-keep public class * implements com.afk.client.ads.inf.BaseListener
+-keep public class com.afk.client.ads.inf.BaseListener
+-keep public class * extends android.app.Activity
+-keep public class * extends android.webkit.WebChromeClient
+-keep public class com.anzhi.usercenter.sdk.AnzhiUserCenter
+-keep class * implements com.anzhi.usercenter.sdk.BaseWebViewActivity$JsCallJavaInterface{*; }
+-keep public class com.anzhi.**{*;}
+-keepclassmembers class com.afk.client.ads.inf.BaseListener {
+<fields>;
+<methods>;
+}
+-keepclassmembers class * extends android.webkit.WebChromeClient{ public <fields>;
+public <methods>;
+}
+-keepclassmembers class * implements com.afk.client.ads.inf.BannerAdListener{ public <fields>;
+public <methods>;
+}
+
+-keep class com.tencent.smtt.sdk.**{*;}
+
+# 穿山甲（头条）广告
+-keep class com.bytedance.sdk.openadsdk.** { *; }
+-keep class com.androidquery.callback.** {*;}
+-keep class com.bytedance.sdk.openadsdk.service.TTDownloadProvider
+-keep class com.ss.sys.ces.a {*;}
+
 #---------------------------------3.与js互相调用的类------------------------
 -keep class com.zhengdao.zqb.h5.** { *; }
 #---------------------------------4.反射相关的类和方法-----------------------
