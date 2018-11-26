@@ -47,7 +47,7 @@ public class RebateFragment extends MVPBaseFragment<RebateContract.View, RebateP
 
     @Override
     protected void initView() {
-        mFakeStatusBar.setBackgroundColor(calculateStatusColor(getResources().getColor(R.color.main), 0));
+        mFakeStatusBar.setBackgroundColor(calculateStatusColor(getResources().getColor(R.color.main), 0));//fragment中添加一个顶部占位View
         StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
         mSmartRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -145,12 +145,17 @@ public class RebateFragment extends MVPBaseFragment<RebateContract.View, RebateP
 
     @Override
     public void onBaiduAdvClick() {
-        mPresenter.getSeeAdvReward(1,1);
+        //        mPresenter.getSeeAdvReward(1,1);
     }
 
     @Override
     public void onTencentAdvClick() {
-        mPresenter.getSeeAdvReward(1,2);
+        //        mPresenter.getSeeAdvReward(1,2);
+    }
+
+    @Override
+    public void onAnZhiAdvClick() {
+        //        mPresenter.getSeeAdvReward(1,3);
     }
 
     @Override

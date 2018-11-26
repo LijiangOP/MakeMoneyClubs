@@ -12,8 +12,8 @@
         android:gravity="center"
         android:paddingBottom="20dp"
         android:paddingTop="37dp"
-        android:textColor="@color/color_666666"
-        android:textSize="13sp"/>
+        style="@style/common_dialog_title"
+        />
 
     <View
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:paddingTop="15dp"
             android:text="取消"
             android:textColor="#61c5fe"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
 
         <View
@@ -53,7 +53,7 @@
             android:paddingTop="15dp"
             android:text="确定"
             android:textColor="#61c5fe"
-            android:textSize="14sp"
+            android:textSize="18sp"
             />
     </LinearLayout>
 </LinearLayout>

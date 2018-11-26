@@ -1,5 +1,6 @@
 package com.zhengdao.zqb.view.activity.homegoodsdetail;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -7,10 +8,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,18 +21,13 @@ import android.provider.Browser;
 import android.provider.MediaStore;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
 import android.text.Html;
-import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.Spanned;
-import android.text.TextPaint;
 import android.text.TextUtils;
-import android.text.method.LinkMovementMethod;
-import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
-import android.text.style.ImageSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,12 +43,9 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 import com.fynn.fluidlayout.FluidLayout;
-import com.jaeger.library.OnSelectListener;
-import com.jaeger.library.SelectableTextHelper;
 import com.kennyc.view.MultiStateView;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.customview.BigImageDialog;
@@ -70,7 +61,7 @@ import com.zhengdao.zqb.entity.ShowEntity;
 import com.zhengdao.zqb.event.BackToHomeEvent;
 import com.zhengdao.zqb.event.UpDataUserInfoEvent;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
-import com.zhengdao.zqb.utils.DensityUtil;
+import com.zhengdao.zqb.utils.AppUtils;
 import com.zhengdao.zqb.utils.FileUtils;
 import com.zhengdao.zqb.utils.ImageUtils;
 import com.zhengdao.zqb.utils.LogUtils;
@@ -83,18 +74,14 @@ import com.zhengdao.zqb.view.activity.customservice.CustomServiceActivity;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.activity.report.ReportActivity;
 import com.zhengdao.zqb.view.adapter.AddUserInfoInputAdapter;
+import com.zhengdao.zqb.view.adapter.FlowAdapter;
 import com.zhengdao.zqb.view.adapter.HomeDetailAddPicAdapter;
-
-import org.xml.sax.XMLReader;
 
 import java.io.File;
 import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -104,6 +91,7 @@ import butterknife.ButterKnife;
 import cn.iwgang.countdownview.CountdownView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import rx.functions.Action1;
 
 /**
  * @Author lijiangop
@@ -157,8 +145,6 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
     TextView         mTvTaskLink;
     @BindView(R.id.re_task_link)
     RelativeLayout   mReTaskLink;
-    @BindView(R.id.tv_wanted_flow)
-    TextView         mTvWantedFlow;
     @BindView(R.id.tv_image_count)
     TextView         mTvImageCount;
     @BindView(R.id.tv_image_count_tag)
@@ -187,6 +173,8 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
     LinearLayout     mLlBottom;
     @BindView(R.id.multiStateView)
     MultiStateView   mMultiStateView;
+    @BindView(R.id.recycle_flow)
+    RecyclerView     mRecycleFlow;
 
     private long mCurrentTimeMillis = 0;
     private WantedHintDialog  mWantedHintDialog;
@@ -200,7 +188,6 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
     private int mState = -1;//悬赏领取状态 0未领取，1已领取
     private int    mCurrentPicPosition;//辅助记位置
     private String mPhone;
-    private String mExplain;
     private HashMap mHashMap = new HashMap<>();
     private AddUserInfoInputAdapter mAddUserInfoInputAdapter;
     private ArrayList<ShowEntity>   mBitmaps;
@@ -212,17 +199,12 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
     private int mAlreadyAddCount = 0;
     private String  mType;
     private boolean isAlreadyAddDesc;
-    private String mStringCompile = "http://app.zqb88.cn/upload/images/rewardImages/.+?\\.\\w{3}";
-    private String mStringTaskLink;
+    private String  mStringTaskLink;
     private Handler mhander = new Handler();
 
     //服务器返回字段
     private String mHttpGoodsPic;//商品图片地址
     private String mHttpCommitTime = "24";
-    private int[] mScreenSize;
-
-    //TextView自定义选择复制功能Helper
-    private SelectableTextHelper mSelectableTextHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -245,7 +227,6 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
             }
         });
         initData();
-        mScreenSize = DensityUtil.getScreenSize(HomeGoodsDetailActivity.this);
     }
 
     private void initData() {
@@ -269,17 +250,6 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
             public void onEnd(CountdownView cv) {
                 mTvGet.setText("领取悬赏令");
                 mCountDownView.setVisibility(View.GONE);
-            }
-        });
-        mSelectableTextHelper = new SelectableTextHelper.Builder(mTvWantedFlow)
-                .setSelectedColor(getResources().getColor(R.color.selected_blue))
-                .setCursorHandleSizeInDp(20)
-                .setCursorHandleColor(getResources().getColor(R.color.cursor_handle_color))
-                .build();
-        mSelectableTextHelper.setSelectListener(new OnSelectListener() {
-            @Override
-            public void onTextSelected(CharSequence content) {
-
             }
         });
     }
@@ -309,7 +279,7 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
                 doAddAttention();
                 break;
             case R.id.tv_check_time:
-                showCheckTimeHintDialog();
+                //                showCheckTimeHintDialog();
                 break;
             case R.id.ll_bottom:
                 if (mState == 0)
@@ -425,8 +395,9 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
                 }
             }
         }
-        if (mAddUserInfoInputAdapter == null || jsons.size() == mAddUserInfoInputAdapter.getCount())
-            mPresenter.CommitWanted(data, jsons, mTaskId);
+        if (mAddUserInfoInputAdapter == null || jsons.size() == mAddUserInfoInputAdapter.getCount()) {
+            mPresenter.CommitWanted(data, jsons, AppUtils.getIMEI(HomeGoodsDetailActivity.this), mTaskId);
+        }
     }
 
     @Override
@@ -712,7 +683,7 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
                 params.setMargins(0, 0, 15, 0);
                 TextView tv1 = new TextView(this);
                 tv1.setText("限" + reward.number + "人领取");
-                tv1.setTextSize(10);
+                tv1.setTextSize(12);
                 Drawable drawable1 = getResources().getDrawable(R.drawable.img_c);
                 drawable1.setBounds(0, 0, drawable1.getMinimumWidth(), drawable1.getMinimumHeight());
                 tv1.setCompoundDrawables(drawable1, null, null, null);
@@ -722,7 +693,7 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
 
                 TextView tv2 = new TextView(this);
                 tv2.setText("剩" + (reward.number - reward.joincount) + "个名额");
-                tv2.setTextSize(10);
+                tv2.setTextSize(12);
                 Drawable drawable2 = getResources().getDrawable(R.drawable.img_t);
                 drawable2.setBounds(0, 0, drawable2.getMinimumWidth(), drawable2.getMinimumHeight());
                 tv2.setCompoundDrawables(drawable2, null, null, null);
@@ -732,7 +703,7 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
 
                 TextView tv3 = new TextView(this);
                 tv3.setText("赏金已托管");
-                tv3.setTextSize(10);
+                tv3.setTextSize(12);
                 Drawable drawable3 = getResources().getDrawable(R.drawable.img_b);
                 drawable3.setBounds(0, 0, drawable3.getMinimumWidth(), drawable3.getMinimumHeight());
                 tv3.setCompoundDrawables(drawable3, null, null, null);
@@ -752,15 +723,12 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
      * @param reward
      */
     private void doShowFlow(HomeWantedDetailEntity.Reward reward) {
-        mExplain = reward.explain;
-        if (!TextUtils.isEmpty(mExplain)) {
-            if (doCompareTime(reward))
-                showNativeText(reward);
-            else
-                showHtmlText(mExplain);
-            mTvWantedFlow.setVisibility(View.VISIBLE);
+        List<String> explains = reward.explains;
+        if (explains != null && explains.size() > 0) {
+            showHtmlText(explains);
+            mRecycleFlow.setVisibility(View.VISIBLE);
         } else {
-            mTvWantedFlow.setVisibility(View.GONE);
+            mRecycleFlow.setVisibility(View.GONE);
         }
         doShowUploadPic(reward);
         doShowUserInputInfo(reward);
@@ -770,92 +738,16 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
             mLlFlowInput.setVisibility(View.VISIBLE);
     }
 
-    private boolean doCompareTime(HomeWantedDetailEntity.Reward reward) {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");//年-月-日 时-分
-        try {
-            String createTime = reward.upFrameTime;
-            if (!TextUtils.isEmpty(createTime)) {
-                Date compareDate = dateFormat.parse(createTime);//比较时间
-                Date standardDate = dateFormat.parse("2018-06-25 00:00:00");//标准时间
-                if (compareDate.getTime() < standardDate.getTime())
-                    return true;
-                else
-                    return false;
-            } else {
-                return false;
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /**
-     * 流程显示：非html类型数据
-     */
-    private void showNativeText(HomeWantedDetailEntity.Reward reward) {
-        String picture = reward.picture;
-        if (!TextUtils.isEmpty(picture)) {
-            int i = picture.lastIndexOf("/");
-            String substring = picture.substring(0, i + 1);
-            mStringCompile = substring + ".+?\\.\\w{3}";
-        }
-        //正则匹配图片
-        Pattern pattern = Pattern.compile(mStringCompile);
-        Matcher matcher = pattern.matcher(mExplain);
-        while (matcher.find()) {
-            final String group = matcher.group();
-            Glide.with(this).load(group).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    mHashMap.put(group, resource);
-                    try {
-                        onImgDownloadFinish();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }
-        mTvWantedFlow.setText(mExplain);
-    }
-
-    //图片下载回调
-    private void onImgDownloadFinish() throws Exception {
-        try {
-            if (!TextUtils.isEmpty(mExplain)) {
-                SpannableString mSpannableString = new SpannableString(mExplain);
-                Pattern p = Pattern.compile(mStringCompile);
-                final Matcher m = p.matcher(mExplain);
-                while (m.find()) {
-                    if (mHashMap.containsKey(m.group())) {
-                        int[] imageScale = ImageUtils.getImageScale((Bitmap) mHashMap.get(m.group()));
-                        int mShowImgWidth = mScreenSize[0] - DensityUtil.dip2px(HomeGoodsDetailActivity.this, 23);
-                        int mShowImgHeight = mShowImgWidth * imageScale[1] / imageScale[0];
-                        Bitmap bitmap = ImageUtils.zoomImg((Bitmap) mHashMap.get(m.group()), mShowImgWidth, mShowImgHeight);
-                        MyClickableSpan myClickableSpan = new MyClickableSpan(m.group());
-                        ImageSpan span = new ImageSpan(HomeGoodsDetailActivity.this, bitmap);
-                        mSpannableString.setSpan(span, m.start() < 0 ? 0 : m.start(), m.end(), Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
-                        mSpannableString.setSpan(myClickableSpan, m.start() < 0 ? 0 : m.start(), m.end(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-                    }
-                }
-                mTvWantedFlow.setMovementMethod(LinkMovementMethod.getInstance());
-                mTvWantedFlow.setText(mSpannableString);
-                mExplain = mSpannableString.toString();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     /**
      * 流程显示：html类型数据
      */
-    public void showHtmlText(final String htmlContent) {
-        URLImageParser imageGetter = new URLImageParser(mTvWantedFlow);
-        mTvWantedFlow.setText(Html.fromHtml(htmlContent, imageGetter, new DetailTagHandler(HomeGoodsDetailActivity.this)));
-        mTvWantedFlow.setClickable(true);
-        mTvWantedFlow.setMovementMethod(LinkMovementMethod.getInstance());
+    public void showHtmlText(List<String> explains) {
+        FlowAdapter flowAdapter = new FlowAdapter(this, R.layout.item_text, explains);
+        mRecycleFlow.setAdapter(flowAdapter);
+        mRecycleFlow.setHasFixedSize(true);
+        mRecycleFlow.setNestedScrollingEnabled(false);
+        mRecycleFlow.setLayoutManager(new LinearLayoutManager(this));
+        mRecycleFlow.addItemDecoration(new TimeAxleDecoration(this));
     }
 
     /**
@@ -894,13 +786,19 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
     @Override
     public void onPicAdd(int position) {
         mCurrentPicPosition = position;
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            startActivityForResult(intent, ACTION_CHOOSE);
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-        }
+        RxPermissions rxPermissions = new RxPermissions(HomeGoodsDetailActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, ACTION_CHOOSE);
+                } catch (Exception ex) {
+                    LogUtils.e(ex.getMessage());
+                }
+            }
+        });
     }
 
     @Override
@@ -1097,8 +995,8 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
         } catch (Exception e) {
             e.printStackTrace();
         }
-        SpannableString spannableString = new SpannableString("请在领取悬赏令" + mHttpCommitTime + "小时内完成悬赏任务，超时未完成将自动取消您的本次任务，如需再次完成任务需重新领取悬赏令，领取的任务可到我的进行查看。");
-        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#fc3135")), 7, 9, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        SpannableString spannableString = new SpannableString("请在" + mHttpCommitTime + "小时内完成任务\n请勿胡乱提交截图\n否则将被限制领取任务");
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#fc3135")), 2, 4 + mHttpCommitTime.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         mWantedHintDialog.setMessage(spannableString);
         mWantedHintDialog.show();
     }
@@ -1149,25 +1047,6 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
         }
     }
 
-    class MyClickableSpan extends ClickableSpan {
-
-        private String content;
-
-        public MyClickableSpan(String content) {
-            this.content = content;
-        }
-
-        @Override
-        public void updateDrawState(TextPaint ds) {
-            ds.setUnderlineText(false);
-        }
-
-        @Override
-        public void onClick(View widget) {
-            doShowBigImage(content);
-        }
-    }
-
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
         private int space;
@@ -1181,96 +1060,5 @@ public class HomeGoodsDetailActivity extends MVPBaseActivity<HomeGoodsDetailCont
             outRect.bottom = 30;
         }
 
-    }
-
-    public class URLImageParser implements Html.ImageGetter {
-        TextView mTextView;
-
-        public URLImageParser(TextView textView) {
-            this.mTextView = textView;
-        }
-
-        @Override
-        public Drawable getDrawable(String source) {
-            final UrlDrawable urlDrawable = new UrlDrawable();
-
-            Glide.with(HomeGoodsDetailActivity.this).load(source).asBitmap().into(new SimpleTarget<Bitmap>() {
-                @Override
-                public void onResourceReady(Bitmap resource, GlideAnimation<? super Bitmap> glideAnimation) {
-                    int[] imageScale = ImageUtils.getImageScale(resource);
-                    int mShowImgWidth = mScreenSize[0] - DensityUtil.dip2px(HomeGoodsDetailActivity.this, 23);
-                    int mShowImgHeight = mShowImgWidth * imageScale[1] / imageScale[0];
-                    Drawable drawable = new BitmapDrawable(resource);
-                    drawable.setBounds(0, 0, mShowImgWidth, mShowImgHeight);
-                    urlDrawable.setBounds(0, 0, mShowImgWidth, mShowImgHeight);
-                    urlDrawable.setDrawable(drawable);
-                    mTextView.invalidate();
-                    mTextView.setText(mTextView.getText());
-                }
-            });
-            return urlDrawable;
-        }
-
-        public class UrlDrawable extends BitmapDrawable {
-            private Drawable drawable;
-
-            @Override
-            public void draw(Canvas canvas) {
-                if (drawable != null)
-                    drawable.draw(canvas);
-            }
-
-            public void setDrawable(Drawable drawable) {
-                this.drawable = drawable;
-            }
-        }
-    }
-
-    public class DetailTagHandler implements Html.TagHandler {
-        private Context           context;
-        private ArrayList<String> strings;
-
-        public DetailTagHandler(Context context) {
-            this.context = context;
-            strings = new ArrayList<>();
-        }
-
-        @Override
-        public void handleTag(boolean opening, String tag, Editable output, XMLReader xmlReader) {
-            try {
-                // 处理标签<img>
-                if ("img".equals(tag.toLowerCase(Locale.getDefault()))) {
-                    // 获取长度
-                    int len = output.length();
-                    // 获取图片地址
-                    ImageSpan[] images = output.getSpans(len - 1, len, ImageSpan.class);
-                    String imgURL = images[0].getSource();
-                    // 记录所有图片地址
-                    strings.add(imgURL);
-                    // 记录是第几张图片
-                    int position = strings.size() - 1;
-                    // 使图片可点击并监听点击事件
-                    output.setSpan(new ClickableImage(context, position), (len - 1) < 0 ? 0 : (len - 1), len,
-                            Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        private class ClickableImage extends ClickableSpan {
-            private Context context;
-            private int     position;
-
-            public ClickableImage(Context context, int position) {
-                this.context = context;
-                this.position = position;
-            }
-
-            @Override
-            public void onClick(View widget) {
-                doShowBigImage(strings.get(position));
-            }
-        }
     }
 }

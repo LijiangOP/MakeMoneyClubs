@@ -55,15 +55,16 @@ public class NewsFragment extends MVPBaseFragment<NewsContract.View, NewsPresent
     MultiStateView     mMultiStateView;
     @BindView(R.id.smartRefreshLayout)
     SmartRefreshLayout mSmartRefreshLayout;
-    private String             mType;
-    private HotRecommendWindow mDailyWindow;
-    private Disposable         mInstallDisposable;
-    private Disposable         mDownloadDisposable;
+
+    private String              mType;
+    private HotRecommendWindow  mDailyWindow;
+    private Disposable          mInstallDisposable;
+    private Disposable          mDownloadDisposable;
     private CompositeDisposable mDisposables = new CompositeDisposable();
-    private int               mCurrentInstall;
-    private ArrayList<String> mI_rpt;
-    private String            mReplaceValue;
-    private String            mFileName;
+    private int                 mCurrentInstall;
+    private ArrayList<String>   mI_rpt;
+    private String              mReplaceValue;
+    private String              mFileName;
 
     public static NewsFragment newInstance(String type) {
         NewsFragment fragment = new NewsFragment();
@@ -127,7 +128,7 @@ public class NewsFragment extends MVPBaseFragment<NewsContract.View, NewsPresent
         });
         mDisposables.add(mDownloadDisposable);
         mDisposables.add(mInstallDisposable);
-        mPresenter.initData(mType);
+        mPresenter.updataData(mType);
     }
 
     @Override

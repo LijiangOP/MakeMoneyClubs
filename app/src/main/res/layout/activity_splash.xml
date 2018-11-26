@@ -36,6 +36,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 android:src="@drawable/splash_bottom"/>
         </LinearLayout>
     </FrameLayout>

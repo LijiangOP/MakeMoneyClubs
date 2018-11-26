@@ -114,12 +114,7 @@ public class BindNewPhoneActivity extends MVPBaseActivity<BindNewPhoneContract.V
     }
 
     private void doBack() {
-        SettingUtils.setLoginState(this, false);
-        SettingUtils.setUserToken(this, "");
-        SettingUtils.setUserID(this, "");
-        SettingUtils.setPhoneNum(this, "");
-        SettingUtils.setAccount(this, "");
-        SettingUtils.setAlipayAccount(this, "");
+        SettingUtils.ClearAfterLogOut(BindNewPhoneActivity.this);
         RxBus.getDefault().post(new LogOutEvent());
         this.finish();
     }
@@ -269,7 +264,7 @@ public class BindNewPhoneActivity extends MVPBaseActivity<BindNewPhoneContract.V
                         String umeng_channel = AppUtils.getAppMetaDataString(BindNewPhoneActivity.this, "UMENG_CHANNEL");
                         String channel = TextUtils.isEmpty(umeng_channel) ? "0" : umeng_channel;
                         mPresenter.BindThirdLoginData(mPhone, response.get("nickname").toString(), response.get("figureurl_qq_1").toString(),
-                                response.get("gender").toString(), new Integer(channel), mTencent.getOpenId(),LOGIN_TYPE_QQ);
+                                response.get("gender").toString(), new Integer(channel), mTencent.getOpenId(), LOGIN_TYPE_QQ);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }

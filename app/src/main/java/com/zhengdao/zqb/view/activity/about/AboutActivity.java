@@ -43,19 +43,19 @@ public class AboutActivity extends MVPBaseActivity<AboutContract.View, AboutPres
 
     private static final int ACTION_HANDLER = 007;
     @BindView(R.id.tv_version)
-    TextView     mTvVersion;
+    TextView       mTvVersion;
     @BindView(R.id.ll_check_update)
-    LinearLayout mLlCheckUpdate;
+    LinearLayout   mLlCheckUpdate;
     @BindView(R.id.ll_version_desc)
-    LinearLayout mLlVersionDesc;
+    LinearLayout   mLlVersionDesc;
     @BindView(R.id.ll_give_a_mark)
-    LinearLayout mLlGiveAMark;
+    LinearLayout   mLlGiveAMark;
     @BindView(R.id.tv_cache)
-    TextView     mTvCache;
+    TextView       mTvCache;
     @BindView(R.id.ll_clear_cache)
-    LinearLayout mLlClearCache;
+    LinearLayout   mLlClearCache;
     @BindView(R.id.ll_serve_protocol)
-    LinearLayout mLlServeProtocol;
+    LinearLayout   mLlServeProtocol;
 
     private long mCurrentTimeMillis = 0;
     private UpdateUtil           mUpdateUtil;
@@ -63,6 +63,8 @@ public class AboutActivity extends MVPBaseActivity<AboutContract.View, AboutPres
     private UpdataWindow         mUpdataWindow;
     private Disposable           mIsShowProgressDisposable;
     private UpdataProgressWindow mUpdataProgressWindow;
+    private int                  mContentView;
+
     private Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
@@ -300,5 +302,4 @@ public class AboutActivity extends MVPBaseActivity<AboutContract.View, AboutPres
         if (null != mIsShowProgressDisposable)
             mIsShowProgressDisposable.dispose();
     }
-
 }

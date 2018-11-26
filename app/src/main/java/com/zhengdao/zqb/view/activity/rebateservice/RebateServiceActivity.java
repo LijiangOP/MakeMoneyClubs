@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
 import com.zhengdao.zqb.utils.LogUtils;
@@ -24,10 +25,7 @@ import java.io.FileOutputStream;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
-
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import rx.functions.Action1;
 
 public class RebateServiceActivity extends MVPBaseActivity<RebateServiceContract.View, RebateServicePresenter> implements RebateServiceContract.View {
 
@@ -58,13 +56,18 @@ public class RebateServiceActivity extends MVPBaseActivity<RebateServiceContract
         mTvTitleBarRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                doSavePic("rebate_service_share.jpg");
+                RxPermissions rxPermissions = new RxPermissions(RebateServiceActivity.this);
+                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        doSavePic("rebate_service_share.jpg");
+                    }
+                });
             }
         });
     }
 
     private void doSavePic(String fileName) {
-        methodRequiresTwoPermission();
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_UNMOUNTED)) {
             ToastUtil.showToast(RebateServiceActivity.this, "未发现内部存储,无法保存");
         } else {
@@ -90,16 +93,6 @@ public class RebateServiceActivity extends MVPBaseActivity<RebateServiceContract
                 LogUtils.e(ex.getMessage());
                 ToastUtil.showToast(RebateServiceActivity.this, "保存失败");
             }
-        }
-    }
-
-    private static final int RC_CAMERA_AND_LOCATION = 001;
-
-    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
-    private void methodRequiresTwoPermission() {
-        String[] perms = {WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "下列权限未获权，是否开启", RC_CAMERA_AND_LOCATION, perms);
         }
     }
 

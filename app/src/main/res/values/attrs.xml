@@ -56,7 +56,7 @@
     <declare-styleable name="MarqueeView">
         <attr name="interval" format="integer|reference"/>
         <attr name="animDuration" format="integer|reference"/>
-        <attr name="orientation">
+        <attr name="marqueen_orientation">
             <enum name="horizontal" value="0"/>
             <enum name="vertical" value="1"/>
         </attr>

@@ -25,8 +25,10 @@ import com.scwang.smartrefresh.layout.listener.OnLoadmoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
+import com.zhengdao.zqb.event.UpDataUserInfoEvent;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
 import com.zhengdao.zqb.utils.LogUtils;
+import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.ToastUtil;
 import com.zhengdao.zqb.utils.Utils;
 import com.zhengdao.zqb.utils.ViewUtils;
@@ -39,6 +41,8 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, MyBalancePresenter> implements MyBalanceContract.View, BalanceTypeAdapter.CallBack, View.OnClickListener {
 
@@ -65,6 +69,7 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
     private String mBalanceTypeString = "全部";
     private Double mUsableSum;
     private long mCurrentTimeMillis = 0;
+    private Disposable mUpDataUserInfoDisposable;
 
 
     @Override
@@ -98,6 +103,13 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
                 mPresenter.initData(mBalanceType);
             }
         });
+        mUpDataUserInfoDisposable = RxBus.getDefault().toObservable(UpDataUserInfoEvent.class).subscribe(new Consumer<UpDataUserInfoEvent>() {
+            @Override
+            public void accept(UpDataUserInfoEvent upDataUserInfoEvent) throws Exception {
+                LogUtils.i("需要刷新该页面数据");
+                mPresenter.initData(mBalanceType);
+            }
+        });
         mTvWithdraw.setOnClickListener(this);
         mTvCurrentMonth.setOnClickListener(this);
         mIvSelect.setOnClickListener(this);
@@ -114,6 +126,8 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
             mSelectData.add("广告收入");
             mSelectData.add("理财返利");
             mSelectData.add("推荐奖励");
+            mSelectData.add("游戏奖励");
+            mSelectData.add("问卷收入");
             mSelectData.add("提现");
         }
         BalanceTypeAdapter balanceTypeAdapter = new BalanceTypeAdapter(this, R.layout.balance_type_item, mSelectData, this, mBalanceTypeString);
@@ -155,6 +169,10 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
                     mBalanceType = 8;
                 } else if (value.equals("推荐奖励")) {
                     mBalanceType = 4;
+                } else if (value.equals("游戏奖励")) {
+                    mBalanceType = 9;
+                } else if (value.equals("问卷收入")) {
+                    mBalanceType = 10;
                 } else if (value.equals("提现")) {
                     mBalanceType = 5;
                 }
@@ -200,6 +218,7 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
 
     @Override
     public void updateAdapter(boolean isHasNext, Double balance) {
+        mUsableSum = balance;
         mTvBalance.setText("" + (balance == null ? 0 : balance));
         mMultiStateView.setViewState(MultiStateView.VIEW_STATE_CONTENT);
         if (isHasNext) {
@@ -260,6 +279,8 @@ public class MyBalanceActivity extends MVPBaseActivity<MyBalanceContract.View, M
             mPresenter.unsubcrible();
         if (mPopupWindow != null)
             mPopupWindow = null;
+        if (null != mUpDataUserInfoDisposable)
+            mUpDataUserInfoDisposable.dispose();
     }
 
 

@@ -212,12 +212,7 @@ public class WXEntryPresenter implements WXEntryContract.Presenter {
         Subscription subscribe = Observable.create(new Observable.OnSubscribe<UserInfo>() {
             @Override
             public void call(Subscriber<? super UserInfo> subscriber) {
-                SettingUtils.setLoginState(mContext, true);
-                SettingUtils.setPhoneNum(mContext, bean.phone);
-                SettingUtils.setUserToken(mContext, bean.token);
-                SettingUtils.setUserID(mContext, "" + bean.id);
-                SettingUtils.setAccount(mContext, bean.userName);
-                SettingUtils.setAccountType(mContext, bean.type);
+                SettingUtils.SaveAfterLogin(mContext, bean);
                 subscriber.onNext(bean);
                 subscriber.onCompleted();
             }

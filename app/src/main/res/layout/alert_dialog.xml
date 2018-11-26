@@ -15,8 +15,8 @@
         android:paddingRight="50dp"
         android:paddingTop="25dp"
         android:text="是否取消关注"
-        android:textColor="#2D2D2D"
-        android:textSize="15sp"/>
+        android:textColor="@color/color_333333"
+        android:textSize="@dimen/dialog_title"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +35,7 @@
             android:paddingTop="5dp"
             android:text="取消"
             android:textColor="#57BAAF"
-            android:textSize="13sp"/>
+            android:textSize="15sp"/>
 
         <TextView
             android:id="@+id/tv_AlertDialogPositive"
@@ -50,7 +50,7 @@
             android:paddingTop="5dp"
             android:text="确定"
             android:textColor="#57BAAF"
-            android:textSize="13sp"/>
+            android:textSize="15sp"/>
 
     </LinearLayout>
 </LinearLayout>

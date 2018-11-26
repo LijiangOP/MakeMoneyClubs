@@ -28,5 +28,6 @@
 
     <TextView
         android:id="@+id/tv_desc"
+        android:textSize="@dimen/official_list_title_1"
         style="@style/custom_tv_style1"/>
 </LinearLayout>

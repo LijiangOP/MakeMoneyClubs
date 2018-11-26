@@ -159,7 +159,9 @@
                                     android:layout_height="wrap_content"
                                     android:gravity="left"
                                     android:textColor="@color/color_fc3135"
-                                    android:textSize="10sp"/>
+                                    android:textSize="10sp"
+                                    android:visibility="invisible"
+                                    />
 
                             </LinearLayout>
 
@@ -181,10 +183,10 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:drawablePadding="3dp"
-                                    android:drawableRight="@drawable/btn_money_w"
                                     android:text="审核时间"
                                     android:textColor="@color/text_999999"
-                                    android:textSize="11sp"/>
+                                    android:textSize="11sp"
+                                    android:visibility="invisible"/>
 
                             </LinearLayout>
 
@@ -224,7 +226,7 @@
                                     android:paddingRight="5dp"
                                     android:paddingTop="1dp"
                                     android:textColor="@color/color_6f717f"
-                                    android:textSize="9sp"
+                                    android:textSize="12sp"
                                     android:visibility="gone"/>
 
                                 <TextView
@@ -239,7 +241,7 @@
                                     android:paddingRight="5dp"
                                     android:paddingTop="1dp"
                                     android:textColor="@color/color_6f717f"
-                                    android:textSize="9sp"
+                                    android:textSize="12sp"
                                     android:visibility="gone"/>
 
                                 <TextView
@@ -254,7 +256,7 @@
                                     android:paddingRight="5dp"
                                     android:paddingTop="1dp"
                                     android:textColor="@color/color_6f717f"
-                                    android:textSize="9sp"
+                                    android:textSize="12sp"
                                     android:visibility="gone"/>
                             </LinearLayout>
                         </LinearLayout>
@@ -275,23 +277,34 @@
                             android:paddingLeft="13dp"
                             android:paddingTop="10dp"
                             android:text="领取条件及限制"
-                            android:textColor="@color/color_fd5a5e"
+                            android:textColor="@color/color_000000"
                             android:textSize="@dimen/official_list_title"
-                            />
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:id="@+id/tv_wanted_limit"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
-                            android:lineSpacingExtra="2dp"
+                            android:lineSpacingExtra="5dp"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/color_333333"
+                            android:textIsSelectable="true"
+                            android:textSize="@dimen/official_list_title"
+                            />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
                             android:paddingBottom="10dp"
                             android:paddingLeft="13dp"
                             android:paddingRight="10dp"
-                            android:textColor="@color/color_5c5c5c"
+                            android:text="@string/wanted_limit_hint"
+                            android:textColor="@color/color_main"
                             android:textIsSelectable="true"
                             android:textSize="@dimen/official_list_title"
-                            android:visibility="gone"
                             />
 
                         <RelativeLayout
@@ -333,29 +346,42 @@
                             android:paddingLeft="13dp"
                             android:paddingTop="10dp"
                             android:text="流程说明"
-                            android:textColor="@color/color_fd5a5e"
-                            android:textSize="@dimen/official_list_title"/>
+                            android:textColor="@color/color_000000"
+                            android:textSize="@dimen/official_list_title"
+                            android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/tv_wanted_flow"
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycle_flow"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@color/white"
-                            android:lineSpacingExtra="2dp"
-                            android:paddingBottom="10dp"
-                            android:paddingLeft="13dp"
+                            android:paddingBottom="15dp"
                             android:paddingRight="10dp"
-                            android:textColor="@color/color_5c5c5c"
-                            android:textSize="@dimen/official_list_title"
+                            android:paddingTop="10dp"
                             android:visibility="gone"
                             />
+
+                        <!--<TextView-->
+                        <!--android:id="@+id/tv_wanted_flow"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:background="@color/white"-->
+                        <!--android:lineSpacingExtra="5dp"-->
+                        <!--android:paddingBottom="10dp"-->
+                        <!--android:paddingLeft="13dp"-->
+                        <!--android:paddingRight="10dp"-->
+                        <!--android:textColor="@color/color_333333"-->
+                        <!--android:textSize="@dimen/official_list_title"-->
+                        <!--android:visibility="gone"-->
+                        <!--/>-->
 
                         <LinearLayout
                             android:id="@+id/ll_flow_input"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:orientation="vertical">
+                            android:orientation="vertical"
+                            android:visibility="gone">
 
 
                             <include
@@ -371,8 +397,9 @@
                                 android:paddingRight="10dp"
                                 android:paddingTop="10dp"
                                 android:text="用户提交信息"
-                                android:textColor="@color/color_fd5a5e"
+                                android:textColor="@color/color_000000"
                                 android:textSize="@dimen/official_list_title"
+                                android:textStyle="bold"
                                 android:visibility="gone"
                                 />
 
@@ -400,15 +427,15 @@
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="10dp"
                                 android:background="@color/white"
                                 android:lineSpacingExtra="2dp"
                                 android:paddingBottom="7dp"
                                 android:paddingLeft="13dp"
                                 android:paddingTop="10dp"
                                 android:text="免责声明"
-                                android:textColor="@color/color_fd5a5e"
+                                android:textColor="@color/color_000000"
                                 android:textSize="@dimen/official_list_title"
+                                android:textStyle="bold"
                                 />
 
                             <TextView
@@ -416,13 +443,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:background="@color/white"
-                                android:lineSpacingExtra="2dp"
+                                android:lineSpacingExtra="5dp"
                                 android:paddingBottom="10dp"
                                 android:paddingLeft="13dp"
                                 android:paddingRight="10dp"
                                 android:paddingTop="5dp"
                                 android:text="@string/app_statement"
-                                android:textColor="@color/color_666666"
+                                android:textColor="@color/color_333333"
                                 android:textIsSelectable="true"
                                 android:textSize="@dimen/official_list_title"/>
                         </LinearLayout>

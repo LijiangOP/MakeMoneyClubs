@@ -1,21 +1,32 @@
 package com.zhengdao.zqb.utils;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.zhengdao.zqb.config.Constant;
+import com.zhengdao.zqb.entity.UserHomeBean;
+import com.zhengdao.zqb.entity.UserInfo;
 
 import static com.zhengdao.zqb.config.Constant.SP.ACCOUNT;
 import static com.zhengdao.zqb.config.Constant.SP.ACCOUNTTYPE;
 import static com.zhengdao.zqb.config.Constant.SP.ALIPAYACCOUNT;
 import static com.zhengdao.zqb.config.Constant.SP.CURRENTCALENDAR;
+import static com.zhengdao.zqb.config.Constant.SP.CURRENT_ALIPAY_CALENDAR;
+import static com.zhengdao.zqb.config.Constant.SP.CURRENT_INTRODUCE_CALENDAR;
+import static com.zhengdao.zqb.config.Constant.SP.CURRENT_RECOMMEND_REWARD_CALENDAR;
 import static com.zhengdao.zqb.config.Constant.SP.IGNORE;
 import static com.zhengdao.zqb.config.Constant.SP.IMG_SETTING;
 import static com.zhengdao.zqb.config.Constant.SP.IS_FRIST_INSTALL;
 import static com.zhengdao.zqb.config.Constant.SP.IS_LOGIN;
 import static com.zhengdao.zqb.config.Constant.SP.MESSAGECOUNT;
 import static com.zhengdao.zqb.config.Constant.SP.PHONE_NUM;
+import static com.zhengdao.zqb.config.Constant.SP.RECEIVE_COUNT;
 import static com.zhengdao.zqb.config.Constant.SP.REWARDMESSAGECOUNT;
+import static com.zhengdao.zqb.config.Constant.SP.TOTAL_INCOME;
+import static com.zhengdao.zqb.config.Constant.SP.USER_ADDRESS_SET;
+import static com.zhengdao.zqb.config.Constant.SP.USER_BIRTHDAY;
 import static com.zhengdao.zqb.config.Constant.SP.USER_ID;
+import static com.zhengdao.zqb.config.Constant.SP.USER_SEX;
 import static com.zhengdao.zqb.config.Constant.SP.USER_TOKEN;
 
 /**
@@ -51,6 +62,14 @@ public class SettingUtils {
 
     public static void setOnlyWifiLoadImg(Context context, boolean flag) {
         context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putBoolean(IMG_SETTING, flag).apply();
+    }
+
+    public static float getTotalIncome(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getFloat(TOTAL_INCOME, 0);
+    }
+
+    public static void setTotalIncome(Context context, float token) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putFloat(TOTAL_INCOME, token).apply();
     }
 
     public static boolean isLogin(Context context) {
@@ -139,5 +158,106 @@ public class SettingUtils {
 
     public static int getLastShowDat(Context context) {
         return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(CURRENTCALENDAR, 0);
+    }
+
+    public static void setAliPayLastShowDate(Context context, int currentDay) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(CURRENT_ALIPAY_CALENDAR, currentDay).apply();
+    }
+
+    public static int getAliuPayLastShowDat(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(CURRENT_ALIPAY_CALENDAR, 0);
+    }
+
+    public static void setRecommendRewardLastShowDate(Context context, int currentDay) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(CURRENT_RECOMMEND_REWARD_CALENDAR, currentDay).apply();
+    }
+
+    public static int getRecommendRewardLastShowDat(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(CURRENT_RECOMMEND_REWARD_CALENDAR, 0);
+    }
+
+    public static void setIntroduceLastShowDate(Context context, int currentDay) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(CURRENT_INTRODUCE_CALENDAR, currentDay).apply();
+    }
+
+    public static int getIntroduceLastShowDat(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(CURRENT_INTRODUCE_CALENDAR, 0);
+    }
+
+    public static int getReceiveCount(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(RECEIVE_COUNT, 0);
+    }
+
+    public static void setReceiveCount(Context context, int type) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(RECEIVE_COUNT, type).apply();
+    }
+
+
+    private static void setAddressSet(Context context, int addressSet) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(USER_ADDRESS_SET, addressSet).apply();
+    }
+
+    public static int getAddressSet(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(USER_ADDRESS_SET, 0);
+    }
+
+    private static void setSex(Context context, int sex) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putInt(USER_SEX, sex).apply();
+    }
+
+    public static int getSex(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getInt(USER_SEX, 0);
+    }
+
+    private static void setBirthday(Context context, String birthday) {
+        context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).edit().putString(USER_BIRTHDAY, birthday).apply();
+    }
+
+    public static String getBirthday(Context context) {
+        return context.getSharedPreferences(APPNAME, Context.MODE_PRIVATE).getString(USER_BIRTHDAY, "");
+    }
+
+
+    public static void SaveAfterLogin(Context context, UserInfo bean) {
+        if (context != null && bean != null) {
+            SettingUtils.setLoginState(context, true);
+            SettingUtils.setPhoneNum(context, bean.phone);
+            SettingUtils.setUserToken(context, bean.token);
+            SettingUtils.setUserID(context, "" + bean.id);
+            SettingUtils.setAccount(context, bean.userName);
+            SettingUtils.setAccountType(context, bean.type);
+        }
+    }
+
+    public static void ClearAfterLogOut(Context context) {
+        if (context != null) {
+            SettingUtils.setLoginState(context, false);
+            SettingUtils.setPhoneNum(context, "");
+            SettingUtils.setUserToken(context, "");
+            SettingUtils.setUserID(context, "0");
+            SettingUtils.setAccount(context, "");
+            SettingUtils.setAlipayAccount(context, "");
+        }
+    }
+
+    public static void SaveAfterGetUSerData(Context context, UserHomeBean bean) {
+        if (bean != null && bean.userInfo != null) {
+            SettingUtils.setAlipayAccount(context, bean.userInfo.zfb);
+            SettingUtils.setReceiveCount(context, bean.userInfo.receiveCount);
+            SettingUtils.setBirthday(context, bean.userInfo.birthday);
+            SettingUtils.setSex(context, bean.userInfo.sex);
+            SettingUtils.setAddressSet(context, bean.userInfo.addressSet);
+
+        }
+    }
+
+    public static boolean IsAttributeAllExit(Context context) {
+        int addressSet = getAddressSet(context);
+        int sex = getSex(context);
+        String birthday = getBirthday(context);
+        if (addressSet == 0 || sex == 0 || TextUtils.isEmpty(birthday))
+            return false;
+        else
+            return true;
     }
 }

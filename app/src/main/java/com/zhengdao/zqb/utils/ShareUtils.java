@@ -26,7 +26,7 @@ public class ShareUtils {
 
     public static void shareToWX(Context context, String url, String title, String desc, int bimmapRes, int scene) {
         try {
-            IWXAPI iwxapi = WXAPIFactory.createWXAPI(context,WECHAT_APPID, false);
+            IWXAPI iwxapi = WXAPIFactory.createWXAPI(context, WECHAT_APPID, false);
             iwxapi.registerApp(WECHAT_APPID);
 
             WXWebpageObject webpage = new WXWebpageObject();
@@ -66,8 +66,13 @@ public class ShareUtils {
         }
     }
 
-
-    public static void shareToWXWithImg(Context context, Bitmap bitmap, String transaction) {
+    /**
+     * @param context
+     * @param type        SendMessageToWX.Req.WXSceneSession 聊天界面；SendMessageToWX.Req.WXSceneTimeline 朋友圈
+     * @param bitmap
+     * @param transaction
+     */
+    public static void shareToWXWithImg(Context context, int type, Bitmap bitmap, String transaction) {
         try {
             IWXAPI iwxapi = WXAPIFactory.createWXAPI(context, WECHAT_APPID, false);
             iwxapi.registerApp(WECHAT_APPID);
@@ -79,10 +84,12 @@ public class ShareUtils {
             SendMessageToWX.Req req = new SendMessageToWX.Req();
             req.transaction = transaction;
             req.message = msg;
-            req.scene = SendMessageToWX.Req.WXSceneTimeline;
+            req.scene = type;
             iwxapi.sendReq(req);
         } catch (Exception ex) {
             LogUtils.e(ex.getMessage());
         }
     }
+
+
 }

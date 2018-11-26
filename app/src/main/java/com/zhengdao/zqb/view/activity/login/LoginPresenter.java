@@ -69,12 +69,7 @@ public class LoginPresenter extends BasePresenterImpl<LoginContract.View> implem
         Subscription subscribe = Observable.create(new Observable.OnSubscribe<UserInfo>() {
             @Override
             public void call(Subscriber<? super UserInfo> subscriber) {
-                SettingUtils.setLoginState(mView.getContext(), true);
-                SettingUtils.setPhoneNum(mView.getContext(), bean.phone);
-                SettingUtils.setUserToken(mView.getContext(), bean.token);
-                SettingUtils.setUserID(mView.getContext(), "" + bean.id);
-                SettingUtils.setAccount(mView.getContext(), bean.userName);
-                SettingUtils.setAccountType(mView.getContext(), bean.type);
+                SettingUtils.SaveAfterLogin(mView.getContext(),bean);
                 subscriber.onNext(bean);
                 subscriber.onCompleted();
             }

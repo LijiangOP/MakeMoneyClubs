@@ -2,57 +2,67 @@ package com.zhengdao.zqb.view.activity.withdraw;
 
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
+import android.support.annotation.RequiresApi;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.text.TextWatcher;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.HttpResult;
 import com.zhengdao.zqb.entity.UserHomeBean;
+import com.zhengdao.zqb.entity.WithDrawSelectEntity;
 import com.zhengdao.zqb.event.UpDataUserInfoEvent;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.SettingUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
+import com.zhengdao.zqb.utils.ViewUtils;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
+import com.zhengdao.zqb.view.adapter.WithDrawSelectedAdapter;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, WithDrawPresenter> implements WithDrawContract.View, View.OnClickListener {
+public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, WithDrawPresenter> implements WithDrawContract.View, View.OnClickListener, WithDrawSelectedAdapter.ItemSelectedCallBack {
 
-    private static final int BIND_ALIPAY  = 002;
-    private static final int ACTION_LOGIN = 001;
+    private static final int   BIND_ALIPAY  = 002;
+    private static final int   ACTION_LOGIN = 001;
+    private static       Toast toast        = null;
     @BindView(R.id.tv_aliPay_account)
-    TextView  mTvAliPayAccount;
+    TextView     mTvAliPayAccount;
     @BindView(R.id.tv_change)
-    TextView  mTvChange;
-    @BindView(R.id.et_number)
-    EditText  mEtNumber;
-    @BindView(R.id.iv_clear)
-    ImageView mIvClear;
+    TextView     mTvChange;
+    @BindView(R.id.recycle_view)
+    RecyclerView mRecycleView;
     @BindView(R.id.tv_balance)
-    TextView  mTvBalance;
-    @BindView(R.id.tv_total)
-    TextView  mTvTotal;
+    TextView     mTvBalance;
     @BindView(R.id.tv_confirm)
-    TextView  mTvConfirm;
+    TextView     mTvConfirm;
+
     private long mCurrentTimeMillis = 0;
-    private String mAccount;
-    private Double mUsableSum;
-    private String mWithDrawNum;
+    private String mAccount;//账户
+    private Double mUsableSum;//可用余额
+    private Integer mWithDrawNum = 0;//提现金额
+    private WithDrawSelectedAdapter    mAdapter;
+    private List<WithDrawSelectEntity> mData;
+    private boolean mIsFristWithDraw = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,75 +72,35 @@ public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, Wit
         setTitle("提现");
         initData();
         initListener();
+        mPresenter.getUserData();
     }
 
     private void initData() {
         mAccount = getIntent().getStringExtra(Constant.Activity.Data);
         if (TextUtils.isEmpty(mAccount))
             mAccount = SettingUtils.getAlipayAccount(this);
-        if (TextUtils.isEmpty(mAccount)) {
-            mPresenter.getUserData();
-        }
         mTvAliPayAccount.setText(TextUtils.isEmpty(mAccount) ? "" : mAccount);
         mUsableSum = getIntent().getDoubleExtra(Constant.Activity.Data1, 0);
         mTvBalance.setText("¥" + new DecimalFormat("#0.00").format(mUsableSum));
-        mEtNumber.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
     }
 
     private void initListener() {
         mTvChange.setOnClickListener(this);
-        mIvClear.setOnClickListener(this);
-        mTvTotal.setOnClickListener(this);
         mTvConfirm.setOnClickListener(this);
-
-        mEtNumber.addTextChangedListener(new TextWatcher() {
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                try {
-                    String number = editable.toString().trim();
-                    if (!TextUtils.isEmpty(number)) {
-                        if (number.contains(".")) {
-                            if (number.length() - 1 - number.indexOf(".") > 2) {
-                                CharSequence charSequence = number.subSequence(0, number.indexOf(".") + 3);
-                                mEtNumber.setText(charSequence);
-                                mEtNumber.setSelection(charSequence.length());
-                            }
-                        }
-                        if (number.substring(0).equals(".")) {
-                            number = "0" + number;
-                            mEtNumber.setText(number);
-                            mEtNumber.setSelection(2);
-                        }
-                        if (number.startsWith("0") && number.length() > 1) {
-                            if (!number.substring(1, 2).equals(".")) {
-                                mEtNumber.setText(number.subSequence(0, 1));
-                                mEtNumber.setSelection(1);
-                            }
-                        }
-                        Double aDouble = Double.valueOf(number);
-                        if (aDouble > mUsableSum) {
-                            mEtNumber.setText("" + mUsableSum);
-                            mEtNumber.setSelection(mEtNumber.getText().toString().trim().length());
-                        }
-                    }
-                } catch (Exception e) {
-                    LogUtils.e(e.getMessage());
-                }
-            }
-        });
+        mData = new ArrayList<>();
+        mData.add(new WithDrawSelectEntity(1, false));
+        mData.add(new WithDrawSelectEntity(5, false));
+        mData.add(new WithDrawSelectEntity(10, mUsableSum < 10 ? false : true));
+        mData.add(new WithDrawSelectEntity(50, mUsableSum < 50 ? false : true));
+        mData.add(new WithDrawSelectEntity(100, mUsableSum < 100 ? false : true));
+        mData.add(new WithDrawSelectEntity(500, mUsableSum < 500 ? false : true));
+        mAdapter = new WithDrawSelectedAdapter(this, R.layout.withdraw_selected_item, mData, this);
+        mRecycleView.setLayoutManager(new GridLayoutManager(this, 3));
+        mRecycleView.addItemDecoration(new SpaceBusinessItemDecoration(13));
+        mRecycleView.setAdapter(mAdapter);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onClick(View v) {
         if (System.currentTimeMillis() - mCurrentTimeMillis < 1000)
@@ -140,64 +110,44 @@ public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, Wit
             case R.id.tv_change:
                 ToastUtil.showToast(WithDrawActivity.this, "修改");
                 break;
-            case R.id.iv_clear:
-                mEtNumber.setText("");
-                break;
-            case R.id.tv_total:
-                mEtNumber.setText(new DecimalFormat("#0.00").format(mUsableSum));
-                break;
             case R.id.tv_confirm:
                 doWithDraw();
                 break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void doWithDraw() {
         try {
             hideSoftInput();
-            Double value;
             if (TextUtils.isEmpty(mAccount)) {
-                ToastUtil.showToast(this, "请绑定支付宝账号");
+                showToastWithGravityinDef(this, "请绑定支付宝账号", Gravity.CENTER);
                 return;
             }
-            mWithDrawNum = mEtNumber.getText().toString().trim();
-            if (TextUtils.isEmpty(mWithDrawNum)) {
-                ToastUtil.showToast(this, "请输入提现金额");
+            if (mWithDrawNum < 1) {
+                showToastWithGravityinDef(this, "请选择提现金额", Gravity.CENTER);
                 return;
             }
-            if (mWithDrawNum.contains(".")) {
-                value = new Double(mWithDrawNum).doubleValue();
-            } else {
-                value = new Integer(mWithDrawNum).doubleValue();
-            }
-            if (value == 0) {
-                ToastUtil.showToast(WithDrawActivity.this, "提现金额不能为0");
-                return;
-            }
-            if (value < 9) {
-                ToastUtil.showToast(this, "取现的金额不能少于10元。");
-            } else {
-                mPresenter.doWithDraw("1", mWithDrawNum);
-            }
+            mPresenter.doWithDraw("1", "" + mWithDrawNum);
         } catch (Exception ex) {
             LogUtils.e(ex.getMessage());
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onWithDrawResult(HttpResult httpResult) {
         if (httpResult.code == Constant.HttpResult.SUCCEED) {
-            ToastUtil.showToast(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "提现成功" : httpResult.msg);
-            int aDouble = new Double(mWithDrawNum).intValue();
-            int total = new Double(mUsableSum).intValue();
-            int value = total - aDouble;
-            mTvBalance.setText("¥" + value);
+            showToastWithGravityinDef(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "提现成功" : httpResult.msg, Gravity.CENTER);
+            double value = new Double(mUsableSum) - new Double(mWithDrawNum);
+            String format = new DecimalFormat("#0.00").format(value);
+            mTvBalance.setText("¥" + format);
             RxBus.getDefault().post(new UpDataUserInfoEvent());
         } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
-            ToastUtil.showToast(this, "登录超时,请重新登录");
+            ToastUtil.showToast(this, "登录超时,请重新登录", Gravity.CENTER);
             startActivity(new Intent(this, LoginActivity.class));
         } else {
-            ToastUtil.showToast(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "提现失败" : httpResult.msg);
+            ToastUtil.showToast(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "提现失败" : httpResult.msg, Gravity.CENTER);
         }
     }
 
@@ -209,14 +159,34 @@ public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, Wit
 
     @Override
     public void showView(UserHomeBean httpResult) {
-        if (httpResult.code == Constant.HttpResult.SUCCEED) {
-            mAccount = httpResult.userInfo.zfb;
-        } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
-            ToastUtil.showToast(WithDrawActivity.this, "登录超时,请重新登录");
-            startActivity(new Intent(WithDrawActivity.this, LoginActivity.class));
-        } else if (httpResult.code == Constant.HttpResult.FAILD) {
-            ToastUtil.showToast(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "数据请求失败" : httpResult.msg);
-            showView(new UserHomeBean());
+        try {
+            if (httpResult.code == Constant.HttpResult.SUCCEED) {
+                if (!TextUtils.isEmpty(httpResult.userInfo.zfb))
+                    mAccount = httpResult.userInfo.zfb;
+                mUsableSum = httpResult.account.usableSum;
+                mTvBalance.setText("¥" + (mUsableSum == null ? 0 : new DecimalFormat("#0.00").format(mUsableSum)));
+                if (httpResult.withdraw > 0) {
+                    mIsFristWithDraw = false;
+                    if (mData != null && mData.size() > 0) {
+                        mData.set(0, new WithDrawSelectEntity(1, mUsableSum < 1 ? false : true));
+                        mData.set(1, new WithDrawSelectEntity(5, mUsableSum < 5 ? false : true));
+                    }
+                }
+                mData.set(2, new WithDrawSelectEntity(10, mUsableSum < 10 ? false : true));
+                mData.set(3, new WithDrawSelectEntity(50, mUsableSum < 50 ? false : true));
+                mData.set(4, new WithDrawSelectEntity(100, mUsableSum < 100 ? false : true));
+                mData.set(5, new WithDrawSelectEntity(500, mUsableSum < 500 ? false : true));
+                if (mAdapter != null)
+                    mAdapter.notifyDataSetChanged();
+            } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
+                ToastUtil.showToast(WithDrawActivity.this, "登录超时,请重新登录");
+                startActivity(new Intent(WithDrawActivity.this, LoginActivity.class));
+            } else if (httpResult.code == Constant.HttpResult.FAILD) {
+                ToastUtil.showToast(WithDrawActivity.this, TextUtils.isEmpty(httpResult.msg) ? "数据请求失败" : httpResult.msg);
+                showView(new UserHomeBean());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -237,6 +207,70 @@ public class WithDrawActivity extends MVPBaseActivity<WithDrawContract.View, Wit
                     break;
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(Integer value) {
+        try {
+            mWithDrawNum = value;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    @Override
+    public void onItemClick(boolean type, Integer value) {
+        if (!type) {//灰色按钮
+            if (mIsFristWithDraw) {//首次提现
+                if (value == 1 || value == 5)
+                    showToastWithGravityinDef(this, "首次提现最低10元起", Gravity.CENTER);
+                else if (mUsableSum < value)
+                    showToastWithGravityinDef(this, "当前可提现余额不足", Gravity.CENTER);
+            } else {//非首次提现
+                if (mUsableSum < value)
+                    showToastWithGravityinDef(this, "当前可提现余额不足", Gravity.CENTER);
+            }
+        }
+    }
+
+    public class SpaceBusinessItemDecoration extends RecyclerView.ItemDecoration {
+
+        private int space;
+
+        public SpaceBusinessItemDecoration(int space) {
+            this.space = ViewUtils.dip2px(WithDrawActivity.this, space);
+        }
+
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            int pos = parent.getChildAdapterPosition(view);
+            outRect.left = 0;
+            outRect.bottom = 0;
+            if ((pos + 1) % 3 != 0) {
+                outRect.right = space;
+            } else {
+                outRect.right = 0;
+            }
+            outRect.top = space;
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public static void showToastWithGravityinDef(Context context, String str, int gravity) {
+        if (toast == null)
+            toast = Toast.makeText(context.getApplicationContext(), str, Toast.LENGTH_SHORT);
+        else
+            toast.setText(str);
+        TextView textView = (TextView) toast.getView().findViewById(android.R.id.message);
+        if (textView != null)
+            textView.setTextColor(Color.WHITE);
+        View view = toast.getView();
+        view.setPadding(50, 20, 50, 20);
+        view.setBackground(context.getResources().getDrawable(R.drawable.shape_rect_five_black));
+        toast.setGravity(gravity, 0, 0);
+        toast.setView(view);
+        toast.show();
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.application.ClientAppLike;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.HttpResult;
+import com.zhengdao.zqb.entity.UserInfo;
 import com.zhengdao.zqb.event.ForceBindPhoneEvent;
 import com.zhengdao.zqb.event.LogInEvent;
 import com.zhengdao.zqb.event.RegistSuccessEvent;
@@ -39,6 +40,7 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
+import static com.zhengdao.zqb.application.ClientAppLike.AppType;
 import static com.zhengdao.zqb.application.ClientAppLike.mTencent;
 import static com.zhengdao.zqb.application.ClientAppLike.mWxApi;
 
@@ -66,6 +68,8 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     ImageView mIvWechat;
     @BindView(R.id.iv_alipay)
     ImageView mIvAlipay;
+    @BindView(R.id.tv_others_login)
+    TextView  mTvOthersLogin;
     private Disposable mDisposable;
     private Disposable mDisposable1;
     private String     mAccount;
@@ -110,6 +114,12 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
                 doFinish(true);
             }
         });
+        //兼职呗 屏蔽三方登陆
+        if (AppType != Constant.App.Zqb) {
+            mTvOthersLogin.setVisibility(View.GONE);
+            mIvWechat.setVisibility(View.GONE);
+            mIvQq.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -188,7 +198,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     };
 
     @Override
-    public void onThirdLoginOver(HttpResult<com.zhengdao.zqb.entity.UserInfo> httpResult) {
+    public void onThirdLoginOver(HttpResult<UserInfo> httpResult) {
         if (httpResult.code == Constant.HttpResult.SUCCEED) {
             mPresenter.saveUserInfo(httpResult.data);
         } else if (httpResult.code == Constant.HttpResult.DATANULL) {
@@ -236,7 +246,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     }
 
     @Override
-    public void onLoginOver(HttpResult<com.zhengdao.zqb.entity.UserInfo> result) {
+    public void onLoginOver(HttpResult<UserInfo> result) {
         if (result.code == Constant.HttpResult.SUCCEED)
             mPresenter.saveUserInfo(result.data);
         else
@@ -244,7 +254,7 @@ public class LoginActivity extends MVPBaseActivity<LoginContract.View, LoginPres
     }
 
     @Override
-    public void loginSuccess(com.zhengdao.zqb.entity.UserInfo bean) {
+    public void loginSuccess(UserInfo bean) {
         LogUtils.i("登录成功:" + "\n" + bean.toString());
         ToastUtil.showToast(this, "登录成功！");
         String phoneNum = SettingUtils.getPhoneNum(this);

@@ -10,15 +10,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.view.View;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.customview.LotteryView;
 import com.zhengdao.zqb.customview.LotteryWindow;
 import com.zhengdao.zqb.customview.WeChatQRCodeDialog;
 import com.zhengdao.zqb.entity.Prize;
+import com.zhengdao.zqb.event.GetWelfareShareRewardEvent;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
 import com.zhengdao.zqb.utils.LogUtils;
+import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.ToastUtil;
+import com.zhengdao.zqb.view.activity.welfarewechatshare.WelfareWeChatShareActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -27,10 +31,8 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
-
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+import io.reactivex.functions.Consumer;
+import rx.functions.Action1;
 
 
 public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View, WelfareGetPresenter> implements WelfareGetContract.View {
@@ -75,7 +77,9 @@ public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View,
 
                         @Override
                         public void onClick(View v) {
-                            showWechatQRCodeWindow();
+                            if (welfareState != 1) {
+                                skipToWelfareWechatShare();
+                            }
                             mActivityDialog.dismiss();
                         }
                     });
@@ -85,6 +89,17 @@ public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View,
         } catch (Exception ex) {
             LogUtils.e(ex.getMessage());
         }
+        RxBus.getDefault().toObservable(GetWelfareShareRewardEvent.class).subscribe(new Consumer<GetWelfareShareRewardEvent>() {
+            @Override
+            public void accept(GetWelfareShareRewardEvent getWelfareShareRewardEvent) throws Exception {
+                WelfareGetActivity.this.finish();
+            }
+        });
+    }
+
+    private void skipToWelfareWechatShare() {
+        Intent intent = new Intent(this, WelfareWeChatShareActivity.class);
+        startActivity(intent);
     }
 
     public void showWechatQRCodeWindow() {
@@ -94,7 +109,13 @@ public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View,
         mWeChatQRCodeDialog.setSaveListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doSavePic("wechat_share.jpg");
+                RxPermissions rxPermissions = new RxPermissions(WelfareGetActivity.this);
+                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        doSavePic("wechat_share.jpg");
+                    }
+                });
                 mWeChatQRCodeDialog.dismiss();
             }
         });
@@ -102,7 +123,6 @@ public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View,
     }
 
     private void doSavePic(String fileName) {
-        methodRequiresTwoPermission();
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_UNMOUNTED)) {
             ToastUtil.showToast(WelfareGetActivity.this, "未发现内部存储,无法保存");
         } else {
@@ -127,16 +147,6 @@ public class WelfareGetActivity extends MVPBaseActivity<WelfareGetContract.View,
                 LogUtils.e(ex.getMessage());
                 ToastUtil.showToast(WelfareGetActivity.this, "保存失败");
             }
-        }
-    }
-
-    private static final int RC_CAMERA_AND_LOCATION = 001;
-
-    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
-    private void methodRequiresTwoPermission() {
-        String[] perms = {WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "下列权限未获权，是否开启", RC_CAMERA_AND_LOCATION, perms);
         }
     }
 

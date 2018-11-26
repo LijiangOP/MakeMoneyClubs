@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.StatFs;
@@ -11,11 +12,14 @@ import android.provider.DocumentsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 
+import com.zhengdao.zqb.application.ClientAppLike;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,6 +28,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+
+import static com.zhengdao.zqb.application.ClientAppLike.APK_FILE_NAME;
 
 public class FileUtils {
     protected static final String TAG = FileUtils.class.getSimpleName();
@@ -436,6 +442,64 @@ public class FileUtils {
         return isSuccessful;
     }
 
+    public static String saveBitmap(Bitmap bm) {
+        File file;
+        if (isSDCardAvailable()) {
+            file = Environment.getExternalStorageDirectory();
+        } else {
+            file = Environment.getDataDirectory();
+        }
+        file = new File(file.getPath());
+        if (!file.isDirectory()) {
+            file.delete();
+            file.mkdirs();
+        }
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+        writeBitmap(file.getPath(), String.valueOf(System.currentTimeMillis()), bm);
+        return new File(file, String.valueOf(System.currentTimeMillis())).getAbsolutePath();
+    }
+
+    public static void writeBitmap(String path, String name, Bitmap bitmap) {
+        File file = new File(path);
+
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        File _file = new File(path + name);
+        if (_file.exists()) {
+            _file.delete();
+        }
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(_file);
+            if (name != null && !"".equals(name)) {
+                int index = name.lastIndexOf(".");
+                if (index != -1 && (index + 1) < name.length()) {
+                    String extension = name.substring(index + 1).toLowerCase();
+                    if ("png".equals(extension)) {
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
+                    } else if ("jpg".equals(extension)
+                            || "jpeg".equals(extension)) {
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 75, fos);
+                    }
+                }
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } finally {
+            if (fos != null) {
+                try {
+                    fos.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
     /**
      * 创建目录
      *
@@ -646,6 +710,41 @@ public class FileUtils {
     }
 
     /**
+     * app更新Apk文件路径是否可用
+     *
+     * @return
+     */
+
+    public static boolean isDownloadFileValable() {
+        String downLoadCacheDirectory = ClientAppLike.getInstance().getDownLoadCacheDirectory();
+        File dir = new File(downLoadCacheDirectory);
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        File outputFile = new File(dir, APK_FILE_NAME);
+        if (outputFile != null) {
+            if (outputFile.exists()) {
+                outputFile.delete();
+            }
+            try {
+                outputFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (outputFile.exists()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static File getUpdataApkFilePath() {
+        File outputFile = new File(ClientAppLike.getInstance().getDownLoadCacheDirectory(), APK_FILE_NAME);
+        return outputFile;
+    }
+
+    /**
      * 获取手机默认下载路径，并生成文件(APK)
      *
      * @param fileName
@@ -653,7 +752,9 @@ public class FileUtils {
      */
     public static String getAppDownloadPath(String fileName) {
         File file;
-        if (isSDCardAvailable()) {
+        if (TextUtils.isEmpty(fileName))
+            return "";
+        if (isSDCardAvailable() && fileName != null) {
             if (fileName.contains(".apk"))
                 file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), fileName);
             else

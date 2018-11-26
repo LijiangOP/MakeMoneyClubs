@@ -128,15 +128,10 @@ public class RegisteConfirmActivity extends MVPBaseActivity<RegisteConfirmContra
     public void onRegisteFinish(HttpResult<UserInfo> httpResult) {
         if (httpResult.code == Constant.HttpResult.SUCCEED) {
             if (httpResult.data != null) {
-                UserInfo data = httpResult.data;
-                SettingUtils.setLoginState(this, true);
-                SettingUtils.setPhoneNum(this, data.phone);
-                SettingUtils.setUserToken(this, data.token);
-                SettingUtils.setUserID(this, "" + data.id);
-                SettingUtils.setAccount(this, data.userName);
+                SettingUtils.SaveAfterLogin(RegisteConfirmActivity.this, httpResult.data);
                 RxBus.getDefault().post(new RegistSuccessEvent());
-                ToastUtil.showToast(RegisteConfirmActivity.this, "注册成功!");
                 RegisteConfirmActivity.this.finish();
+                ToastUtil.showToast(RegisteConfirmActivity.this, "注册成功!");
             }
         } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
             ToastUtil.showToast(this, "登录超时,请重新登录");

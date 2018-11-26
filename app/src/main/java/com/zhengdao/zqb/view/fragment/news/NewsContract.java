@@ -7,6 +7,7 @@ import com.zhengdao.zqb.view.adapter.NewsAdapter;
 
 public class NewsContract {
     interface View extends BaseView, NewsAdapter.CallBack {
+
         void noData();
 
         void ReLogin();
@@ -21,6 +22,7 @@ public class NewsContract {
     }
 
     interface Presenter extends BasePresenter<View> {
+
         void initData(String type);
 
         void updataData(String type);

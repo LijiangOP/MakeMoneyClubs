@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/image_earn"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/newhand_introduce_earn_money"
+        android:visibility="gone"/>
+
+    <ImageView
+        android:id="@+id/image_next"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/newhand_introduce_next"
+        android:visibility="gone"
+        />
+
+    <ImageView
+        android:id="@+id/image_play"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/newhand_introduce_play"
+        android:visibility="gone"
+        />
+
+</FrameLayout>

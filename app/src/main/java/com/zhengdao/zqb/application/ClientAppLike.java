@@ -1,16 +1,20 @@
 package com.zhengdao.zqb.application;
 
+import android.Manifest;
 import android.annotation.TargetApi;
 import android.app.Application;
 import android.app.Notification;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.os.Build;
+import android.os.Environment;
 import android.os.StrictMode;
 import android.support.multidex.MultiDex;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -25,16 +29,19 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.constant.SpinnerStyle;
 import com.scwang.smartrefresh.layout.footer.ClassicsFooter;
 import com.tencent.bugly.Bugly;
-import com.tencent.bugly.beta.Beta;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.tencent.tauth.Tencent;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
+import com.yatoooon.screenadaptation.ScreenAdapterTools;
+import com.youle.androidsdk.utils.YLUtils;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.manager.RetrofitManager;
 import com.zhengdao.zqb.receiver.NetworkConnectChangedReceiver;
 import com.zhengdao.zqb.utils.LogUtils;
+
+import java.io.File;
 
 import cn.jpush.android.api.BasicPushNotificationBuilder;
 import cn.jpush.android.api.JPushInterface;
@@ -46,15 +53,19 @@ import cn.jpush.android.api.JPushInterface;
  */
 public class ClientAppLike extends DefaultApplicationLike {
 
-    public static String                        WECHAT_APPID;
-    public static String                        WECHAT_SECRET_ID;
-    public static String                        QQ_APPID;
-    public static Tencent                       mTencent;
-    public static Context                       context;
-    public static IWXAPI                        mWxApi;
+    public static String WECHAT_APPID;
+    public static String WECHAT_SECRET_ID = "";
+    public static String  QQ_APPID;
+    public static String  APK_FILE_NAME;
+    public static Tencent mTencent;
+    public static Context context;
+    public static IWXAPI  mWxApi;
+
+
     public        NetworkConnectChangedReceiver mReceiver;
     public static int                           AppType;
     private String[] mStrings = new String[]{Constant.ADVIEW.KeySet};
+    private static ClientAppLike mClientAppLike;
 
     public ClientAppLike(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag,
                          long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent) {
@@ -69,28 +80,43 @@ public class ClientAppLike extends DefaultApplicationLike {
     @Override
     public void onCreate() {
         super.onCreate();
+        mClientAppLike = this;
         RetrofitManager.init(getApplication().getApplicationContext());
         initMultipleApp();
         initNetWorkListener();
         initTencent();
         initJPush();
         initTaobaoAppLink();
-        //        initStrikeMode();//TODO Release版本关掉
         initSmartRefreshLayout();
+        ScreenAdapterTools.init(getApplication().getApplicationContext());
+        initYoule();
     }
 
     private void initMultipleApp() {
         String packageName = getApplication().getPackageName();
-        if (!TextUtils.isEmpty(packageName) && packageName.equals("com.wlg.wlgmall")) {//玩乐购返利
+        if (!TextUtils.isEmpty(packageName) && packageName.equals("com.wlg.wlgmall")) {//兼职呗
             AppType = Constant.App.Wlgfl;
             WECHAT_APPID = "wxde190ac2e913d0b6";
             WECHAT_SECRET_ID = "b5a583be719680768dbd3dcfde69c49b";
             QQ_APPID = "101430001";
+            APK_FILE_NAME = "jzb.apk";
+        } else if (!TextUtils.isEmpty(packageName) && packageName.equals("com.wlgfl.wlgflmall")) {//兼职呗(华为市场)
+            AppType = Constant.App.Wlgfl_hy;
+            WECHAT_APPID = "wxde190ac2e913d0b6";
+            WECHAT_SECRET_ID = "b5a583be719680768dbd3dcfde69c49b";
+            QQ_APPID = "101430001";
+            APK_FILE_NAME = "jzb.apk";
+        } else if (!TextUtils.isEmpty(packageName) && packageName.equals("com.lc.lccenter")) {
+            AppType = Constant.App.Lczj;
+            WECHAT_APPID = "wx6e3365a437734988";
+            QQ_APPID = "101435276";
+            APK_FILE_NAME = "lczj.apk";
         } else {//赚钱吧
             AppType = Constant.App.Zqb;
             WECHAT_APPID = "wx08fef6b801503f47";
-            WECHAT_SECRET_ID = "c34fe497c26175d1aa394a4300e09c33";
+            WECHAT_SECRET_ID = "c34fe497c26175d1aa394a4300e09c33";//微信登录才用
             QQ_APPID = "101464836";
+            APK_FILE_NAME = "zqb.apk";
         }
     }
 
@@ -138,7 +164,6 @@ public class ClientAppLike extends DefaultApplicationLike {
         MultiDex.install(base);
         // 安装tinker
         // TinkerManager.installTinker(this); 替换成下面Bugly提供的方法
-        Beta.installTinker(this);
     }
 
     private void initJPush() {
@@ -186,5 +211,137 @@ public class ClientAppLike extends DefaultApplicationLike {
                 Log.e("alibaba", "BaseAlibabaSDK init failed");
             }
         });
+    }
+
+    private void initYoule() {
+        YLUtils.getInstance(context).init(Constant.YouLe.YOULE_CHANNEL_ID, Constant.YouLe.YOUELE_APPSECRET);
+    }
+
+    public static ClientAppLike getInstance() {
+        return mClientAppLike;
+    }
+
+    public String getDownLoadCacheDirectory() {
+        return getCachePath() + File.separator + "download" + File.separator;
+    }
+
+    /**
+     * 获取app缓存路径
+     * 先获取外部存储 外部存储不可用用内部存储  没有使用sd卡权限的使用内部缓存
+     *
+     * @return
+     */
+    private String getCachePath() {
+        String cachePath;
+        int checkCallPhonePermission = 1;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //检查是否拥有权限
+            checkCallPhonePermission = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M || checkCallPhonePermission == PackageManager.PERMISSION_GRANTED) {
+            if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState()) || !Environment.isExternalStorageRemovable()) {
+                //外部存储可用
+                cachePath = Environment.getExternalStorageDirectory().getPath() + File.separator + "cmodichina" + File.separator + "cmedicaliot";
+                //设置磁盘缓存目录（和创建的缓存目录相同）
+                File file = new File(cachePath);
+                if (!file.exists()) {
+                    file.mkdirs();
+                }
+            } else {
+                //外部存储不可用
+                cachePath = getApplication().getCacheDir().getPath();
+            }
+        } else {
+            cachePath = getCacheDirectory(getContext(), null);
+        }
+        return cachePath;
+    }
+
+    /**
+     * 获取应用专属缓存目录
+     * android 4.4及以上系统不需要申请SD卡读写权限
+     * 因此也不用考虑6.0系统动态申请SD卡读写权限问题，切随应用被卸载后自动清空 不会污染用户存储空间
+     *
+     * @param context 上下文
+     * @param type    文件夹类型 可以为空，为空则返回API得到的一级目录
+     * @return 缓存文件夹 如果没有SD卡或SD卡有问题则返回内存缓存目录，否则优先返回SD卡缓存目录
+     */
+    private static String getCacheDirectory(Context context, String type) {
+        File appCacheDir = getExternalCacheDirectory(context, type);
+        if (appCacheDir == null) {
+            appCacheDir = getInternalCacheDirectory(context, type);
+        }
+
+        if (appCacheDir == null) {
+            Log.e("getCacheDirectory", "getCacheDirectory fail ,the reason is mobile phone unknown exception !");
+        } else {
+            if (!appCacheDir.exists() && !appCacheDir.mkdirs()) {
+                Log.e("getCacheDirectory", "getCacheDirectory fail ,the reason is make directory fail !");
+            }
+        }
+        return appCacheDir.getAbsolutePath();
+    }
+
+    /**
+     * 获取SD卡缓存目录
+     *
+     * @param context 上下文
+     * @param type    文件夹类型 如果为空则返回 /storage/emulated/0/Android/data/app_package_name/cache
+     *                否则返回对应类型的文件夹如Environment.DIRECTORY_PICTURES 对应的文件夹为 .../data/app_package_name/files/Pictures
+     *                {@link Environment#DIRECTORY_MUSIC},
+     *                {@link Environment#DIRECTORY_PODCASTS},
+     *                {@link Environment#DIRECTORY_RINGTONES},
+     *                {@link Environment#DIRECTORY_ALARMS},
+     *                {@link Environment#DIRECTORY_NOTIFICATIONS},
+     *                {@link Environment#DIRECTORY_PICTURES}, or
+     *                {@link Environment#DIRECTORY_MOVIES}.or 自定义文件夹名称
+     * @return 缓存目录文件夹 或 null（无SD卡或SD卡挂载失败）
+     */
+    private static File getExternalCacheDirectory(Context context, String type) {
+        File appCacheDir = null;
+        if (Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())) {
+            if (TextUtils.isEmpty(type)) {
+                appCacheDir = context.getExternalCacheDir();
+            } else {
+                appCacheDir = context.getExternalFilesDir(type);
+            }
+
+            if (appCacheDir == null) {// 有些手机需要通过自定义目录
+                appCacheDir = new File(Environment.getExternalStorageDirectory(), "Android/data/" + context.getPackageName() + "/cache/" + type);
+            }
+
+            if (appCacheDir == null) {
+                Log.e("getExternalDirectory", "getExternalDirectory fail ,the reason is sdCard unknown exception !");
+            } else {
+                if (!appCacheDir.exists() && !appCacheDir.mkdirs()) {
+                    Log.e("getExternalDirectory", "getExternalDirectory fail ,the reason is make directory fail !");
+                }
+            }
+        } else {
+            Log.e("getExternalDirectory", "getExternalDirectory fail ,the reason is sdCard nonexistence or sdCard mount fail !");
+        }
+        return appCacheDir;
+    }
+
+    /**
+     * 获取内存缓存目录
+     *
+     * @param type 子目录，可以为空，为空直接返回一级目录
+     * @return 缓存目录文件夹 或 null（创建目录文件失败）
+     * 注：该方法获取的目录是能供当前应用自己使用，外部应用没有读写权限，如 系统相机应用
+     */
+    private static File getInternalCacheDirectory(Context context, String type) {
+        File appCacheDir = null;
+        if (TextUtils.isEmpty(type)) {
+            appCacheDir = context.getCacheDir();// /data/data/app_package_name/cache
+        } else {
+            appCacheDir = new File(context.getFilesDir(), type);// /data/data/app_package_name/files/type
+        }
+
+        if (!appCacheDir.exists() && !appCacheDir.mkdirs()) {
+            Log.e("getInternalDirectory", "getInternalDirectory fail ,the reason is make directory fail !");
+        }
+        return appCacheDir;
     }
 }

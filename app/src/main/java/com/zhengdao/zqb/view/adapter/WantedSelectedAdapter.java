@@ -44,8 +44,8 @@ public class WantedSelectedAdapter extends CommonAdapter<ScreenLoadEntity.Screen
         final TextView textView = holder.getView(R.id.text);
         textView.setText(TextUtils.isEmpty(screenLoadDetailEntity.value) ? "" : screenLoadDetailEntity.value);
         if (isSelectedList.get(position)) {
-            textView.setTextColor(mContext.getResources().getColor(R.color.color_fc3135));
-            textView.setBackground(mContext.getResources().getDrawable(R.drawable.shape_rect_gray_three_red));
+            textView.setTextColor(mContext.getResources().getColor(R.color.white));
+            textView.setBackground(mContext.getResources().getDrawable(R.drawable.shape_rect_selected_red));
         } else {
             textView.setTextColor(mContext.getResources().getColor(R.color.color_000000));
             textView.setBackground(mContext.getResources().getDrawable(R.drawable.shape_rect_gray_three_gray));

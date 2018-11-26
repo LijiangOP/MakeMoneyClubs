@@ -45,7 +45,7 @@ public class MarqueeView<T extends View> extends ViewFlipper {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MarqueeView);
         mAnimDuration = a.getInteger(R.styleable.MarqueeView_animDuration, BASIC_DURATION);
         mInterval = a.getInteger(R.styleable.MarqueeView_interval, BASIC_INTERVAL);
-        mOrientation = a.getInt(R.styleable.MarqueeView_orientation, VERTICAL);
+        mOrientation = a.getInt(R.styleable.MarqueeView_marqueen_orientation, VERTICAL);
         a.recycle();
         setFlipInterval(mInterval);
         setAnimation();

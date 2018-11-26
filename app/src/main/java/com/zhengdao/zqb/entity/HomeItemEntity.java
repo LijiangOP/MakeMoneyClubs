@@ -32,4 +32,5 @@ public class HomeItemEntity {
     public long   lowerTime;
     public String discount;
     public String option3;
+    public String name;
 }

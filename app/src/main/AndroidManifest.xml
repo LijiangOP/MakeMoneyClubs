@@ -3,16 +3,8 @@
           xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Required -->
-    <permission
-        android:name="${applicationId}.permission.JPUSH_MESSAGE"
-        android:protectionLevel="signature"/>
-
-    <!-- Required  一些系统要求的权限，如访问网络等-->
-    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE"/>
     <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <!-- Optional for location -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS"/>
@@ -36,12 +28,15 @@
     <uses-permission android:name="android.permission.SEND_SMS"/>
     <uses-permission android:name="android.permission.ACCESS_DOWNLOAD_MANAGER"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
+
+    <!--享玩游戏-->
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+    <uses-permission android:name="android.permission.NETWORK_PROVIDER"/>
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions"/>
 
-    <!--TextView自定义选择复制功能-->
-    <uses-sdk tools:overrideLibrary="com.jaeger.library"/>
+    <uses-sdk tools:overrideLibrary="com.youle.androidsdk"/>
 
     <application
         android:name=".application.SampleApplication"
@@ -59,6 +54,18 @@
         <meta-data
             android:name="BaiduMobAd_APP_ID"
             android:value="c4636b86"/>
+        <meta-data
+            android:name="designwidth"
+            android:value="1080"/>
+        <meta-data
+            android:name="designdpi"
+            android:value="480"/>
+        <meta-data
+            android:name="fontsize"
+            android:value="1.0"/>
+        <meta-data
+            android:name="unit"
+            android:value="px"/>
 
         <activity
             android:name=".view.activity.IntroduceActivity"
@@ -472,6 +479,31 @@
             android:configChanges="keyboardHidden|orientation|screenSize"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.news.NewsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.rankinglist.RankingListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.welfarewechatshare.WelfareWeChatShareActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.questionsurvery.QuestionSurveryActivty"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".view.activity.advertisementlist.AdvertisementListActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
 
         <receiver android:name=".receiver.NotificationReceiver"/>
         <receiver android:name=".receiver.NetWorkChangeReceiver"/>
@@ -523,102 +555,19 @@
             android:name="android.support.v4.content.FileProvider"
             android:authorities="${applicationId}.fileProvider"
             android:exported="false"
-            android:grantUriPermissions="true">
+            android:grantUriPermissions="true"
+            tools:replace="name,authorities,exported,grantUriPermissions"
+            >
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths"
+                tools:replace="name,resource"/>
         </provider>
-        <!-- 极光推送配置 -->
-        <!-- Rich push 核心功能 since 2.0.6-->
-        <activity
-            android:name="cn.jpush.android.ui.PopWinActivity"
-            android:exported="false"
-            android:theme="@style/MyDialogStyle">
-        </activity>
-        <!-- Required SDK核心功能-->
-        <activity
-            android:name="cn.jpush.android.ui.PushActivity"
-            android:configChanges="orientation|keyboardHidden"
-            android:exported="false"
-            android:theme="@android:style/Theme.NoTitleBar">
-            <intent-filter>
-                <action android:name="cn.jpush.android.ui.PushActivity"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="${applicationId}"/>
-            </intent-filter>
-        </activity>
-        <!-- Required SDK 核心功能-->
-        <!-- 可配置android:process参数将PushService放在其他进程中 -->
-        <service
-            android:name="cn.jpush.android.service.PushService"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:exported="false"
-            android:process=":mult"
-            tools:replace="android:process">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.REGISTER"/>
-                <action android:name="cn.jpush.android.intent.REPORT"/>
-                <action android:name="cn.jpush.android.intent.PushService"/>
-                <action android:name="cn.jpush.android.intent.PUSH_TIME"/>
-            </intent-filter>
-        </service>
-        <!-- since 3.0.9 Required SDK 核心功能-->
-        <provider
-            android:name="cn.jpush.android.service.DataProvider"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:authorities="${applicationId}.DataProvider"
-            android:exported="true"
-            tools:replace="android:authorities"
-            />
-        <!-- since 1.8.0 option 可选项。用于同一设备中不同应用的JPush服务相互拉起的功能。 -->
-        <!-- 若不启用该功能可删除该组件，将不拉起其他应用也不能被其他应用拉起 -->
-        <service
-            android:name="cn.jpush.android.service.DaemonService"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="cn.jpush.android.intent.DaemonService"/>
-                <category android:name="${applicationId}"/>
-            </intent-filter>
-        </service>
-        <!-- Required SDK核心功能-->
-        <receiver
-            android:name="cn.jpush.android.service.PushReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter android:priority="1000">
-                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY"/>   <!--Required  显示通知栏 -->
-                <category android:name="${applicationId}"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.USER_PRESENT"/>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_ADDED"/>
-                <action android:name="android.intent.action.PACKAGE_REMOVED"/>
-
-                <data android:scheme="package"/>
-            </intent-filter>
-        </receiver>
-        <!-- Required SDK核心功能-->
-        <receiver
-            android:name="cn.jpush.android.service.AlarmReceiver"
-            android:exported="false"/>
-
-        <meta-data
-            android:name="JPUSH_CHANNEL"
-            android:value="developer-default"/>
-
-        <meta-data
-            android:name="JPUSH_APPKEY"
-            android:value="fd8604249033220161f3bd6d"/> <!--TODO 赚钱吧 -->
-        <!--android:value="0d41964babd3fc7082fb6e8f"/> &lt;!&ndash; TODO 玩乐购返利  &ndash;&gt;-->
 
         <receiver
             android:name=".receiver.JPushReceiver"
-            android:enabled="true">
+            android:enabled="true"
+            tools:node="replace">
             <intent-filter>
                 <!--Required 用户注册SDK的intent-->
                 <action android:name="cn.jpush.android.intent.REGISTRATION"/>
@@ -636,7 +585,7 @@
             </intent-filter>
         </receiver>
 
-        <!-- QQ第三方登录相关       开始 -->
+        <!-- QQ第三方登录相关 开始 -->
         <activity
             android:name="com.tencent.tauth.AuthActivity"
             android:launchMode="singleTask"
@@ -655,7 +604,7 @@
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"
             />
-        <!-- QQ第三方登录相关  结束 -->
+        <!-- QQ第三方登录相关 结束 -->
 
         <!-- 微信三方登录分享相关  开始(多渠道打包时要创建各对应包名下的WXEntry类) -->
         <activity
@@ -666,7 +615,7 @@
             />
         <!-- 微信三方登录分享相关  结束 -->
 
-        <!-- 百度广告三方登录分享相关  开始 -->
+        <!-- 百度广告 开始 -->
         <!-- 如果targetSdkVersion设置值>=24，则强烈建议添加以下provider，否则会影响app变现效率 -->
         <provider
             android:name="com.baidu.mobads.openad.FileProvider"
@@ -682,7 +631,7 @@
             android:name="com.baidu.mobads.AppActivity"
             android:configChanges="screenSize|keyboard|keyboardHidden|orientation"
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
-        <!-- 百度广告三方登录分享相关   结束 -->
+        <!-- 百度广告 结束 -->
 
         <!-- 360广告 开始 -->
         <activity
@@ -714,17 +663,33 @@
             android:value=".view.activity.main.MainActivity"/>
         <!-- 淘宝AppLInk集成 end-->
 
-        <!-- 闲玩SDK集成 start-->
+        <!-- 安智SDK集成 start-->
         <activity
-            android:name="com.xianwan.sdklibrary.view.AdListActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
-        <service
-            android:name="com.xianwan.sdklibrary.view.DownLoadService"
-            android:exported="false"/>
+            android:name="com.anzhi.sdk.ad.activity.InterstitialAzADActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+        <activity
+            android:name="com.anzhi.sdk.ad.activity.WebActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"/>
+
+        <meta-data
+            android:name="ANZHI_AD_VERSIONS"
+            android:value="3.2">
+        </meta-data>
+        <!-- 安智SDK集成 end-->
+
+        <!-- 享玩SDK集成 start-->
+        <activity
+            android:name=".view.activity.xiangwan.XiangWanActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"/>
+        <service android:name=".view.activity.xiangwan.DownLoadService"/>
         <receiver
-            android:name="com.xianwan.sdklibrary.view.DownLoadReceiver"
+            android:name=".view.activity.xiangwan.DownLoadReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -732,7 +697,16 @@
                 <action android:name="android.intent.action.DOWNLOAD_NOTIFICATION_CLICKED"/>
             </intent-filter>
         </receiver>
-        <!-- 闲玩SDK集成 end-->
+        <!-- 享玩SDK集成 end-->
+
+        <!-- 穿山甲SDK集成 start-->
+        <provider
+            android:name="com.bytedance.sdk.openadsdk.service.TTDownloadProvider"
+            android:authorities="${applicationId}.union_adsdk_tt"
+            android:exported="false">
+        </provider>
+        <service android:name=".toutiao.AppDownloadService"></service>
+        <!-- 穿山甲SDK集成 end-->
 
     </application>
 </manifest>

@@ -15,6 +15,7 @@ import com.zhengdao.zqb.event.Download;
 import com.zhengdao.zqb.utils.AppUtils;
 import com.zhengdao.zqb.utils.BaiDuAPiAdvUtils;
 import com.zhengdao.zqb.utils.FileUtils;
+import com.zhengdao.zqb.utils.JinChengUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
 import com.zhengdao.zqb.utils.update.DownloadAPI;
 import com.zhengdao.zqb.utils.update.DownloadProgressListener;
@@ -41,6 +42,7 @@ public class ApiApkDownloadService extends IntentService {
     private ArrayList<String>          mD_rpt;//开始下载的上报
     private ArrayList<String>          mDC_rpt;//完成下载的上报
     private String                     mReplace;//要替换掉上报数据中的"SZST_CLID"的数据
+    private int                        mType;//2 金橙广告
 
     public ApiApkDownloadService() {
         super("ApiApkDownloadService");
@@ -59,6 +61,7 @@ public class ApiApkDownloadService extends IntentService {
         mD_rpt = intent.getStringArrayListExtra(Constant.Activity.Data1);
         mDC_rpt = intent.getStringArrayListExtra(Constant.Activity.Data2);
         mReplace = intent.getStringExtra(Constant.Activity.Replace);
+        mType = intent.getIntExtra(Constant.Activity.Type, 0);
         try {
             download();
         } catch (Exception e) {
@@ -93,9 +96,13 @@ public class ApiApkDownloadService extends IntentService {
                 if (mDC_rpt != null && mDC_rpt.size() > 0) {
                     for (String value : mDC_rpt) {
                         if (!TextUtils.isEmpty(value)) {
-                            if (value.contains("SZST_CLID") && !TextUtils.isEmpty(mReplace))
-                                value = value.replace("SZST_CLID", mReplace);
-                            BaiDuAPiAdvUtils.ReportAdv(value);
+                            if (mType == 2) {
+                                JinChengUtils.ReportAdv(ApiApkDownloadService.this, value);
+                            } else {
+                                if (value.contains("SZST_CLID") && !TextUtils.isEmpty(mReplace))
+                                    value = value.replace("SZST_CLID", mReplace);
+                                BaiDuAPiAdvUtils.ReportAdv(value);
+                            }
                         }
                     }
                 }
@@ -113,9 +120,13 @@ public class ApiApkDownloadService extends IntentService {
                 if (mD_rpt != null && mD_rpt.size() > 0) {
                     for (String value : mD_rpt) {
                         if (!TextUtils.isEmpty(value)) {
-                            if (value.contains("SZST_CLID") && !TextUtils.isEmpty(mReplace))
-                                value = value.replace("SZST_CLID", mReplace);
-                            BaiDuAPiAdvUtils.ReportAdv(value);
+                            if (mType == 2) {
+                                JinChengUtils.ReportAdv(ApiApkDownloadService.this, value);
+                            } else {
+                                if (value.contains("SZST_CLID") && !TextUtils.isEmpty(mReplace))
+                                    value = value.replace("SZST_CLID", mReplace);
+                                BaiDuAPiAdvUtils.ReportAdv(value);
+                            }
                         }
                     }
                 }
@@ -153,7 +164,8 @@ public class ApiApkDownloadService extends IntentService {
                 notificationManager.notify(0, notificationBuilder.build());
                 ToastUtil.showToast(this, "应用下载出错,请重新下载");
                 File file = new File(FileUtils.getAppDownloadPath(name));
-                file.delete();
+                if (file != null && file.exists())
+                    file.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();

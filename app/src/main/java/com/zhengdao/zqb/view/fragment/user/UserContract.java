@@ -2,6 +2,7 @@ package com.zhengdao.zqb.view.fragment.user;
 
 import com.zhengdao.zqb.entity.AdvertisementHttpEntity;
 import com.zhengdao.zqb.entity.HttpResult;
+import com.zhengdao.zqb.entity.SurveyHttpResult;
 import com.zhengdao.zqb.entity.UserHomeBean;
 import com.zhengdao.zqb.mvp.BasePresenter;
 import com.zhengdao.zqb.mvp.BaseView;
@@ -18,6 +19,8 @@ public class UserContract {
         void onGetInvitedReward(HttpResult httpResult);
 
         void onGetAdvReward(HttpResult httpResult);
+
+        void onSurveyLinkGet(SurveyHttpResult httpResult);
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -29,5 +32,7 @@ public class UserContract {
         void getInvitedReward(String investCode);
 
         void getSeeAdvReward(int address, int type);
+
+        void getSurveyLink();
     }
 }

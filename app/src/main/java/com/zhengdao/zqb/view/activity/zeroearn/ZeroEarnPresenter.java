@@ -1,11 +1,14 @@
 package com.zhengdao.zqb.view.activity.zeroearn;
 
+import android.text.TextUtils;
+
 import com.zhengdao.zqb.api.HomeApi;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.EarnEntity;
 import com.zhengdao.zqb.entity.HomeItemEntity;
 import com.zhengdao.zqb.manager.RetrofitManager;
 import com.zhengdao.zqb.mvp.BasePresenterImpl;
+import com.zhengdao.zqb.utils.SettingUtils;
 import com.zhengdao.zqb.view.adapter.GoodsAdapter;
 
 import java.util.ArrayList;
@@ -22,14 +25,14 @@ public class ZeroEarnPresenter extends BasePresenterImpl<ZeroEarnContract.View> 
     private GoodsAdapter              mAdapter;
     private ArrayList<HomeItemEntity> mDatas;
     private boolean                   mIsHasNext;
-    private int    mCurrentPage = 1;
-    private String mSortName    = "order";//(joincount =人气,money = 奖励 默认空)
-    private String mSortOrder   = "desc";//排序方式(正序 = asc,倒序 = desc 默认空)
-    private int    mClassify    = -1;//业务类型(默认 ID为-1)
-    private int    mCategory    = -1;//悬赏类型(默认 ID为-1)
-    private String mSearch      = "";//搜索字段(默认 空)
-    private int    mType        = -1;//请求类型(默认 -1)
-    private int    mBlock       = 0;//导航类型(默认 0)
+    private int                       mCurrentPage = 1;
+    private String                    mSortName    = "order";//(joincount =人气,money = 奖励 默认空)
+    private String                    mSortOrder   = "desc";//排序方式(正序 = asc,倒序 = desc 默认空)
+    private int                       mClassify    = -1;//业务类型(默认 ID为-1)
+    private int                       mCategory    = -1;//悬赏类型(默认 ID为-1)
+    private String                    mSearch      = "";//搜索字段(默认 空)
+    private int                       mType        = -1;//请求类型(默认 -1)
+    private int                       mBlock       = 0;//导航类型(默认 0)
 
     public void setCurrentPage(int currentPage) {
         mCurrentPage = currentPage;
@@ -73,34 +76,67 @@ public class ZeroEarnPresenter extends BasePresenterImpl<ZeroEarnContract.View> 
 
     @Override
     public void initData() {
-        Subscription subscribe = RetrofitManager.getInstance().noCache().create(HomeApi.class)
-                .getEarnData(mBlock, mCurrentPage, mSortName, mSortOrder, mClassify, mCategory, mType, mSearch)
-                .subscribeOn(Schedulers.io()).doOnSubscribe(new Action0() {
-                    @Override
-                    public void call() {
-                        mView.showProgress();
-                    }
-                })
-                .subscribeOn(AndroidSchedulers.mainThread())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Subscriber<EarnEntity>() {
-                    @Override
-                    public void onCompleted() {
-                        mView.hideProgress();
-                    }
+        String token = SettingUtils.getUserToken(mView.getContext());
+        Subscription subscribe;
+        if (TextUtils.isEmpty(token)) {
+            subscribe = RetrofitManager.getInstance().noCache().create(HomeApi.class)
+                    .getEarnData(mBlock, mCurrentPage, mSortName, mSortOrder, mClassify, mCategory, mType, mSearch)
+                    .subscribeOn(Schedulers.io()).doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            mView.showProgress();
+                        }
+                    })
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<EarnEntity>() {
+                        @Override
+                        public void onCompleted() {
+                            mView.hideProgress();
+                        }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.hideProgress();
-                        mView.showErrorMessage(e.getMessage());
-                    }
+                        @Override
+                        public void onError(Throwable e) {
+                            mView.hideProgress();
+                            mView.showErrorMessage(e.getMessage());
+                        }
 
-                    @Override
-                    public void onNext(EarnEntity result) {
-                        mView.hideProgress();
-                        buildData(result);
-                    }
-                });
+                        @Override
+                        public void onNext(EarnEntity result) {
+                            mView.hideProgress();
+                            buildData(result);
+                        }
+                    });
+        } else {
+            subscribe = RetrofitManager.getInstance().noCache().create(HomeApi.class)
+                    .getEarnData(mBlock, mCurrentPage, mSortName, mSortOrder, mClassify, mCategory, mType, mSearch, token)
+                    .subscribeOn(Schedulers.io()).doOnSubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            mView.showProgress();
+                        }
+                    })
+                    .subscribeOn(AndroidSchedulers.mainThread())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(new Subscriber<EarnEntity>() {
+                        @Override
+                        public void onCompleted() {
+                            mView.hideProgress();
+                        }
+
+                        @Override
+                        public void onError(Throwable e) {
+                            mView.hideProgress();
+                            mView.showErrorMessage(e.getMessage());
+                        }
+
+                        @Override
+                        public void onNext(EarnEntity result) {
+                            mView.hideProgress();
+                            buildData(result);
+                        }
+                    });
+        }
         addSubscription(subscribe);
     }
 

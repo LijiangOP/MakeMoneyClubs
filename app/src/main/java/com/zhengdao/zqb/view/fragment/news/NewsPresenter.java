@@ -1,5 +1,7 @@
 package com.zhengdao.zqb.view.fragment.news;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -101,7 +103,7 @@ public class NewsPresenter extends BasePresenterImpl<NewsContract.View> implemen
             }
             addData(result);
             if (mAdapter == null) {
-                mAdapter = new NewsAdapter(mView.getContext(), mData, mView);
+                mAdapter = new NewsAdapter((Activity) mView.getContext(), mData, mView);
                 mView.setAdapter(mAdapter, mIsHasNext);
             } else {
                 mView.updateAdapter(mIsHasNext);
@@ -133,19 +135,27 @@ public class NewsPresenter extends BasePresenterImpl<NewsContract.View> implemen
                 mQueue.offer(Constant.BaiDuAdv.PicAndText);
                 mQueue.offer(Constant.BaiDuAdv.PicAndText1);
                 mQueue.offer(Constant.BaiDuAdv.PicAndText2);
-                mQueue.offer(Constant.BaiDuAdv.PicAndText3);
+                mQueue.offer(Constant.BaiDuAdv.Text1);
             }
+            //添加百度广告
             int position = mData.size() - 4;//每页第3位
             mData.add(position, new NewsDetailEntity(10, mQueue.poll()));
             //添加API广告
             position = mData.size() - 4;//每页第4位
             mData.add(position, new NewsDetailEntity(11));
+            //添加安智广告
+            position = mData.size() - 4;//每页第5位
+            mData.add(position, new NewsDetailEntity(12));
+
             //添加百度广告
             position = mData.size() - 2;//每页第7位
             mData.add(position, new NewsDetailEntity(10, mQueue.poll()));
             //添加API广告
             position = mData.size() - 2;//每页第8位
             mData.add(position, new NewsDetailEntity(11));
+            //添加安智广告
+            position = mData.size() - 2;//每页第9位
+            mData.add(position, new NewsDetailEntity(12));
         }
     }
 
@@ -316,7 +326,7 @@ public class NewsPresenter extends BasePresenterImpl<NewsContract.View> implemen
      */
     private void doGetReward(int id, String packageName) {
         TelephonyManager tm = (TelephonyManager) mView.getContext().getSystemService(Context.TELEPHONY_SERVICE);
-        String IMEI = tm.getDeviceId();//设备唯一标识
+        @SuppressLint("MissingPermission") String IMEI = tm.getDeviceId();//设备唯一标识
         int anInt = Settings.System.getInt(mView.getContext().getContentResolver(), packageName, 0);//是否安装该应用的记录
         if (anInt == 0) {
             LogUtils.i("去领取奖励+IMEI=" + IMEI);

@@ -11,6 +11,11 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.anzhi.sdk.ad.main.AzBannerAd;
+import com.anzhi.sdk.ad.main.AzNativeExpressView;
+import com.anzhi.sdk.ad.manage.AnzhiAdCallBack;
+import com.anzhi.sdk.ad.manage.AnzhiNativeAdCallBack;
+import com.anzhi.sdk.ad.manage.NativeExpressViewData;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
 import com.baidu.mobads.AppActivity;
@@ -460,6 +465,120 @@ public class AdvertisementUtils {
                 e.printStackTrace();
             }
             return adView;
+        }
+    }
+
+    /**
+     * 安智广告
+     */
+    public static class AnZhiAdv {
+
+        /**
+         * 添加banner广告
+         *
+         * @param activity
+         * @param rootView
+         * @return
+         */
+        public static void addAnZhiBannerAdv(Activity activity, ViewGroup rootView, final onItemClick mCallback) {
+            try {
+                AzBannerAd azBannerAd = new AzBannerAd(activity, Constant.AnZhiAdv.AppKey, Constant.AnZhiAdv.AdvId_Banner, new AnzhiAdCallBack() {
+                    @Override
+                    public void onReceiveAd() {
+                        Log.w("ANZHI", "onReceiveAd");
+                    }
+
+                    @Override
+                    public void onLoadFailed(String s) {
+                        Log.w("ANZHI", "onLoadFailed_____s=" + s);
+
+                    }
+
+                    @Override
+                    public void onCloseAd() {
+                        Log.w("ANZHI", "onCloseAd");
+
+                    }
+
+                    @Override
+                    public void onAdClik() {
+                        Log.w("ANZHI", "onAdClik");
+                        if (mCallback != null)
+                            mCallback.onAdvClick();
+                    }
+
+                    @Override
+                    public void onShow() {
+                        Log.w("ANZHI", "onShow");
+
+                    }
+
+                    @Override
+                    public void onAdExposure() {
+                        Log.w("ANZHI", "onAdExposure");
+
+                    }
+
+                    @Override
+                    public void onADTick(long l) {
+                        Log.w("ANZHI", "onADTick____l=" + l);
+
+                    }
+                }, rootView);
+                azBannerAd.setWidthSize(560);
+                azBannerAd.loadAd();
+            } catch (Exception e) {
+                LogUtils.e(e.getMessage());
+            }
+        }
+
+
+        public static void addAnZhiNativeAdv(Activity activity, final ViewGroup rootView, final onItemClick mCallback) {
+            AzNativeExpressView azNativeExpressView = new AzNativeExpressView(activity, Constant.AnZhiAdv.AppKey, Constant.AnZhiAdv.AdvId_Native, new AnzhiNativeAdCallBack() {
+                @Override
+                public void onReceiveAd(NativeExpressViewData nativeExpressViewData) {
+                    Log.i("ANZHI", "---渲染广告成功---");
+                }
+
+                @Override
+                public void onAdFail(String s) {
+                    Log.i("ANZHI", "加载广告失败————————s=" + s);
+                }
+
+                @Override
+                public void onRenderFail(NativeExpressViewData nativeExpressViewData) {
+                    Log.i("ANZHI", "渲染广告失败");
+                }
+
+                @Override
+                public void onCloseAd(NativeExpressViewData nativeExpressViewData) {
+                    Log.i("ANZHI", "");
+                }
+
+                @Override
+                public void onAdClik(NativeExpressViewData nativeExpressViewData) {
+                    Log.i("ANZHI", "原生广告被点击");
+                    if (mCallback != null)
+                        mCallback.onAdvClick();
+                }
+
+                @Override
+                public void onAdExposure(NativeExpressViewData nativeExpressViewData) {
+                    Log.i("ANZHI", "原生广告展示");
+                }
+
+                @Override
+                public void onADLoaded(List<NativeExpressViewData> list) {
+                    Log.i("ANZHI", "");
+                    if (list == null || list.size() == 0)
+                        return;
+                    if (rootView.getChildCount() > 0)
+                        rootView.removeAllViews();
+                    NativeExpressViewData nativeExpressViewData = list.get(0);
+                    nativeExpressViewData.bindView(rootView);
+                }
+            }, 1);
+            azNativeExpressView.loadAd();
         }
     }
 }

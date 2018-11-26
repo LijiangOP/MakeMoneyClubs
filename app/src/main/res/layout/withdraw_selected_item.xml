@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="@dimen/selected_item_vertical"
+        android:paddingTop="@dimen/selected_item_vertical"
+        android:text="投票"
+        android:textColor="@color/color_000000"
+        android:textSize="12sp"/>
+
+</LinearLayout>

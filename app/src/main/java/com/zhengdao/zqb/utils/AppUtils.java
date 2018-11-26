@@ -12,6 +12,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+import android.support.annotation.RequiresApi;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
 import java.io.File;
@@ -124,14 +126,19 @@ public class AppUtils {
             return false;
         }
         String md5ByFile = MD5Utils.getMd5ByFile(file);
-        LogUtils.e("md5ByFile:" + md5ByFile + "md5:" + md5);
-        return md5ByFile.equals(md5);
+        if (TextUtils.isEmpty(md5ByFile)) {
+            LogUtils.e("md5ByFile=null");
+            return false;
+        } else {
+            LogUtils.e("md5ByFile:" + md5ByFile + "md5:" + md5);
+            return md5ByFile.equals(md5);
+        }
     }
 
     /**
      * 获取application中指定的meta-data
      *
-     * @return 如果没有获取成功(没有对应值，或者异常)，则返回值为空
+     * @return 如果没有获取成功(没有对应值 ， 或者异常)，则返回值为空
      */
     public static String getAppMetaDataString(Context ctx, String key) {
         if (ctx == null || TextUtils.isEmpty(key)) {
@@ -146,6 +153,10 @@ public class AppUtils {
                     String result = applicationInfo.metaData.getString(key);
                     if (!TextUtils.isEmpty(result) && result.contains("zqb_")) {
                         resultData = result.replace("zqb_", "");
+                    } else if (!TextUtils.isEmpty(result) && result.contains("jzb_")) {
+                        resultData = result.replace("jzb_", "");
+                    } else if (!TextUtils.isEmpty(result) && result.contains("lczj_")) {
+                        resultData = result.replace("lczj_", "");
                     }
                 }
             }
@@ -213,6 +224,7 @@ public class AppUtils {
         return mPackageName;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     private static boolean isNoSwitch(Context context) {
         long ts = System.currentTimeMillis();
         @SuppressLint("WrongConstant") UsageStatsManager usageStatsManager = (UsageStatsManager) context.getSystemService("usagestats");
@@ -286,8 +298,34 @@ public class AppUtils {
     }
 
     public static String getPackageNameByFile(Context context, File file) {
+        if (file == null || !file.exists())
+            return "";
         PackageManager packageManager = context.getPackageManager();
         PackageInfo packageInfo = packageManager.getPackageArchiveInfo(file.getAbsolutePath(), PackageManager.GET_ACTIVITIES);
         return packageInfo.packageName;
+    }
+
+    /**
+     * 获取手机IMEI
+     *
+     * @param context
+     * @return
+     */
+    public static String getIMEI(Context context) {
+        try {
+            //实例化TelephonyManager对象
+            TelephonyManager telephonyManager = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+            //获取IMEI号
+            @SuppressLint("MissingPermission") String imei = telephonyManager.getDeviceId();
+            //在次做个验证，也不是什么时候都能获取到的啊
+            if (imei == null) {
+                imei = "";
+            }
+            return imei;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
     }
 }

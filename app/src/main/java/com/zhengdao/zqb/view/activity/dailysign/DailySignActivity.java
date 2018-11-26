@@ -62,10 +62,10 @@ public class DailySignActivity extends MVPBaseActivity<DailySignContract.View, D
 
     private void initAdv() {
         try {
-            if (AppType == 2) {
-                AdvertisementUtils.TencentAdv.getTencentBannerAdv(DailySignActivity.this, Constant.TencentAdv.advTenCent_ADV_BANNER_ID, mLlAdvertisement, false);
-            } else {
+            if (AppType == Constant.App.Zqb) {
                 AdvertisementUtils.BaiDuAdv.addAdvWithDefClose(this, Constant.BaiDuAdv.UserCenterBottom, mLlAdvertisement);
+            } else {
+                AdvertisementUtils.TencentAdv.getTencentBannerAdv(DailySignActivity.this, Constant.TencentAdv.advTenCent_ADV_BANNER_ID, mLlAdvertisement, false);
             }
         } catch (Exception e) {
             e.printStackTrace();

@@ -18,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.HttpResult;
@@ -77,9 +78,28 @@ public class DailyWeChatShareActivity extends MVPBaseActivity<DailyWeChatShareCo
         if (mType == 1) {
             String useableSum = getIntent().getStringExtra(Constant.Activity.Data1);
             mCid = getIntent().getIntExtra(Constant.Activity.Data2, 0);
-            SpannableString spannableString = new SpannableString("分享即可领取\n" + useableSum + "M流量");
-            spannableString.setSpan(new RelativeSizeSpan(2f), 6, spannableString.length() - 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-            spannableString.setSpan(new StyleSpan(Typeface.BOLD), 6, spannableString.length() - 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            int type = getIntent().getIntExtra(Constant.Activity.Data3, 0);
+            SpannableString spannableString;
+            switch (type) {
+                case 1:
+                    spannableString = new SpannableString("分享即可领取\n" + useableSum + "M流量");
+                    spannableString.setSpan(new RelativeSizeSpan(2f), 6, spannableString.length() - 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 6, spannableString.length() - 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    break;
+                case 2:
+                    spannableString = new SpannableString("分享即可领取\n" + useableSum + "元话费");
+                    spannableString.setSpan(new RelativeSizeSpan(2f), 6, spannableString.length() - 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 6, spannableString.length() - 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    break;
+                case 3:
+                    spannableString = new SpannableString("分享即可领取\n" + useableSum + "元现金");
+                    spannableString.setSpan(new RelativeSizeSpan(2f), 6, spannableString.length() - 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    spannableString.setSpan(new StyleSpan(Typeface.BOLD), 6, spannableString.length() - 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+                    break;
+                default:
+                    spannableString = new SpannableString("");
+                    break;
+            }
             mTvPart2.setText(spannableString);
             mTvHint.setText(getString(R.string.share_hint_1));
         } else {
@@ -138,7 +158,7 @@ public class DailyWeChatShareActivity extends MVPBaseActivity<DailyWeChatShareCo
         Bitmap b = Bitmap.createBitmap(b1, 0, statusBarHeight + i, width, height
                 - statusBarHeight - i - mReBottomHeight);
         view.destroyDrawingCache();
-        ShareUtils.shareToWXWithImg(this, b, Constant.WechatReq.DailyShare);
+        ShareUtils.shareToWXWithImg(this, SendMessageToWX.Req.WXSceneTimeline, b, Constant.WechatReq.DailyShare);
     }
 
     @Override

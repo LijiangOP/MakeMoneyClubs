@@ -1,7 +1,9 @@
 package com.zhengdao.zqb.view.adapter;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,8 +30,10 @@ import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.TaskEntity;
 import com.zhengdao.zqb.utils.AdvertisementUtils;
+import com.zhengdao.zqb.utils.SkipUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
 import com.zhengdao.zqb.utils.Utils;
+import com.zhengdao.zqb.view.activity.advertisementlist.AdvertisementListActivity;
 import com.zhengdao.zqb.view.activity.bindalipay.BindAliPayActivity;
 import com.zhengdao.zqb.view.activity.homegoodsdetail.HomeGoodsDetailActivity;
 import com.zhengdao.zqb.view.activity.marketcommentdetail.MarketCommentDetailActivity;
@@ -57,6 +62,15 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private static final int TYPE_RECOMMEND     = 3;
     private static final int TYPE_SHARE         = 4;
     private static final int TYPE_SIGN          = 5;
+
+    private static final int TYPE_WANTED_REWARD    = 6;
+    private static final int TYPE_GAME_REWARD      = 7;
+    private static final int TYPE_SHOUTU_REWARD    = 8;
+    private static final int TYPE_WENJUAN_REWARD   = 9;
+    private static final int TYPE_GUANGGAO         = 10;
+    private static final int TYPE_XINSHOU_FULI     = 11;
+    private static final int TYPE_ALIPAY_REDPACKET = 12;
+
     private CallBack         mCallBack;
     private Context          mContext;
     private List<TaskEntity> mData;
@@ -65,9 +79,7 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     private BaiduAdvHolder   mBaiduViewHolder;
 
     public interface CallBack {
-        void onSign(boolean state);
-
-        void onShare();
+        void onItemClick(int type, int state);
 
         void onBaiduAdvClick();
 
@@ -83,12 +95,12 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         RecyclerView.ViewHolder holder;
-        if (viewType == 0) {
+        if (viewType == 0) {//标题栏模块
             View title = View.inflate(mContext, R.layout.new_hand_mission_1, null);
             holder = new HeaderViewHolder(title);
-        } else if (viewType == 10) {
+        } else if (viewType == 10) {//广告模块
             return new BaiduAdvHolder(View.inflate(mContext, R.layout.item_news_adv, null));
-        } else {
+        } else {//内容模块
             View item = View.inflate(mContext, R.layout.item_newhand_mission, null);
             holder = new ItemViewHolder(item);
         }
@@ -103,28 +115,83 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
             mHeaderViewHolder.mTitle.setText(TextUtils.isEmpty(taskEntity.title) ? "" : taskEntity.title);
         } else if (taskEntity.type == 10) {
             mBaiduViewHolder = (BaiduAdvHolder) holder;
+            mBaiduViewHolder.mFlContainer.removeAllViews();
             initAdv();
         } else {
             mItemViewHolder = (ItemViewHolder) holder;
             mItemViewHolder.mTvTask.setText(TextUtils.isEmpty(taskEntity.entity.title) ? "" : taskEntity.entity.title);
             String describe = TextUtils.isEmpty(taskEntity.entity.describe) ? "" : taskEntity.entity.describe;
             Double integral = taskEntity.entity.integral == null ? 0.0 : taskEntity.entity.integral;
-            SpannableString spannableString = new SpannableString(describe + " 赏金+" + new DecimalFormat("#0.00").format(integral));
+            SpannableString spannableString;
+            if (integral == 0) {
+                spannableString = new SpannableString(describe + "赏金随机");
+            } else {
+                spannableString = new SpannableString(describe + " 赏金+" + new DecimalFormat("#0.00").format(integral));
+            }
+            if (taskEntity.entity.type == TYPE_ALIPAY_REDPACKET) {
+                spannableString = new SpannableString(describe + " 最高99元");
+            }
             spannableString.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.main)), describe.length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mItemViewHolder.mTvDesc.setText(spannableString);
-            if (taskEntity.entity.status == 1) {
-                if (taskEntity.entity.type == TYPE_SIGN || taskEntity.entity.type == TYPE_SHARE) {
-                    mItemViewHolder.mTvAlreadyDone.setVisibility(View.VISIBLE);
-                    mItemViewHolder.mTvAlreadyDone.setTextColor(mContext.getResources().getColor(R.color.color_00b7ee));
-                    mItemViewHolder.mTvAlreadyDone.setText("去看看");
-                    mItemViewHolder.mTvGoFinish.setVisibility(View.GONE);
-                } else {
-                    mItemViewHolder.mTvAlreadyDone.setVisibility(View.VISIBLE);
-                    mItemViewHolder.mTvGoFinish.setVisibility(View.GONE);
-                }
-            } else if (taskEntity.entity.status == 2) {
-                mItemViewHolder.mTvAlreadyDone.setVisibility(View.GONE);
+            if (taskEntity.entity.status == 1) {//已完成
+                mItemViewHolder.mTvGoFinish.setText("已完成");
+                mItemViewHolder.mTvGoFinish.setTextColor(mContext.getResources().getColor(R.color.color_b3b3b3));
                 mItemViewHolder.mTvGoFinish.setVisibility(View.VISIBLE);
+                mItemViewHolder.mTvGetReward.setVisibility(View.GONE);
+            } else if (taskEntity.entity.status == 2) {//未完成
+                mItemViewHolder.mTvGoFinish.setText("去完成");
+                mItemViewHolder.mTvGoFinish.setTextColor(mContext.getResources().getColor(R.color.color_02a0e9));
+                mItemViewHolder.mTvGoFinish.setVisibility(View.VISIBLE);
+                mItemViewHolder.mTvGetReward.setVisibility(View.GONE);
+            } else if (taskEntity.entity.status == 3) {//已完结
+                mItemViewHolder.mTvGoFinish.setText("已完结");
+                mItemViewHolder.mTvGoFinish.setTextColor(mContext.getResources().getColor(R.color.color_b3b3b3));
+                mItemViewHolder.mTvGoFinish.setVisibility(View.VISIBLE);
+                mItemViewHolder.mTvGetReward.setVisibility(View.GONE);
+            } else if (taskEntity.entity.status == 4) {//可领取
+                mItemViewHolder.mTvGoFinish.setVisibility(View.GONE);
+                mItemViewHolder.mTvGetReward.setVisibility(View.VISIBLE);
+            }
+            switch (taskEntity.entity.type) {
+                case TYPE_REGIST://注册任务
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_tuijian));
+                    break;
+                case TYPE_BINDALIPAY://支付宝绑定
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_tuijian));
+                    break;
+                case TYPE_MARKETCOMMENT://市场评论
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_pinglun));
+                    break;
+                case TYPE_RECOMMEND://推荐悬赏
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_tuijian));
+                    break;
+                case TYPE_SHARE://分享朋友圈
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_fengxiang));
+                    break;
+                case TYPE_SIGN://签到
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_tuijian));
+                    break;
+                case TYPE_WANTED_REWARD://悬赏奖励
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_jiangli));
+                    break;
+                case TYPE_GAME_REWARD://游戏奖励
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_youxi));
+                    break;
+                case TYPE_SHOUTU_REWARD://收徒奖励
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_shuotu));
+                    break;
+                case TYPE_WENJUAN_REWARD://问卷调查奖励
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_wenjuan));
+                    break;
+                case TYPE_GUANGGAO://广告列表
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_guanggao));
+                    break;
+                case TYPE_XINSHOU_FULI://新手福利
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_fuli));
+                    break;
+                case TYPE_ALIPAY_REDPACKET://支付宝红包奖励红包码
+                    mItemViewHolder.mIvIcon.setImageDrawable(mContext.getResources().getDrawable(R.drawable.daily_redpacket));
+                    break;
             }
             mItemViewHolder.mLlItem.setOnClickListener(new View.OnClickListener() {
 
@@ -132,20 +199,20 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                 public void onClick(View v) {
                     if (taskEntity.entity.status == 2) {//未完成
                         switch (taskEntity.entity.type) {
-                            case TYPE_REGIST:
+                            case TYPE_REGIST://注册任务
                                 Intent regist = new Intent(mContext, RegisterActivity.class);
                                 regist.putExtra(Constant.Activity.Data, "fromNewHand");
                                 Utils.StartActivity(mContext, regist);
                                 break;
-                            case TYPE_BINDALIPAY:
+                            case TYPE_BINDALIPAY://支付宝绑定
                                 Intent bindalipay = new Intent(mContext, BindAliPayActivity.class);
                                 bindalipay.putExtra(Constant.Activity.Type, "fromNewHand");
                                 Utils.StartActivity(mContext, bindalipay);
                                 break;
-                            case TYPE_MARKETCOMMENT:
+                            case TYPE_MARKETCOMMENT://市场评论
                                 Utils.StartActivity(mContext, new Intent(mContext, MarketCommentDetailActivity.class));
                                 break;
-                            case TYPE_RECOMMEND:
+                            case TYPE_RECOMMEND://推荐悬赏
                                 if (taskEntity.entity.rwId == 0) {
                                     ToastUtil.showToast(mContext, "暂无推荐悬赏");
                                     return;
@@ -154,13 +221,38 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                                 intent.putExtra(Constant.Activity.Data, taskEntity.entity.rwId);
                                 Utils.StartActivity(mContext, intent);
                                 break;
-                            case TYPE_SHARE:
+                            case TYPE_SHARE://分享朋友圈
                                 if (mCallBack != null)
-                                    mCallBack.onShare();
+                                    mCallBack.onItemClick(TYPE_SHARE, taskEntity.entity.status);
                                 break;
-                            case TYPE_SIGN:
+                            case TYPE_SIGN://签到
                                 if (mCallBack != null)
-                                    mCallBack.onSign(false);
+                                    mCallBack.onItemClick(TYPE_SIGN, taskEntity.entity.status);
+                                break;
+                            case TYPE_WANTED_REWARD://悬赏奖励
+                                if (mCallBack != null)
+                                    mCallBack.onItemClick(TYPE_WANTED_REWARD, taskEntity.entity.status);
+                                break;
+                            case TYPE_GAME_REWARD://游戏奖励
+                                if (mCallBack != null)
+                                    mCallBack.onItemClick(TYPE_GAME_REWARD, taskEntity.entity.status);
+                                break;
+                            case TYPE_SHOUTU_REWARD://收徒奖励
+                                SkipUtils.SkipToShouTu(mContext);
+                                break;
+                            case TYPE_WENJUAN_REWARD://问卷调查奖励
+                                if (mCallBack != null)
+                                    mCallBack.onItemClick(TYPE_WENJUAN_REWARD, taskEntity.entity.status);
+                                break;
+                            case TYPE_GUANGGAO://广告列表
+                                mContext.startActivity(new Intent(mContext, AdvertisementListActivity.class));
+                                break;
+                            case TYPE_XINSHOU_FULI://新手福利
+                                if (mCallBack != null)
+                                    mCallBack.onItemClick(TYPE_XINSHOU_FULI, taskEntity.entity.status);
+                                break;
+                            case TYPE_ALIPAY_REDPACKET:
+                                skipToAliPay(taskEntity.entity.url);
                                 break;
                         }
                     }
@@ -168,23 +260,38 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                         switch (taskEntity.entity.type) {
                             case TYPE_SHARE:
                                 if (mCallBack != null)
-                                    mCallBack.onShare();
+                                    mCallBack.onItemClick(TYPE_SHARE, taskEntity.entity.status);
                                 break;
                             case TYPE_SIGN:
                                 if (mCallBack != null)
-                                    mCallBack.onSign(true);
+                                    mCallBack.onItemClick(TYPE_SIGN, taskEntity.entity.status);
                                 break;
                         }
+                    }
+                    if (taskEntity.entity.status == 4) {
+                        if (mCallBack != null)
+                            mCallBack.onItemClick(taskEntity.entity.type, taskEntity.entity.status);
                     }
                 }
             });
         }
     }
 
+    private void skipToAliPay(String url) {
+        Uri uri;
+        if (checkAliPayIsInstall(mContext)) {
+            uri = Uri.parse(url);
+        } else {
+            uri = Uri.parse("https://mobile.alipay.com/index.htm");
+        }
+        Intent four = new Intent(Intent.ACTION_VIEW, uri);
+        mContext.startActivity(four);
+    }
+
     private void initAdv() {
         try {
             if (AppType == Constant.App.Wlgfl) {
-                AdvertisementUtils.TencentAdv.getTencentNativeAdv1(mContext,Constant.TencentAdv.advTenCent_ADV_BANNER_ID, new NativeExpressAD.NativeExpressADListener() {
+                AdvertisementUtils.TencentAdv.getTencentNativeAdv1(mContext, Constant.TencentAdv.advTenCent_ADV_BANNER_ID, new NativeExpressAD.NativeExpressADListener() {
 
                     @Override
                     public void onNoAD(AdError adError) {
@@ -249,7 +356,7 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
                     }
                 });
             } else {
-                AdView baiDuBanner = AdvertisementUtils.BaiDuAdv.getBaiDuBanner(mContext,Constant.BaiDuAdv.UserCenterBottom, new AdViewListener() {
+                AdView baiDuBanner = AdvertisementUtils.BaiDuAdv.getBaiDuBanner(mContext, Constant.BaiDuAdv.UserCenterBottom, new AdViewListener() {
                     @Override
                     public void onAdReady(AdView adView) {
                         Log.w("BAIDUA", "onAdReady");
@@ -299,6 +406,13 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
         }
     }
 
+    private boolean checkAliPayIsInstall(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
+
     @Override
     public int getItemCount() {
         return mData == null ? 0 : mData.size();
@@ -332,14 +446,16 @@ public class NewHandMissionAdapter extends RecyclerView.Adapter<RecyclerView.Vie
 
     class ItemViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.iv_icon)
+        ImageView    mIvIcon;
         @BindView(R.id.tv_task)
         TextView     mTvTask;
         @BindView(R.id.tv_desc)
         TextView     mTvDesc;
         @BindView(R.id.tv_go_finish)
         TextView     mTvGoFinish;
-        @BindView(R.id.tv_already_done)
-        TextView     mTvAlreadyDone;
+        @BindView(R.id.tv_get_reward)
+        TextView     mTvGetReward;
         @BindView(R.id.ll_item)
         LinearLayout mLlItem;
 

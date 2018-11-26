@@ -17,15 +17,14 @@
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="12dp"
             android:background="@drawable/shape_rect_four_light_gray"
             android:lineSpacingExtra="2dp"
             android:paddingBottom="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:paddingTop="22dp"
-            android:textColor="#999999"
-            android:textSize="12sp"/>
+            style="@style/common_dialog_content"/>
 
         <TextView
             android:id="@+id/tv_title"
@@ -37,8 +36,7 @@
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
             android:text="口令复制成功"
-            android:textColor="#333333"
-            android:textSize="14sp"/>
+            style="@style/common_dialog_title"/>
     </RelativeLayout>
 
     <View
@@ -54,7 +52,7 @@
         android:padding="10dp"
         android:text="复制给好友"
         android:textColor="#fc3135"
-        android:textSize="14sp"
+        android:textSize="18sp"
         />
 </LinearLayout>
 

@@ -12,7 +12,6 @@
         android:gravity="center"
         android:paddingBottom="@dimen/selected_item_vertical"
         android:paddingTop="@dimen/selected_item_vertical"
-        android:text="投票"
         android:textColor="@color/color_000000"
         android:textSize="11sp"/>
 

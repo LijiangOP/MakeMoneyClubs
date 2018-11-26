@@ -7,6 +7,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.RelativeSizeSpan;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -18,6 +19,8 @@ import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.customview.ShapeDialog;
 import com.zhengdao.zqb.entity.GoodsCommandHttpEntity;
 import com.zhengdao.zqb.entity.HttpLiCaiDetailEntity;
+
+import java.text.DecimalFormat;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -78,10 +81,14 @@ public class GoodsCommandDialog extends ShapeDialog implements View.OnClickListe
 
     public void initContentView(GoodsCommandHttpEntity httpEntity, View.OnClickListener listener) {
         if (httpEntity != null && httpEntity.reward != null) {
-            mTvTop.setText("邀请你领取悬赏");
+            mTvTop.setText("邀请您领取悬赏");
             Glide.with(mContext).load(httpEntity.reward.picture).error(R.drawable.net_less_140).into(mIvGoodsPic);
             mTvContent.setText(TextUtils.isEmpty(httpEntity.reward.title) ? "" : httpEntity.reward.title);
-            mTvPrice.setText("¥" + httpEntity.reward.money);
+            Double money = httpEntity.reward.money;
+            String value = money == null ? "0" : new DecimalFormat("#0.00").format(money);
+            SpannableString spannableString = new SpannableString("赚 ¥" + value);
+            spannableString.setSpan(new RelativeSizeSpan(0.8f),1,3,Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+            mTvPrice.setText(spannableString);
         }
         if (listener != null)
             mTvCheck.setOnClickListener(listener);
@@ -89,11 +96,13 @@ public class GoodsCommandDialog extends ShapeDialog implements View.OnClickListe
 
     public void initContentView(HttpLiCaiDetailEntity httpEntity, View.OnClickListener listener) {
         if (httpEntity != null && httpEntity.wangzhuan != null) {
-            mTvTop.setText("邀请你领取奖励");
+            mTvTop.setText("邀请你参与");
             Glide.with(mContext).load(httpEntity.wangzhuan.logo).error(R.drawable.net_less_140).into(mIvGoodsPic);
             mTvContent.setText(TextUtils.isEmpty(httpEntity.wangzhuan.title) ? "" : httpEntity.wangzhuan.title);
-            String income = "¥" + httpEntity.wangzhuan.incomeTotal;
-            SpannableString spannableString = new SpannableString("总收益 " + income);
+            Double incomeTotal = httpEntity.wangzhuan.incomeTotal;
+            String value = incomeTotal == null ? "0" : new DecimalFormat("#0.00").format(incomeTotal);
+            SpannableString spannableString = new SpannableString("总收益 ¥" + value);
+            spannableString.setSpan(new RelativeSizeSpan(0.7f),3,5,Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new ForegroundColorSpan(mContext.getResources().getColor(R.color.text_999999)), 0, 3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mTvPrice.setText(spannableString);
         }

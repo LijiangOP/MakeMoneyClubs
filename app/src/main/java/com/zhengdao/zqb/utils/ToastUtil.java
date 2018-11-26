@@ -91,5 +91,4 @@ public class ToastUtil {
         ((TextView) toast.getView().findViewById(textview_id)).setGravity(gravity);
         toast.show();
     }
-
 }

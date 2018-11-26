@@ -25,18 +25,30 @@
     <string name="charge_no_permit_hint_content">充值功能目前仅对悬赏主开放!</string>
     <string name="market_comment_appname">“赚钱吧”</string>
     <string name="consult_qq">QQ“2660841136”已复制成\n功，打开QQ立即开始咨询客服</string>
-    <string name="consult_wechat">服务号“zqb88cn”已复制成功，打\n开微信立享客服MM贴心服务</string>
+    <string name="consult_wechat">服务号“zqb88cn”已复制成功\n打开微信立享客服MM贴心服务</string>
     <string name="app_statement">1.本平台内容，包括以链接形式推荐的其他网站内容，在法律允许范围内，本平台不担保这些内容、产品、服务或其他材料的真实性、完整性、安全性和合法性。用户应谨慎判断并自担风险，避免任何因使用或信赖此类内容、产品、服务或其他材料而造成的任何直接或间接损失。\n\n2.如发布广告任务为购物优惠折扣，用户下单后撤单或者退货，用户须同供货商家自行协商解决，且不能获得本次广告任务活动奖励。\n\n3.赚钱吧做为广告信息推广服务平台，广告展示形式及活动形式最终解释权归赚钱吧官方运营所有。</string>
     <string name="share_hint_1">长按识别二维码领红包\n或可以在各应用市场搜索赚钱吧APP下载安装</string>
     <string name="share_hint_2">长按识别二维码领流量\n或可以在各应用市场搜索赚钱吧APP下载安装</string>
-    <string name="licai_detail_statement1">本活动所有信息（包括但不局限于平台介绍、平台背景、平台数据等关于平台的各类信息）均由各商家自行提供，</string>
-    <string name="licai_detail_statement2">仅作为信息展示平台，不对用户投资行为进行任何主观性引导。 投资前请慎重考虑平台信用、投资项目的真实性、可行性等因素。用户如因投资发生争议，请自行与该平台联系</string>
-    <string name="coupons">优惠券</string>
     <string name="complain_hint">赚钱吧将根据您的举报进行核查,查实悬赏存在的问题记入悬赏主平台征信,感谢您对赚钱吧的支持。</string>
-    <string name="withdraw_hint_2">提现申请提交后由赚钱吧进行审核，并提现至账户绑定的支付宝账号。</string>
+    <string name="licai_detail_statement1">本活动所有信息（包括但不局限于平台介绍、平台背景、平台数据等关于平台的各类信息）均由各商家自行提供，</string>
+    <string name="licai_detail_statement2">仅作为信息展示平台，不对用户投资行为进行任何主观性引导。\n投资前请慎重考虑平台信用、投资项目的真实性、可行性等因素。用户如因投资发生争议，请自行与该平台联系</string>
+    <string name="coupons">优惠券</string>
     <string name="kouling">赚钱吧口令</string>
-    <string name="withdraw_hint_3">提现前请确保账户绑定的支付宝无误，否则由于绑定信息错误导致提现到账出错，赚钱吧概不负责。</string>
     <string name="ad_activity_name">娱乐悬赏</string>
     <string name="home_survey">问卷悬赏</string>
     <string name="home_entertainment">娱乐悬赏</string>
+    <string name="home_publish">发布悬赏</string>
+    <string name="select_all">全选</string>
+    <string name="copy">复制</string>
+
+    <string name="withdraw_hint_1">首次提现的最低限制为10元。</string>
+    <string name="withdraw_hint_2">首次提现后，提现不受10元起的限制。</string>
+    <string name="withdraw_hint_3">每日限提一次，请勿频繁操作。</string>
+    <string name="withdraw_hint_4">提现申请提交后由平台进行审核，并提现至账户绑定的支付宝账号。</string>
+    <string name="withdraw_hint_5">提现前请确保账户绑定的支付宝账户无误，否则由于绑定信息错误导致提现到账出错，平台概不负责。</string>
+    <string name="bind_alipay_hint">根据第三方支付的规定，帐号都需要通过实名认证才能进行转账操作！</string>
+
+    <string name="daily">每日任务</string>
+    <string name="wanted_limit_hint">*请勿乱提交资料和截图,警告两次的用户将被冻结;\n*作弊的用户一经发现直接冻结处理。</string>
+
 </resources>

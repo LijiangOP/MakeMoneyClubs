@@ -128,6 +128,7 @@ public class RewardTicketFragment extends MVPBaseFragment<RewardTicketContract.V
                 intent.putExtra(Constant.Activity.Type, 1);
                 intent.putExtra(Constant.Activity.Data1, String.valueOf(new Double(rewardTicketEntity.quota).intValue()));
                 intent.putExtra(Constant.Activity.Data2, rewardTicketEntity.id);
+                intent.putExtra(Constant.Activity.Data3, rewardTicketEntity.type);
                 startActivity(intent);
             }
         } catch (Exception e) {

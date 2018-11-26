@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.anzhi.sdk.ad.main.AzBannerAd;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -28,6 +29,7 @@ import com.zhengdao.zqb.customview.DailyWindow;
 import com.zhengdao.zqb.customview.InvestCodeWindow;
 import com.zhengdao.zqb.entity.AdvertisementHttpEntity;
 import com.zhengdao.zqb.entity.HttpResult;
+import com.zhengdao.zqb.entity.SurveyHttpResult;
 import com.zhengdao.zqb.entity.UserHomeBean;
 import com.zhengdao.zqb.event.LogInEvent;
 import com.zhengdao.zqb.event.LogOutEvent;
@@ -41,6 +43,7 @@ import com.zhengdao.zqb.utils.DensityUtil;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.SettingUtils;
+import com.zhengdao.zqb.utils.SkipUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
 import com.zhengdao.zqb.utils.Utils;
 import com.zhengdao.zqb.view.activity.activitycenter.ActivityCenterActivity;
@@ -53,6 +56,8 @@ import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.activity.main.MainActivity;
 import com.zhengdao.zqb.view.activity.mybalance.MyBalanceActivity;
 import com.zhengdao.zqb.view.activity.mywanted.MyWantedActivity;
+import com.zhengdao.zqb.view.activity.newhandmission.NewHandMissionActivity;
+import com.zhengdao.zqb.view.activity.questionsurvery.QuestionSurveryActivty;
 import com.zhengdao.zqb.view.activity.rebaterecords.RebateRecordsActivity;
 import com.zhengdao.zqb.view.activity.rewardticket.RewardTicketActivity;
 import com.zhengdao.zqb.view.activity.setting.SettingActivity;
@@ -125,6 +130,10 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
     FrameLayout        mFlContainerBottom;
     @BindView(R.id.swipeRefreshLayout)
     SwipeRefreshLayout mSwipeRefreshLayout;
+    @BindView(R.id.ll_module_daily_mission)
+    LinearLayout       mLlModuleDailyMission;
+    @BindView(R.id.ll_module_fiction)
+    LinearLayout       mLlModuleFiction;
 
     private Disposable mLogOutDisposable;
     private Disposable mLogInDisposable;
@@ -139,6 +148,7 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
     private DailyWindow mDailyWindow;
     private long mCurrentAskDataTime = 0;
     private InvestCodeWindow mInvestCodeWindow;
+    private AzBannerAd       mAzBannerAd;
 
     @Override
     protected View getFragmentView() {
@@ -160,44 +170,51 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
         reGistEvent();
         initClickListener();
         initAdv();//增加广告
-        //        showDailyWindow();//展示每日弹窗 7.18功能下线
+        showDailyWindow();//展示每日弹窗
+        if (!SettingUtils.isLogin(getActivity()))
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class), ACTION_LOGIN);
     }
 
     private void initAdv() {
         try {
             if (AppType == Constant.App.Wlgfl) {
+                //安智广告
+                //                AdvertisementUtils.AnZhiAdv.addAnZhiNativeAdv(getActivity(), mFlContainerBottom, new AdvertisementUtils.onItemClick() {
+                //                    @Override
+                //                    public void onAdvClick() {
+                //                        mPresenter.getSeeAdvReward(3, 3);
+                //                    }
+                //                });
                 AdvertisementUtils.TencentAdv.getTencentBannerAdvWithCallBack(getActivity(), Constant.TencentAdv.advTenCent_ADV_BANNER_ID, mFlContainerTop, false, new AdvertisementUtils.onItemClick() {
                     @Override
                     public void onAdvClick() {
-                        mPresenter.getSeeAdvReward(3, 2);
-                    }
-                });
-                AdvertisementUtils.TencentAdv.getTencentBannerAdvWithCallBack(getActivity(), Constant.TencentAdv.advTenCent_ADV_BANNER_ID, mFlContainerBottom, false, new AdvertisementUtils.onItemClick() {
-                    @Override
-                    public void onAdvClick() {
-                        mPresenter.getSeeAdvReward(3, 2);
+                        //                        mPresenter.getSeeAdvReward(3, 2);
                     }
                 });
             } else {
-                AdvertisementUtils.BaiDuAdv.addAdvNoDefCloseWithCallBack(getActivity(), Constant.BaiDuAdv.UserCenterTop, mFlContainerTop, new AdvertisementUtils.onItemClick() {
+                //安智广告
+                //                AdvertisementUtils.AnZhiAdv.addAnZhiNativeAdv(getActivity(), mFlContainerBottom, new AdvertisementUtils.onItemClick() {
+                //                    @Override
+                //                    public void onAdvClick() {
+                //                        mPresenter.getSeeAdvReward(3, 3);
+                //                    }
+                //                });
+                //百度广告
+                AdvertisementUtils.BaiDuAdv.addAdvNoDefCloseWithCallBack(getActivity(), Constant.BaiDuAdv.UserCenterBottom, mFlContainerTop, new AdvertisementUtils.onItemClick() {
                     @Override
                     public void onAdvClick() {
-                        mPresenter.getSeeAdvReward(3, 1);
+                        //                        mPresenter.getSeeAdvReward(3, 1);
                     }
                 });
-                AdvertisementUtils.BaiDuAdv.addAdvNoDefCloseWithCallBack(getActivity(), Constant.BaiDuAdv.UserCenterBottom, mFlContainerBottom, new AdvertisementUtils.onItemClick() {
-                    @Override
-                    public void onAdvClick() {
-                        mPresenter.getSeeAdvReward(3, 1);
-                    }
-                });//增加广告
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
         mPresenter.getAdvReplace(Constant.AdvPosition.PositionsMine);
-
-        mLlModuleInvitedCode.setVisibility(View.GONE);
+        mLlModuleInvitedCode.setVisibility(View.GONE);//7.30 隐藏输入邀请码
+        mLlModuleAdvCenter.setVisibility(View.GONE);//7.30 隐藏广告中心
+        mLlModuleDailyMission.setVisibility(View.GONE);//10.23 隐藏每日任务
+        mLlModuleFiction.setVisibility(View.GONE);//10.23
     }
 
     private void reGistEvent() {
@@ -242,13 +259,14 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
         mTvWithdraw.setOnClickListener(this);
 
         mLlModuleWelfare.setOnClickListener(this);
+        mLlModuleDailyMission.setOnClickListener(this);
+        mLlModuleFiction.setOnClickListener(this);
         mLlModuleInvitedCode.setOnClickListener(this);
 
         mLlModuleTaskCenter.setOnClickListener(this);
         mLlModuleAdvCenter.setOnClickListener(this);
         mLlModuleRebateRecords.setOnClickListener(this);
         mLlModuleInvitedFriends.setOnClickListener(this);
-        mLlModuleInvitedFriends.setVisibility(View.GONE);
 
         mLlModuleMyWallet.setOnClickListener(this);
         mLlModuleTicket.setOnClickListener(this);
@@ -287,15 +305,20 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden && !SettingUtils.isLogin(getActivity()))
+            startActivityForResult(new Intent(getActivity(), LoginActivity.class), ACTION_LOGIN);
+        else
+            mPresenter.getUserData();
+    }
 
     @Override
     public void onResume() {
         super.onResume();
-        if (!SettingUtils.isLogin(getActivity())) {
-            startActivityForResult(new Intent(getActivity(), LoginActivity.class), ACTION_LOGIN);
-        }
         long value = System.currentTimeMillis();
-        if (value - mCurrentAskDataTime > 3 * 60 * 1000 || mCurrentAskDataTime == 0) {//3分钟间隔请求数据
+        if (value - mCurrentAskDataTime > 3 * 60 * 1000 || mCurrentAskDataTime == 0) {//3分钟间隔 自动请求数据
             if (SettingUtils.isLogin(getActivity()))
                 mPresenter.getUserData();
         }
@@ -387,6 +410,29 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
         }
     }
 
+    @Override
+    public void onSurveyLinkGet(SurveyHttpResult httpResult) {
+        if (httpResult == null) {
+            ToastUtil.showToast(getActivity(), "请求出错");
+            return;
+        }
+        if (httpResult.code == Constant.HttpResult.SUCCEED) {
+            Intent welfare = new Intent(getActivity(), WelfareGetActivity.class);
+            welfare.putExtra(Constant.Activity.Data, mWelfareState);
+            Utils.StartActivity(getActivity(), welfare);
+        } else if (httpResult.code == Constant.HttpResult.FAILD) {
+            Intent survery = new Intent(getActivity(), QuestionSurveryActivty.class);
+            survery.putExtra(Constant.Activity.Skip, "welfare");
+            Utils.StartActivity(getActivity(), survery);
+            ToastUtil.showToast(getActivity(), "请完善用户信息");
+        } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
+            ToastUtil.showToast(getActivity(), "登录超时,请重新登录");
+            startActivity(new Intent(getActivity(), LoginActivity.class));
+        } else {
+            ToastUtil.showToast(getActivity(), TextUtils.isEmpty(httpResult.msg) ? "请求失败" : httpResult.msg);
+        }
+    }
+
     /**
      * @param bean
      */
@@ -396,7 +442,6 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
             mNickname = bean.user.nickName;
             mAliPayAccount = bean.userInfo.zfb;
             mUsableSum = bean.account.usableSum;
-            SettingUtils.setAlipayAccount(getActivity(), mAliPayAccount);
             mWelfareState = bean.user.welfare;
             //控件显示
             Glide.with(getActivity()).load(bean.user.avatar).error(R.drawable.default_icon).into(mIvUserIcon);
@@ -413,6 +458,8 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
             spannableTodayIncome.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.main)), 5, spannableTodayIncome.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mTvTodayIncome.setText(spannableTodayIncome);
 
+            double total = bean.account.takenAmount == null ? mUsableSum : (bean.account.takenAmount + mUsableSum);
+            SettingUtils.setTotalIncome(getActivity(), new Double(total).floatValue());
             SpannableString spannableTotalIncome = new SpannableString("收入总额: " + ((bean.account.takenAmount == null ? mUsableSum : new DecimalFormat("#0.00").format(bean.account.takenAmount + mUsableSum))));
             spannableTotalIncome.setSpan(new StyleSpan(Typeface.BOLD), 5, spannableTotalIncome.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             spannableTotalIncome.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.main)), 5, spannableTotalIncome.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
@@ -424,6 +471,9 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
             mTvTotalWithdraw.setText(spannableTotalWithdraw);
 
             mTvMyWallet.setText(mUsableSum + "元");
+
+            //保存数据
+            SettingUtils.SaveAfterGetUSerData(getActivity(), bean);
         }
     }
 
@@ -465,9 +515,16 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
                 Utils.StartActivity(getActivity(), withDraw);
                 break;
             case R.id.ll_module_welfare:
-                Intent welfare = new Intent(getActivity(), WelfareGetActivity.class);
-                welfare.putExtra(Constant.Activity.Data, mWelfareState);
-                Utils.StartActivity(getActivity(), welfare);
+                mPresenter.getSurveyLink();
+                break;
+            case R.id.ll_module_daily_mission:
+                Utils.StartActivity(getActivity(), new Intent(getActivity(), NewHandMissionActivity.class));
+                break;
+            case R.id.ll_module_fiction:
+                Intent fiction = new Intent(getActivity(), WebViewActivity.class);
+                fiction.putExtra(Constant.WebView.TITLE, "小说阅读");
+                fiction.putExtra(Constant.WebView.URL, Constant.IP.Fiction);
+                getActivity().startActivity(fiction);
                 break;
             case R.id.ll_module_invited_code:
                 showInvestCodeWindow();
@@ -482,15 +539,7 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
                 Utils.StartActivity(getActivity(), new Intent(getActivity(), RebateRecordsActivity.class));
                 break;
             case R.id.ll_module_invited_friends:
-                Intent intent_three;
-                if (SettingUtils.isLogin(getActivity())) {
-                    intent_three = new Intent(getActivity(), WebViewActivity.class);
-                    intent_three.putExtra(Constant.WebView.TITLE, "邀请有礼");
-                    intent_three.putExtra(Constant.WebView.URL, Constant.IP.Invited + "/?token=" + SettingUtils.getUserToken(getActivity()));
-                } else {
-                    intent_three = new Intent(getActivity(), LoginActivity.class);
-                }
-                Utils.StartActivity(getActivity(), intent_three);
+                SkipUtils.SkipToShouTu(getActivity());
                 break;
             case R.id.ll_module_my_wallet:
                 Utils.StartActivity(getActivity(), new Intent(getActivity(), MyBalanceActivity.class));
@@ -584,5 +633,7 @@ public class UserFragment extends MVPBaseFragment<UserContract.View, UserPresent
             mInvestCodeWindow.dismiss();
             mInvestCodeWindow = null;
         }
+        if (mAzBannerAd != null)
+            mAzBannerAd.onDestroy();
     }
 }

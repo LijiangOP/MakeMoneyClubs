@@ -5,24 +5,21 @@ import android.content.Intent;
 import android.text.TextUtils;
 
 import com.zhengdao.zqb.api.DownloadApi;
+import com.zhengdao.zqb.application.ClientAppLike;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.UpdateInfoEntity;
 import com.zhengdao.zqb.entity.Version;
 import com.zhengdao.zqb.manager.RetrofitManager;
 import com.zhengdao.zqb.service.DownloadApkService;
-import com.zhengdao.zqb.utils.AppUtils;
 import com.zhengdao.zqb.utils.FileUtils;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
-
-import java.io.File;
 
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-import static com.zhengdao.zqb.config.Constant.Download.APK_FILE_NAME;
 import static com.zhengdao.zqb.utils.AppUtils.getVersionCode;
 
 /**
@@ -46,8 +43,24 @@ public class UpdateUtil {
     }
 
     public void checkUpdate() {
+        //TODO 更新不同类型
+        int type;
+        switch (ClientAppLike.AppType) {
+            case Constant.App.Wlgfl:
+                type = 1;
+                break;
+            case Constant.App.Wlgfl_hy:
+                type = 2;
+                break;
+            case Constant.App.Lczj:
+                type = 3;
+                break;
+            default:
+                type = 0;
+                break;
+        }
         mSubscribe = RetrofitManager.getInstance().create(DownloadApi.class)
-                .getUpdateInfo(getVersionCode(mContext))
+                .getUpdateInfo(getVersionCode(mContext), type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Subscriber<UpdateInfoEntity>() {
@@ -84,24 +97,15 @@ public class UpdateUtil {
     }
 
     public void update(Version bean, boolean mustUpdate) {
-        File outputFile = new File(FileUtils.getDownloadPath(APK_FILE_NAME));
-        if (outputFile.exists()) {
-            boolean available = AppUtils.checkFile(outputFile, bean.mD5);
-            if (available) {
-                AppUtils.install(mContext, outputFile);
-                if (mustUpdate) {
-                    System.exit(0);
-                }
-                return;
-            } else {
-                outputFile.delete();
-            }
+        if (FileUtils.isDownloadFileValable()){
+            ToastUtil.showToast(ClientAppLike.getContext(), "正在下载，请稍后");
+            Intent intent = new Intent(mContext, DownloadApkService.class);
+            intent.putExtra(Constant.Download.URL, bean.downloadApp);
+            intent.putExtra(Constant.Download.MD5, bean.mD5);
+            intent.putExtra(Constant.Download.MUST_UPDATE, mustUpdate);
+            mContext.startService(intent);
+        }else {
+            ToastUtil.showToast(ClientAppLike.getContext(), "无法创建下载文件，更新失败");
         }
-        ToastUtil.showToast(mContext, "正在下载，请稍后");
-        Intent intent = new Intent(mContext, DownloadApkService.class);
-        intent.putExtra(Constant.Download.URL, bean.downloadApp);
-        intent.putExtra(Constant.Download.MD5, bean.mD5);
-        intent.putExtra(Constant.Download.MUST_UPDATE, mustUpdate);
-        mContext.startService(intent);
     }
 }

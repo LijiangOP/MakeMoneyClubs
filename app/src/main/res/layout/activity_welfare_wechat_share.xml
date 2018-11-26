@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <include layout="@layout/title_bar"/>
+
+    <com.dalong.library.view.LoopRotarySwitchView
+        android:id="@+id/loopView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@+id/re_bottom"
+        android:layout_below="@+id/re_title_bar"
+        android:layout_weight="1"
+        android:background="@color/color_f5f5f5">
+
+        <RelativeLayout
+            android:id="@+id/re_game_break"
+            style="@style/share_re_part"
+            android:background="@drawable/share_game_break">
+
+            <ImageView
+                android:id="@+id/iv_code_1"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_finish_survy"
+            style="@style/share_re_part"
+            android:background="@drawable/share_finish_survy">
+
+            <ImageView
+                android:id="@+id/iv_code_2"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_linghuaqian"
+            style="@style/share_re_part"
+            android:background="@drawable/share_linghuaqian">
+
+            <ImageView
+                android:id="@+id/iv_code_3"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_youhuiquan"
+            style="@style/share_re_part"
+            android:background="@drawable/share_youhuiquan">
+
+            <ImageView
+                android:id="@+id/iv_code_4"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_zhuanqianle"
+            style="@style/share_re_part"
+            android:background="@drawable/share_zhuanqianle">
+
+            <ImageView
+                android:id="@+id/iv_code_5"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_daily_earn"
+            style="@style/share_re_part"
+            android:background="@drawable/share_daily_earn">
+
+            <ImageView
+                android:id="@+id/iv_code_6"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/re_shoutu"
+            style="@style/share_re_part"
+            android:background="@drawable/share_shoutu">
+
+            <ImageView
+                android:id="@+id/iv_code_7"
+                style="@style/share_iv_code_part"/>
+
+        </RelativeLayout>
+
+    </com.dalong.library.view.LoopRotarySwitchView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="371px"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="27px"
+            android:text="分享去赚钱"
+            android:textColor="@color/color_333333"
+            android:textSize="48px"/>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="20px"
+            android:layout_marginRight="20px"
+            android:layout_marginTop="20px"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_share_wechat"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/share_wechat"
+                android:gravity="center"
+                android:text="微信分享"
+                android:textColor="@color/color_333333"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/tv_share_wechat_zone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/share_wechat_zone"
+                android:gravity="center"
+                android:text="朋友圈分享"
+                android:textColor="@color/color_333333"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/tv_share_qq"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/share_qq"
+                android:gravity="center"
+                android:text="QQ分享"
+                android:textColor="@color/color_333333"
+                android:textSize="11sp"/>
+
+            <TextView
+                android:id="@+id/tv_share_qq_zone"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:drawableTop="@drawable/share_qq_zone"
+                android:gravity="center"
+                android:text="QQ空间分享"
+                android:textColor="@color/color_333333"
+                android:textSize="11sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

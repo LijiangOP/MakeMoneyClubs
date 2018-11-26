@@ -103,4 +103,12 @@
 
     <color name="cursor_handle_color">#0d7aff</color>
     <color name="selected_blue">#afe1f4</color>
+    <color name="text_gray">#888888</color>
+    <color name="text_dark">#454545</color>
+
+    <color name="color_c2c2c2">#c2c2c2</color>
+    <color name="color_a6fc3135">#a6fc3135</color>
+    <color name="color_fff127">#fff127</color>
+    <color name="color_02a0e9">#02a0e9</color>
+    <color name="color_ff0000">#ff0000</color>
 </resources>

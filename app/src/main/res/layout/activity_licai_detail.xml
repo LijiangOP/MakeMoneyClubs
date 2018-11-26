@@ -101,6 +101,7 @@
                         android:paddingLeft="15dp"
                         android:paddingRight="10dp"
                         android:text="产品期限2个月,金额1000元"
+                        android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_desc"/>
 
                     <TextView
@@ -113,6 +114,7 @@
                         android:drawablePadding="2dp"
                         android:paddingLeft="15dp"
                         android:text="返利300元"
+                        android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_desc"/>
 
                     <TextView
@@ -126,6 +128,7 @@
                         android:drawablePadding="2dp"
                         android:paddingLeft="15dp"
                         android:text="返利300元"
+                        android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_desc"/>
 
                     <TextView
@@ -139,6 +142,7 @@
                         android:drawablePadding="2dp"
                         android:paddingLeft="15dp"
                         android:text=" 红包80元"
+                        android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_desc"/>
 
                     <View
@@ -168,10 +172,9 @@
                         android:layout_marginBottom="14dp"
                         android:layout_marginTop="5dp"
                         android:background="@color/white"
-                        android:lineSpacingExtra="1dp"
+                        android:lineSpacingExtra="5dp"
                         android:paddingLeft="15dp"
                         android:paddingRight="10dp"
-                        android:text="银谷在线2016年7月15日正式上线，是东方银谷（北京）投资管理有限公司（简称东方银谷）旗下网络借贷信息撮合平台。西安银行存管，等保三级，icp许可证，备案信息资料齐全。"
                         android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_title"/>
 
@@ -226,10 +229,9 @@
                         android:layout_marginBottom="15dp"
                         android:layout_marginTop="15dp"
                         android:background="@color/white"
-                        android:lineSpacingExtra="1dp"
+                        android:lineSpacingExtra="5dp"
                         android:paddingLeft="15dp"
                         android:paddingRight="10dp"
-                        android:text="银谷在线2016年7月15日正式上线，是东方银谷（北京）投资管理有限公司（简称东方银谷）旗下网络借贷信息撮合平台。西安银行存管，等保三级，icp许可证，备案信息资料齐全。"
                         android:textColor="@color/color_333333"
                         android:textSize="@dimen/official_list_title"/>
 
@@ -273,8 +275,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="16dp"
-                    android:src="@drawable/product_calculate"
-                    />
+                    android:src="@drawable/product_calculate"/>
 
             </LinearLayout>
         </LinearLayout>

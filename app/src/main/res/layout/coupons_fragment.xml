@@ -28,7 +28,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="54dp"
+                android:layout_height="@dimen/fragment_title_height"
                 android:background="#00ffffff"
                 android:gravity="center"
                 app:contentInsetLeft="0dp"
@@ -40,50 +40,53 @@
 
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <include layout="@layout/coupons_select_part"/>
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabLayout"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="@drawable/shape_home_tab_bg"
+            app:tabGravity="center"
+            app:tabIndicatorColor="@color/color_fc3135"
+            app:tabMode="scrollable"
+            app:tabPaddingEnd="-1dp"
+            app:tabPaddingStart="-1dp"
+            app:tabSelectedTextColor="@color/color_fc3135"
+            app:tabTextAppearance="@style/tab_select_style_earn"
+            app:tabTextColor="@color/color_292929">
 
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="淘宝"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="京东"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="拼多多"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="苏宁易购"/>
+
+            <android.support.design.widget.TabItem
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="网易考拉"/>
+
+        </android.support.design.widget.TabLayout>
     </android.support.design.widget.AppBarLayout>
 
-    <FrameLayout
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-        <com.kennyc.view.MultiStateView
-            android:id="@+id/multiStateView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/color_f5f5f5"
-            app:msv_emptyView="@layout/layout_empty"
-            app:msv_errorView="@layout/layout_error">
-
-            <com.scwang.smartrefresh.layout.SmartRefreshLayout
-                android:id="@+id/smartRefreshLayout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/color_f5f5f5">
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycle_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/white"
-                    android:scrollbars="none"/>
-
-            </com.scwang.smartrefresh.layout.SmartRefreshLayout>
-        </com.kennyc.view.MultiStateView>
-
-        <View
-            android:id="@+id/mask"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#80000000"/>
-
-        <com.zhengdao.zqb.customview.DropdownListView
-            android:id="@+id/dropdownType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-    </FrameLayout>
+    </android.support.v4.view.ViewPager>
 
 </android.support.design.widget.CoordinatorLayout>

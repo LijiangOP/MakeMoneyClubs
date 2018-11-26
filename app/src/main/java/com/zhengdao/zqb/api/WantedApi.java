@@ -136,7 +136,7 @@ public interface WantedApi {
 
 
     /**
-     * 46.字典接口
+     * 字典接口
      *
      * @param key
      * @return

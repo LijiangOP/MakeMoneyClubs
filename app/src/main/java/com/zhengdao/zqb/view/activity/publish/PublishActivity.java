@@ -33,6 +33,7 @@ import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.SimpleTarget;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yalantis.ucrop.UCrop;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
@@ -59,6 +60,7 @@ import com.zhengdao.zqb.view.activity.TextEditActivity;
 import com.zhengdao.zqb.view.activity.keywords.KeyWordsActivity;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.activity.publishconfirm.PublishConfirmActivity;
+import com.zhengdao.zqb.view.activity.webview.WebViewActivity;
 import com.zhengdao.zqb.view.adapter.PublishCategroyAdapter;
 
 import java.io.File;
@@ -79,8 +81,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+import rx.functions.Action1;
 
 import static com.zhengdao.zqb.config.Constant.Assist.mCommonPicPath;
 import static com.zhengdao.zqb.config.Constant.EditableList;
@@ -375,14 +376,20 @@ public class PublishActivity extends MVPBaseActivity<PublishContract.View, Publi
 
     //-----------------------------------------------------------------常规方法---------------------------------------------------------------------------
     private void doAddPic() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            startActivityForResult(intent, ACTION_CHOOSE_GOODS_PIC);
-            hideSoftInput();
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-        }
+        RxPermissions rxPermissions = new RxPermissions(PublishActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, ACTION_CHOOSE_GOODS_PIC);
+                    hideSoftInput();
+                } catch (Exception ex) {
+                    LogUtils.e(ex.getMessage());
+                }
+            }
+        });
     }
 
     private void doEditTitle() {
@@ -1145,20 +1152,17 @@ public class PublishActivity extends MVPBaseActivity<PublishContract.View, Publi
         }
     }
 
-    public void cropImage(Uri uri, Uri cropUri) throws Exception {
-        methodRequiresTwoPermission();
-        UCrop.of(uri, cropUri)
-                .withAspectRatio(9, 9)
-                .withMaxResultSize(1080, 1080)
-                .start(PublishActivity.this);
-    }
-
-    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
-    private void methodRequiresTwoPermission() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "下列权限未获权，是否开启", RC_CAMERA_AND_LOCATION, perms);
-        }
+    public void cropImage(final Uri uri, final Uri cropUri) throws Exception {
+        RxPermissions rxPermissions = new RxPermissions(PublishActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                UCrop.of(uri, cropUri)
+                        .withAspectRatio(9, 9)
+                        .withMaxResultSize(1080, 1080)
+                        .start(PublishActivity.this);
+            }
+        });
     }
 
     private void showImage(File cropFile) throws Exception {

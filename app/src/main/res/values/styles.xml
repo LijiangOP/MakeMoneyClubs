@@ -301,9 +301,27 @@
         <item name="android:paddingTop">12dp</item>
     </style>
 
+    <style name="question_survery_re_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:paddingBottom">15dp</item>
+        <item name="android:paddingTop">15dp</item>
+    </style>
+
     <style name="user_framgment_tv_style_1">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">@dimen/official_list_title</item>
+    </style>
+
+    <style name="question_survery_tv_style_1">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">15dp</item>
         <item name="android:layout_centerVertical">true</item>
         <item name="android:textColor">@color/color_333333</item>
         <item name="android:textSize">@dimen/official_list_title</item>
@@ -318,6 +336,18 @@
         <item name="android:drawablePadding">3dp</item>
         <item name="android:textColor">@color/main</item>
         <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="question_survery_tv_style_2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:drawableRight">@drawable/arrow_r</item>
+        <item name="android:gravity">right</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:drawablePadding">3dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:textColor">@color/color_b3b3b3</item>
+        <item name="android:textSize">@dimen/official_list_title</item>
     </style>
 
     <style name="user_framgment_tv_style_3">
@@ -349,6 +379,53 @@
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="OperateTextView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:textColor">@color/text_dark</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="common_dialog_title">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="common_dialog_content">
+        <item name="android:textColor">@color/color_333333</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="home_bottom_tab_tv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:textColor">@color/selector_bottom_navigate</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="share_re_part">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">1084px</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="share_iv_code_part">
+        <item name="android:layout_width">207px</item>
+        <item name="android:layout_height">210px</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_marginBottom">126px</item>
     </style>
 
 </resources>

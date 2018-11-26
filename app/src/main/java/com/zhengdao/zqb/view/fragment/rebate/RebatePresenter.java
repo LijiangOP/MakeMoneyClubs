@@ -29,7 +29,7 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action0;
 import rx.schedulers.Schedulers;
 
-public class RebatePresenter extends BasePresenterImpl<RebateContract.View> implements RebateContract.Presenter{
+public class RebatePresenter extends BasePresenterImpl<RebateContract.View> implements RebateContract.Presenter {
 
     private boolean mRebateIsHasNext   = false;
     private boolean mTicketIsHasNext   = false;
@@ -47,6 +47,9 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
         mSwitchState = switchState;
     }
 
+    /**
+     * 返利页面的开启和关闭状态获取
+     */
     @Override
     public void getSwitchState() {
         Subscription subscribe = RetrofitManager.getInstance().noCache().create(WantedApi.class)
@@ -80,6 +83,9 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
         addSubscription(subscribe);
     }
 
+    /**
+     * 获取页面数据
+     */
     @Override
     public void initData() {
         if (mSwitchState == 0) {//返利
@@ -168,15 +174,19 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
         }
     }
 
+    /**
+     * 获取点击广告后的奖励
+     * @param address 广告位置
+     * @param type 广告类型
+     */
     @Override
     public void getSeeAdvReward(int address, int type) {
         String userToken = SettingUtils.getUserToken(mView.getContext());
         if (TextUtils.isEmpty(userToken)) {
-            //            mView.ReLogin();用户体验不好
             return;
         }
         Subscription subscribe = RetrofitManager.getInstance().noCache().create(UserApi.class)
-                .getSeeAdvReward(userToken,address,type)
+                .getSeeAdvReward(userToken, address, type)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(new Action0() {
                     @Override
@@ -212,6 +222,10 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
         initData();
     }
 
+    /**
+     * 返利页面数据
+     * @param result
+     */
     private void buildRebateData(HttpResult result) {
         try {
             if (result.code == Constant.HttpResult.SUCCEED) {
@@ -236,7 +250,7 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
                 }
                 mRebateData.addAll(dataList);
                 if (mRebateAdapter == null) {
-                    mRebateAdapter = new RebateAdapter((Activity) mView.getContext(), mRebateData,mView);
+                    mRebateAdapter = new RebateAdapter((Activity) mView.getContext(), mRebateData, mView);
                     mView.setAdapter(mRebateAdapter, mRebateIsHasNext);
                 } else {
                     mView.refreshAdapter(mRebateIsHasNext);
@@ -251,7 +265,10 @@ public class RebatePresenter extends BasePresenterImpl<RebateContract.View> impl
         }
     }
 
-
+    /**
+     * 优惠券页面数据
+     * @param httpResult
+     */
     private void buildTicketData(HttpResult<Coupons> httpResult) {
         try {
             if (httpResult.code == Constant.HttpResult.SUCCEED) {

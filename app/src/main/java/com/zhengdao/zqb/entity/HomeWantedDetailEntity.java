@@ -25,7 +25,8 @@ public class HomeWantedDetailEntity {
         public int                   classify;//业务分类
         public int                   category;//悬赏分类
         public int                   mode;//审核时间id
-        public String                explain;
+        public String                explain;//流程
+        public List<String>          explains;//流程
         public int                   userId;
         public int                   id;
         public int                   type;//1 新品,0默认

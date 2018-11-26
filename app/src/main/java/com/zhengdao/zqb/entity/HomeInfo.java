@@ -11,11 +11,11 @@ import java.util.List;
 public class HomeInfo implements Serializable {
     public int                    code;
     public String                 msg;
-    public String                 GAME_STATE;
     public List<BannerBean>       adverts;
     public InvitationBanner       invitationBanner;
     public HomeGoodsItem          newsRewards;//为你推荐
     public List<AnnouncementBean> platformMsg;
+    public List<MenusBean>        menus;//banner下导航栏
 
     public class InvitationBanner {
         public int    id;

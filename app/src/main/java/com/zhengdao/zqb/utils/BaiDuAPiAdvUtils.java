@@ -1,5 +1,6 @@
 package com.zhengdao.zqb.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -41,8 +42,8 @@ public class BaiDuAPiAdvUtils {
 
     public static void getAdv(Context context, final BaiDuApiAdvListener listener) throws UnsupportedEncodingException {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
-        String IMEI = TextUtils.isEmpty(tm.getDeviceId()) ? "" : tm.getDeviceId();//IMEI号
-        String subscriberId = TextUtils.isEmpty(tm.getSubscriberId()) ? "" : tm.getSubscriberId();//imsi号
+        @SuppressLint("MissingPermission") String IMEI = TextUtils.isEmpty(tm.getDeviceId()) ? "" : tm.getDeviceId();//IMEI号
+        @SuppressLint("MissingPermission") String subscriberId = TextUtils.isEmpty(tm.getSubscriberId()) ? "" : tm.getSubscriberId();//imsi号
         String ANDROID_ID = Settings.System.getString(context.getContentResolver(), Settings.System.ANDROID_ID);//ANDROIDID - 安卓ID
         String mac = PhoneUtils.getWifiMac(context);//设备wifi网卡MAC地址
         String systemVersion = TextUtils.isEmpty(PhoneUtils.getSystemVersion()) ? "" : PhoneUtils.getSystemVersion();//操作系统版本

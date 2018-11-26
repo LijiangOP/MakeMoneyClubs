@@ -7,6 +7,7 @@ import com.zhengdao.zqb.entity.Coupons;
 import com.zhengdao.zqb.entity.DictionaryEntity;
 import com.zhengdao.zqb.entity.EarnEntity;
 import com.zhengdao.zqb.entity.FindEntityHttpResult;
+import com.zhengdao.zqb.entity.GameListHttpResult;
 import com.zhengdao.zqb.entity.GoodsCommandHttpEntity;
 import com.zhengdao.zqb.entity.HomeInfo;
 import com.zhengdao.zqb.entity.HomeWantedDetailEntity;
@@ -41,7 +42,7 @@ public interface HomeApi {
      * @return
      */
     @GET(Constant.Url.BASEURL)
-    Observable<HomeInfo> getData();
+    Observable<HomeInfo> getData(@Query("token") String token);
 
 
     /**
@@ -62,9 +63,27 @@ public interface HomeApi {
                                        @Query("sortOrder") String sortOrder, @Query("classify") int classify,
                                        @Query("category") int category, @Query("type") int type, @Query("title") String title);
 
-
     /**
      * 赚钱大厅 请求类型二
+     *
+     * @param block     类别
+     * @param pageNo    当前页码
+     * @param sortName  排序字段(joincount =人气,money = 奖励 默认综合排序)
+     * @param sortOrder 排序方式(正序 = asc,倒序 = desc)
+     * @param classify  业务分类(字典)
+     * @param category  悬赏类别(字典)
+     * @param type      类型
+     * @param title     标题（模糊搜索）
+     * @return
+     */
+    @GET("reward/rewardSearch")
+    Observable<EarnEntity> getEarnData(@Query("block") int block, @Query("pageNo") int pageNo, @Query("sortName") String sortName,
+                                       @Query("sortOrder") String sortOrder, @Query("classify") int classify,
+                                       @Query("category") int category, @Query("type") int type, @Query("title") String title, @Query("token") String token);
+
+
+    /**
+     * 赚钱大厅 请求类型三
      *
      * @param pageNo
      * @param sortName
@@ -174,7 +193,7 @@ public interface HomeApi {
     @FormUrlEncoded
     @POST("reward/submitReward")
     Observable<HttpResult> CommitWantedQVU(@Field("pics") List<String> uploadImages, @Field("taskInfos") String jsons,
-                                           @Field("token") String token, @Field("id") int id);
+                                           @Field("token") String token, @Field("imei") String imei, @Field("id") int id);
 
 
     /**
@@ -296,4 +315,28 @@ public interface HomeApi {
      */
     @GET("questionnaire/goQuestionnairePage")
     Observable<SurveyHttpResult> getSurveyLink(@Query("token") String token);
+
+    /**
+     * 获取退出推荐悬赏
+     *
+     * @return
+     */
+    @GET("reward/outReward")
+    Observable<GoodsCommandHttpEntity> getOutReward(@Query("token") String token);
+
+    /**
+     * 获取退出推荐悬赏
+     *
+     * @return
+     */
+    @GET("newbieTask/getRecommendReward")
+    Observable<GoodsCommandHttpEntity> getRecommendReward();
+
+    /**
+     * 获取游戏列表
+     *
+     * @return
+     */
+    @GET("dictionary/getGames")
+    Observable<GameListHttpResult> getGameList();
 }

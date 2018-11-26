@@ -23,6 +23,8 @@ import com.zhengdao.zqb.mvp.MVPBaseActivity;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.ToastUtil;
+import com.zhengdao.zqb.utils.Utils;
+import com.zhengdao.zqb.view.activity.homegoodsdetail.HomeGoodsDetailActivity;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.activity.report.ReportActivity;
 
@@ -97,6 +99,8 @@ public class WantedDetailActivity extends MVPBaseActivity<WantedDetailContract.V
     TextView       mTvKeyword2;
     @BindView(R.id.tv_keyword_3)
     TextView       mTvKeyword3;
+    @BindView(R.id.ll_goods_part)
+    LinearLayout   mLlGoodsPart;
     private long mCurrentTimeMillis = 0;
     private int    mTaskId;
     private int    mWantedId;
@@ -167,6 +171,7 @@ public class WantedDetailActivity extends MVPBaseActivity<WantedDetailContract.V
         mTvOrderCopy.setOnClickListener(this);
         mTvLeftButton.setOnClickListener(this);
         mTvRightButton.setOnClickListener(this);
+        mLlGoodsPart.setOnClickListener(this);
     }
 
     @Override
@@ -193,6 +198,9 @@ public class WantedDetailActivity extends MVPBaseActivity<WantedDetailContract.V
                 break;
             case R.id.tv_right_button:
                 doRight();
+                break;
+            case R.id.ll_goods_part:
+                gotoWantedDetail();
                 break;
         }
     }
@@ -256,6 +264,19 @@ public class WantedDetailActivity extends MVPBaseActivity<WantedDetailContract.V
             default:
                 break;
         }
+    }
+
+
+    private void gotoWantedDetail() {
+        //        switch (mCurrentState) {
+        //            case DONE:
+        Intent intent = new Intent(this, HomeGoodsDetailActivity.class);
+        intent.putExtra(Constant.Activity.Data, mWantedId);
+        Utils.StartActivity(this, intent);
+        //                break;
+        //            default:
+        //                break;
+        //        }
     }
 
     @Override

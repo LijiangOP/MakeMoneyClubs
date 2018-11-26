@@ -2,6 +2,8 @@ package com.zhengdao.zqb.view.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.View;
@@ -54,6 +56,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         return holder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         mViewHolder = (ViewHolder) holder;
@@ -68,10 +71,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             } else {
                 mViewHolder.mTvTicket.setVisibility(View.GONE);
             }
-            if (entity.type == 1) {
-                mViewHolder.mTvNews.setVisibility(View.VISIBLE);
-            } else
-                mViewHolder.mTvNews.setVisibility(View.GONE);
+            //            if (entity.type == 1) {
+            //                mViewHolder.mTvNews.setVisibility(View.VISIBLE);
+            //            } else
+            mViewHolder.mTvNews.setVisibility(View.GONE);
             if (entity.lowerTime > 0 && entity.lowerTime < 86400000) {
                 mViewHolder.mCountDownView.setVisibility(View.VISIBLE);
                 mViewHolder.mCountDownView.start(entity.lowerTime);
@@ -124,6 +127,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addKeyword(String keyword) {
         FluidLayout.LayoutParams params = new FluidLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -132,7 +136,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         params.setMargins(0, 0, 8, 0);
         TextView textView = new TextView(mContext);
         textView.setText(keyword);
-        textView.setTextSize(10);
+        textView.setTextSize(12);
         textView.setTextColor(mContext.getResources().getColor(R.color.color_6f717f));
         textView.setBackground(mContext.getResources().getDrawable(R.drawable.shape3));
         textView.setPadding(5, 3, 5, 3);

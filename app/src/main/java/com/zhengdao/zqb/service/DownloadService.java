@@ -130,7 +130,8 @@ public class DownloadService extends IntentService {
                 notificationManager.notify(0, notificationBuilder.build());
                 ToastUtil.showToast(this, "应用下载出错,请重新下载");
                 File file = new File(FileUtils.getAppDownloadPath(mHotRecommendEntity.appName));
-                file.delete();
+                if (file != null && file.exists())
+                    file.delete();
             }
         } catch (Exception e) {
             e.printStackTrace();

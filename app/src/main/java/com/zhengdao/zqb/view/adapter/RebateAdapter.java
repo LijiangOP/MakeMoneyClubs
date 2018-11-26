@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -72,6 +74,8 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         void onBaiduAdvClick();
 
         void onTencentAdvClick();
+
+        void onAnZhiAdvClick();
     }
 
     public RebateAdapter(Activity context, List<RebateBean> data, onItemClick callback) {
@@ -93,6 +97,7 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         return holder;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         try {
@@ -108,6 +113,7 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
                 mHeaderViewHolder.mTvService.setOnClickListener(this);
                 mHeaderViewHolder.mFlAdv.removeAllViews();
                 initAdv();
+                //                initAnZhiAdv();
             } else {
                 mGoodsViewHolder = (GoodsViewHolder) holder;
                 Glide.with(mContext).load(itemBean.logo).error(R.drawable.net_less_140).into(mGoodsViewHolder.mIvIcon);
@@ -150,6 +156,23 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         }
     }
 
+    /**
+     * 安智广告
+     */
+    private void initAnZhiAdv() {
+        //安智广告
+        AdvertisementUtils.AnZhiAdv.addAnZhiNativeAdv(mContext, mHeaderViewHolder.mFlAdv, new AdvertisementUtils.onItemClick() {
+            @Override
+            public void onAdvClick() {
+                if (mCallback != null)
+                    mCallback.onAnZhiAdvClick();
+            }
+        });
+    }
+
+    /**
+     * 百度/腾讯广告
+     */
     private void initAdv() {
         try {
             if (AppType == Constant.App.Wlgfl) {
@@ -265,6 +288,8 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         }
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addKeyword(String keyword) {
         FluidLayout.LayoutParams params = new FluidLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -273,13 +298,14 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         params.setMargins(0, 10, 25, 0);
         TextView textView = new TextView(mContext);
         textView.setText(keyword);
-        textView.setTextSize(9);
+        textView.setTextSize(12);
         textView.setTextColor(mContext.getResources().getColor(R.color.color_6f717f));
         textView.setBackground(mContext.getResources().getDrawable(R.drawable.shape3));
         textView.setPadding(9, 2, 9, 2);
         mGoodsViewHolder.mFluidLayoutKeyWord.addView(textView, params);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addMoneyPart(RebateBean itemBean) {
         FluidLayout.LayoutParams params = new FluidLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -308,16 +334,16 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
         textView.setText(spannableString);
         mGoodsViewHolder.mFluidLayoutMoney.addView(textView, params);
         //新品显示
-        if (itemBean.goodsType == 1) {
-            TextView textView2 = new TextView(mContext);
-            textView2.setTextSize(9);
-            textView2.setTextColor(mContext.getResources().getColor(R.color.color_00b9fd));
-            textView2.setBackground(mContext.getResources().getDrawable(R.drawable.shape_rect_home_item_news));
-            textView2.setPadding(10, 2, 10, 2);
-            textView2.setText("新品");
-            textView2.setGravity(Gravity.CENTER_VERTICAL);
-            mGoodsViewHolder.mFluidLayoutMoney.addView(textView2, params);
-        }
+        //        if (itemBean.goodsType == 1) {
+        //            TextView textView2 = new TextView(mContext);
+        //            textView2.setTextSize(9);
+        //            textView2.setTextColor(mContext.getResources().getColor(R.color.color_00b9fd));
+        //            textView2.setBackground(mContext.getResources().getDrawable(R.drawable.shape_rect_home_item_news));
+        //            textView2.setPadding(10, 2, 10, 2);
+        //            textView2.setText("新品");
+        //            textView2.setGravity(Gravity.CENTER_VERTICAL);
+        //            mGoodsViewHolder.mFluidLayoutMoney.addView(textView2, params);
+        //        }
     }
 
     @Override
@@ -350,7 +376,7 @@ public class RebateAdapter extends RecyclerView.Adapter implements View.OnClickL
                     Utils.StartActivity(mContext, new Intent(mContext, RebateRecordsActivity.class));
                     break;
                 case R.id.tv_service:
-                    mContext.startActivity(new Intent(mContext,RebateServiceActivity.class));
+                    mContext.startActivity(new Intent(mContext, RebateServiceActivity.class));
                     break;
             }
         } catch (Exception e) {

@@ -10,6 +10,10 @@ public class MainContract {
         void onGetZeroEarnGoodsCommandResult(GoodsCommandHttpEntity httpResult);
 
         void onGetRebateGoodsCommandResult(HttpLiCaiDetailEntity result);
+
+        void onGetExitCommandResult(GoodsCommandHttpEntity httpResult);
+
+        void onGetExitCommandError();
     }
 
     interface Presenter extends BasePresenter<View> {
@@ -17,5 +21,7 @@ public class MainContract {
         void getZeroEarnGoodsCommand(int i);
 
         void getRebateGoodsCommand(int i);
+
+        void getOutReward();
     }
 }

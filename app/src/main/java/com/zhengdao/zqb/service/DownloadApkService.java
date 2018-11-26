@@ -30,7 +30,6 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 
-import static com.zhengdao.zqb.config.Constant.Download.APK_FILE_NAME;
 import static com.zhengdao.zqb.config.Constant.Download.MUST_UPDATE;
 
 /**
@@ -42,7 +41,6 @@ public class DownloadApkService extends IntentService {
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager        notificationManager;
     private String                     mMd5;
-    private boolean                    mHasInstall;
     private boolean                    mMustUpdate;
 
     public DownloadApkService() {
@@ -69,7 +67,6 @@ public class DownloadApkService extends IntentService {
     }
 
     private void download(String apkUrl) throws Exception {
-        mHasInstall = false;
         DownloadProgressListener listener = new DownloadProgressListener() {
             @Override
             public void update(long bytesRead, long contentLength, boolean done) {
@@ -82,14 +79,18 @@ public class DownloadApkService extends IntentService {
                 RxBus.getDefault().post(new IsShowProgressEvent(true, (float) progress));
             }
         };
-        File outputFile = new File(FileUtils.getDownloadPath(APK_FILE_NAME));
-        if (outputFile.exists()) {
-            outputFile.delete();
+        File updataApkFilePath = FileUtils.getUpdataApkFilePath();
+        if (!updataApkFilePath.exists()) {
+            ToastUtil.showToast(ClientAppLike.getContext(), "无法创建下载文件，更新失败");
+            return;
         }
-        new DownloadAPI(Constant.Url.BASEURL, listener).downloadAPK(apkUrl, outputFile, new Subscriber() {
+        new DownloadAPI(Constant.Url.BASEURL, listener).downloadAPK(apkUrl, updataApkFilePath, new Subscriber() {
             @Override
             public void onCompleted() {
-                downloadCompleted();
+                if (AppUtils.checkFile(FileUtils.getUpdataApkFilePath(), mMd5))
+                    downloadCompleted();
+                else
+                    downloadError();
             }
 
             @Override
@@ -109,6 +110,7 @@ public class DownloadApkService extends IntentService {
     private void downloadCompleted() {
         //发送关闭下载进度显示框的事件
         RxBus.getDefault().post(new IsShowProgressEvent(false));
+
         //下载完成后的点击事件
         int id = (int) (System.currentTimeMillis() / 1000);
         Intent clickIntent = new Intent(this, AppUpdateNotificationReceiver.class); //点击通知之后要发送的广播
@@ -119,18 +121,14 @@ public class DownloadApkService extends IntentService {
         notificationBuilder.setContentText("应用下载完成");
         notificationBuilder.setContentIntent(broadcast);
         notificationManager.notify(0, notificationBuilder.build());
-        ToastUtil.showToast(this, "应用下载完成");
+        ToastUtil.showToast(ClientAppLike.getContext(), "应用下载成功！");
         Observable.timer(100, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Action1<Long>() {
                     @Override
                     public void call(Long aLong) {
-                        if (AppUtils.checkFile(new File(FileUtils.getDownloadPath(Constant.Download.APK_FILE_NAME)), mMd5)) {
-                            AppUtils.install(ClientAppLike.getContext(), new File(FileUtils.getDownloadPath(Constant.Download.APK_FILE_NAME)));
-                        } else {
-                            ToastUtil.showToast(ClientAppLike.getContext(), "应用校验失败！请重新下载！");
-                        }
+                        AppUtils.install(ClientAppLike.getContext(), FileUtils.getUpdataApkFilePath());
                         if (mMustUpdate) {
                             System.exit(0);
                         }
@@ -139,6 +137,8 @@ public class DownloadApkService extends IntentService {
     }
 
     private void downloadError() {
+        ToastUtil.showToast(ClientAppLike.getContext(), "应用下载失败,请重新下载");
+        notificationManager.cancel(0);
         RxBus.getDefault().post(new IsShowProgressEvent(false));
     }
 

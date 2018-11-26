@@ -80,7 +80,7 @@ public class SettingActivity extends MVPBaseActivity<SettingContract.View, Setti
         init();
         setOnclickListener();
         String skip = getIntent().getStringExtra(Constant.Activity.Skip);
-        if (!TextUtils.isEmpty(skip) && "Skip_To_Certification".equals(skip)) {
+        if (!TextUtils.isEmpty(skip) && "Skip_To_Certification".equals(skip)) {//我的页面点击头像 直接跳转到 账户设置页面
             Utils.StartActivity(SettingActivity.this, new Intent(SettingActivity.this, PersonalInfoActivity.class));
         }
     }
@@ -154,11 +154,7 @@ public class SettingActivity extends MVPBaseActivity<SettingContract.View, Setti
     }
 
     private void doLogOut() {
-        SettingUtils.setLoginState(this, false);
-        SettingUtils.setPhoneNum(this, "");
-        SettingUtils.setUserToken(this, "");
-        SettingUtils.setAccount(this, "");
-        SettingUtils.setAlipayAccount(this, "");
+        SettingUtils.ClearAfterLogOut(SettingActivity.this);
         RxBus.getDefault().post(new LogOutEvent());
         SettingActivity.this.finish();
         ToastUtil.showToast(this, "退出登录成功");

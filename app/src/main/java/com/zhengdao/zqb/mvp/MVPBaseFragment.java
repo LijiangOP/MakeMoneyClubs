@@ -26,20 +26,19 @@ import io.reactivex.functions.Consumer;
 import static android.content.Context.INPUT_METHOD_SERVICE;
 
 public abstract class MVPBaseFragment<V extends BaseView, T extends BasePresenterImpl<V>> extends Fragment implements BaseView {
-    public T mPresenter;
-    protected boolean showProgressDialog = true;
+    public    T                    mPresenter;
+    protected boolean              showProgressDialog = true;
     protected CustomProgressDialog mProgressDialog;
     protected Unbinder             mUnbinder;
     private   View                 mRootView;
     private   Disposable           mDisposable;
-    protected boolean mFristShow = true;
-    private View               decorView;
-    private InputMethodManager mImm;
+    protected boolean              mFristShow         = true;
+    private   View                 decorView;
+    private   InputMethodManager   mImm;
     //因为一般不会调用setUserVisibleHint()方法 所以 默认使isVisible为true
-    protected boolean isVisible = true;
-    private boolean isPrepared;
-    private boolean isFirst = true;
-
+    protected boolean              isVisible          = true;
+    private   boolean              isPrepared;
+    private   boolean              isFirst            = true;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
@@ -86,13 +85,14 @@ public abstract class MVPBaseFragment<V extends BaseView, T extends BasePresente
 
     private void lazyLoad() {
         //拦截处理
-        if (!isPrepared || !isVisible || !isFirst) {
+        boolean isFirst = this.isFirst;
+        if (!isPrepared || !isVisible || !this.isFirst) {
             return;
         }
         //在fragment启动时只调用一次
         registListentr();
         initView();
-        isFirst = false;
+        this.isFirst = false;
     }
 
     private void registListentr() {

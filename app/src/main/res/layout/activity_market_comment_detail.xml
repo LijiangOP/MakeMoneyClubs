@@ -29,7 +29,7 @@
                     android:paddingLeft="@dimen/market_comment_pic_left"
                     android:text="流程说明"
                     android:textColor="@color/main"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -42,9 +42,9 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="1、打开您手机上的应用市场，或点击"
+                        android:text="1、打开手机上应用市场，或点击"
                         android:textColor="@color/text_333333"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:id="@+id/tv_flow1"
@@ -57,14 +57,14 @@
                         android:paddingTop="1dp"
                         android:text="应用市场"
                         android:textColor="@color/white"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="打开。"
                         android:textColor="@color/text_333333"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
                 </LinearLayout>
 
                 <LinearLayout
@@ -80,7 +80,7 @@
                         android:layout_height="wrap_content"
                         android:text="2、搜索"
                         android:textColor="@color/text_333333"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -88,14 +88,14 @@
                         android:text="@string/market_comment_appname"
                         android:textColor="@color/main"
                         android:textIsSelectable="true"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="打开。"
                         android:textColor="@color/text_333333"
-                        android:textSize="12sp"/>
+                        android:textSize="@dimen/official_list_title"/>
                 </LinearLayout>
 
                 <TextView
@@ -106,7 +106,7 @@
                     android:paddingRight="@dimen/market_comment_pic_left"
                     android:text="3、对个人评论内容及应用市场个人账户中心进行截图，如下图："
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                     android:paddingLeft="@dimen/market_comment_pic_left"
                     android:text="4、上传指定截图,完成任务。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
 
                 <View
                     android:layout_width="match_parent"
@@ -153,7 +153,7 @@
                     android:paddingLeft="@dimen/market_comment_pic_left"
                     android:text="上传截图"
                     android:textColor="@color/main"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycle_view"
@@ -178,7 +178,7 @@
             android:gravity="center"
             android:text="提交"
             android:textColor="@color/white"
-            android:textSize="16sp"/>
+            android:textSize="18sp"/>
 
     </RelativeLayout>
 </LinearLayout>

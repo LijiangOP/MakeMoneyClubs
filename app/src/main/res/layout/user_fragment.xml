@@ -75,7 +75,7 @@
                         android:layout_gravity="center_horizontal"
                         android:layout_marginTop="112dp"
                         android:textColor="@color/color_a60307"
-                        android:textSize="14sp"
+                        android:textSize="@dimen/official_list_title"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -87,7 +87,7 @@
                         android:layout_marginTop="10dp"
                         android:text="帐户余额: 0"
                         android:textColor="@color/color_999999"
-                        android:textSize="@dimen/official_12"/>
+                        android:textSize="@dimen/official_list_title_1"/>
 
                     <TextView
                         android:id="@+id/tv_withdraw"
@@ -101,7 +101,7 @@
                         android:paddingTop="10dp"
                         android:text="提现"
                         android:textColor="@color/color_03c3fd"
-                        android:textSize="@dimen/official_12"/>
+                        android:textSize="@dimen/official_list_title_1"/>
 
                 </RelativeLayout>
 
@@ -121,7 +121,7 @@
                         android:gravity="center"
                         android:text="今日收入: 0"
                         android:textColor="@color/color_999999"
-                        android:textSize="@dimen/official_12"/>
+                        android:textSize="@dimen/official_list_title_1"/>
 
                     <TextView
                         android:id="@+id/tv_total_income"
@@ -132,7 +132,7 @@
                         android:gravity="center"
                         android:text="收入总额: 0"
                         android:textColor="@color/color_999999"
-                        android:textSize="@dimen/official_12"/>
+                        android:textSize="@dimen/official_list_title_1"/>
 
                     <TextView
                         android:id="@+id/tv_total_withdraw"
@@ -142,7 +142,7 @@
                         android:gravity="center"
                         android:text="提现总额: 0"
                         android:textColor="@color/color_999999"
-                        android:textSize="@dimen/official_12"/>
+                        android:textSize="@dimen/official_list_title_1"/>
                 </LinearLayout>
 
                 <View
@@ -187,6 +187,30 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_module_daily_mission"
+                    style="@style/user_framgment_ll_style">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/img_mrrw"/>
+
+                    <RelativeLayout
+                        style="@style/user_framgment_re_style"
+                        android:background="@drawable/shape_only_bottom_gray_1">
+
+                        <TextView
+                            style="@style/user_framgment_tv_style_1"
+                            android:text="每日任务"/>
+
+                        <TextView
+                            style="@style/user_framgment_tv_style_3"
+                            android:text="每日分享奖励拿不停"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/ll_module_invited_code"
                     style="@style/user_framgment_ll_style">
 
@@ -216,6 +240,30 @@
                     android:background="@color/color_f5f5f5"/>
 
                 <LinearLayout
+                    android:id="@+id/ll_module_fiction"
+                    style="@style/user_framgment_ll_style">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/img_xsyd"/>
+
+                    <RelativeLayout
+                        style="@style/user_framgment_re_style"
+                        android:background="@drawable/shape_only_bottom_gray_1">
+
+                        <TextView
+                            style="@style/user_framgment_tv_style_1"
+                            android:text="小说阅读"/>
+
+                        <TextView
+                            style="@style/user_framgment_tv_style_3"
+                            android:text="精彩小说看不停"/>
+                    </RelativeLayout>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/ll_module_task_center"
                     style="@style/user_framgment_ll_style">
 
@@ -231,10 +279,10 @@
 
                         <TextView
                             style="@style/user_framgment_tv_style_1"
-                            android:text="任务中心"/>
+                            android:text="悬赏中心"/>
 
                         <TextView
-                            style="@style/user_framgment_tv_style_2"
+                            style="@style/user_framgment_tv_style_3"
                             android:text="完成任务拿奖励"/>
                     </RelativeLayout>
                 </LinearLayout>
@@ -303,11 +351,11 @@
 
                         <TextView
                             style="@style/user_framgment_tv_style_1"
-                            android:text="邀请好友"/>
+                            android:text="收徒赚钱"/>
 
                         <TextView
-                            style="@style/user_framgment_tv_style_3"
-                            android:text="坐等零钱入账"/>
+                            style="@style/user_framgment_tv_style_2"
+                            android:text="躺赚徒弟10%佣金"/>
                     </RelativeLayout>
                 </LinearLayout>
 

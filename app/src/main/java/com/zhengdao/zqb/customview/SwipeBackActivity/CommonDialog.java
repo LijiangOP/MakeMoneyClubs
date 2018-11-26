@@ -55,7 +55,7 @@ public class CommonDialog extends Dialog {
         Window dialogWindow = getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         DisplayMetrics d = mContext.getResources().getDisplayMetrics(); // 获取屏幕宽、高用
-        lp.width = (int) (d.widthPixels * 0.72);
+        lp.width = (int) (d.widthPixels * 0.80);
         dialogWindow.setAttributes(lp);
     }
 

@@ -24,6 +24,7 @@ import com.zhengdao.zqb.event.ForceBindPhoneEvent;
 import com.zhengdao.zqb.event.LogInEvent;
 import com.zhengdao.zqb.event.WechatBindEvent;
 import com.zhengdao.zqb.event.WechatLoginSuccessEvent;
+import com.zhengdao.zqb.event.WelfareWechatShareEvent;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.SettingUtils;
@@ -111,6 +112,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler, WXE
                         String transaction = TextUtils.isEmpty(resp.transaction) ? "" : resp.transaction;
                         if (!TextUtils.isEmpty(transaction) && transaction.equals(Constant.WechatReq.DailyShare)) {
                             RxBus.getDefault().post(new DailyWechatShareEvent());
+                        }else if (!TextUtils.isEmpty(transaction) && transaction.equals(Constant.WechatReq.WelfareShare)){
+                            RxBus.getDefault().post(new WelfareWechatShareEvent());
                         }
                         finish();
                         break;

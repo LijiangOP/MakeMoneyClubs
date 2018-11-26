@@ -1,5 +1,6 @@
 package com.zhengdao.zqb.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -102,10 +103,20 @@ public class PhoneUtils {
     }
 
     /**
+     * 获取设备制造商
+     *
+     * @return
+     */
+    public static String getDeviceBuildFactoryName() {
+        return android.os.Build.MANUFACTURER;
+    }
+
+    /**
      * 获取手机IMEI(需要“android.permission.READ_PHONE_STATE”权限)
      *
      * @return 手机IMEI
      */
+    @SuppressLint({"HardwareIds", "MissingPermission"})
     public static String getIMEI(Context ctx) {
         TelephonyManager tm = (TelephonyManager) ctx.getSystemService(Activity.TELEPHONY_SERVICE);
         if (tm != null) {
@@ -229,5 +240,22 @@ public class PhoneUtils {
             default:
                 return "0";
         }
+    }
+
+    public static String getJinChengNetworkState(Context context) {
+        String state;
+        String networkState = getNetworkState(context);
+        if (networkState.equals("wifi")) {
+            state = "3";
+        } else if (networkState.equals("2g")) {
+            state = "1";
+        } else if (networkState.equals("3g")) {
+            state = "2";
+        } else if (networkState.equals("4g")) {
+            state = "5";
+        } else {
+            state = "4";
+        }
+        return state;
     }
 }

@@ -27,7 +27,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="上传截图"
-                android:textColor="@color/color_fd5a5e"
+                android:textStyle="bold"
+                android:textColor="@color/color_000000"
                 android:textSize="@dimen/official_list_title"/>
 
             <TextView
@@ -35,21 +36,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_333333"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/official_list_title"/>
 
             <TextView
                 android:id="@+id/tv_image_count_tag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_input_hint"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/official_list_title"/>
 
             <TextView
                 android:id="@+id/tv_image_count_total"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/text_input_hint"
-                android:textSize="13sp"/>
+                android:textSize="@dimen/official_list_title"/>
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView

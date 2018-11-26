@@ -16,7 +16,7 @@ import rx.Observable;
 public interface DownloadApi {
 
     @GET("version/checkUpdate")
-    Observable<UpdateInfoEntity> getUpdateInfo(@Query("insideVersion") int insideVersion);
+    Observable<UpdateInfoEntity> getUpdateInfo(@Query("insideVersion") int insideVersion, @Query("type") int type);
 
     @Streaming
     @GET

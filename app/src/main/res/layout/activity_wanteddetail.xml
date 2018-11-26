@@ -132,13 +132,14 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/ll_goods_part"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingBottom="7dp"
+                    android:paddingBottom="9dp"
                     android:paddingLeft="10dp"
                     android:paddingRight="10dp"
-                    android:paddingTop="7dp">
+                    android:paddingTop="9dp">
 
                     <ImageView
                         android:id="@+id/iv_goods_icon"

@@ -1,6 +1,7 @@
 package com.zhengdao.zqb.view.activity.advicefeedback;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.entity.HttpResult;
@@ -40,6 +42,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import rx.functions.Action1;
 
 public class AdviceFeedbackActivity extends MVPBaseActivity<AdviceFeedbackContract.View, AdviceFeedbackPresenter> implements AdviceFeedbackContract.View, View.OnClickListener, AddPicAdapter.CallBack {
 
@@ -164,13 +167,19 @@ public class AdviceFeedbackActivity extends MVPBaseActivity<AdviceFeedbackContra
     @Override
     public void onPicAdd(int position) {
         mCurrentPicPosition = position;
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            startActivityForResult(intent, ACTION_CHOOSE);
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-        }
+        RxPermissions rxPermissions = new RxPermissions(AdviceFeedbackActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, ACTION_CHOOSE);
+                } catch (Exception ex) {
+                    LogUtils.e(ex.getMessage());
+                }
+            }
+        });
     }
 
     @Override
@@ -245,7 +254,7 @@ public class AdviceFeedbackActivity extends MVPBaseActivity<AdviceFeedbackContra
             return;
         }
         String describe = mEtInput.getText().toString().trim();
-        if (mType == 3 && TextUtils.isEmpty(describe)) {
+        if (TextUtils.isEmpty(describe)) {
             ToastUtil.showToast(AdviceFeedbackActivity.this, "请输入问题描述");
             mIsUploading = false;
             return;

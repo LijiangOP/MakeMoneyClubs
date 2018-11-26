@@ -4,63 +4,102 @@ package com.zhengdao.zqb.view.activity.main;
 import android.content.ClipData;
 import android.content.ClipDescription;
 import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.SpannableString;
+import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TabHost;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.application.ExitApplication;
 import com.zhengdao.zqb.config.Constant;
-import com.zhengdao.zqb.customview.FragmentTabHost;
+import com.zhengdao.zqb.customview.ExitDialog;
+import com.zhengdao.zqb.customview.NewHandIntroduceDialog;
 import com.zhengdao.zqb.customview.SwipeBackActivity.GoodsCommandDialog;
 import com.zhengdao.zqb.entity.GoodsCommandHttpEntity;
 import com.zhengdao.zqb.entity.HttpLiCaiDetailEntity;
-import com.zhengdao.zqb.entity.TabBean;
 import com.zhengdao.zqb.event.ForceBindPhoneEvent;
 import com.zhengdao.zqb.mvp.MVPBaseActivity;
+import com.zhengdao.zqb.utils.DateDefUtils;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.SettingUtils;
+import com.zhengdao.zqb.utils.Utils;
 import com.zhengdao.zqb.view.activity.bindnewphone.BindNewPhoneActivity;
 import com.zhengdao.zqb.view.activity.homegoodsdetail.HomeGoodsDetailActivity;
 import com.zhengdao.zqb.view.activity.licaidetail.LicaiDetailActivity;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.fragment.coupons.CouponsFragment;
-import com.zhengdao.zqb.view.fragment.focus.FocusFragment;
+import com.zhengdao.zqb.view.fragment.daily.DailyFragment;
 import com.zhengdao.zqb.view.fragment.home.HomeFragment;
 import com.zhengdao.zqb.view.fragment.rebate.RebateFragment;
 import com.zhengdao.zqb.view.fragment.user.UserFragment;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import cn.bingoogolapple.badgeview.BGABadgeLinearLayout;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 
-public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, TabHost.OnTabChangeListener {
+public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresenter> implements MainContract.View, View.OnClickListener {
 
-    @BindView(R.id.main_tabHost)
-    FragmentTabHost mMainTabHost;
+    private HomeFragment    mHomeFragment;
+    private RebateFragment  mRebateFragment;
+    private DailyFragment   mDailyFragment;
+    private CouponsFragment mCouponsFragment;
+    private UserFragment    mUserFragment;
+
+    private FragmentManager     mFragmentManager;
+    private FragmentTransaction mTransaction;
+
+    private RelativeLayout mHomeTab;
+    private RelativeLayout mEarnTab;
+    private RelativeLayout mDailyTab;
+    private RelativeLayout mCouponsTab;
+    private RelativeLayout mUserTab;
+
+    private TextView mTextUser;
+    private TextView mTextHome;
+    private TextView mTextEarn;
+    private TextView mTextDaily;
+    private TextView mTextCoupons;
+
+    private ImageView mImageHome;
+    private ImageView mImageEarn;
+    private ImageView mImageDaily;
+    private ImageView mImageCoupons;
+    private ImageView mImageUser;
 
     private long mExitTime;
-    private List<TabBean> mTabs = new ArrayList<>();
-    private int                preTab;
-    private int                currentTab;
+    private int  preTab;
+    private int currentTab = 0;
     private GoodsCommandDialog mCommandDialog;
     private Disposable         mBindPhoneDisposable;
-    private List<BGABadgeLinearLayout> mBGABadgeLinearLayouts = new ArrayList<>();
+
+    private Handler mHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case 0:
+                    showNewHandIntroduce();
+                    break;
+            }
+        }
+
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,44 +108,204 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         ExitApplication.getInstance().addActivity(this);
         setSwipeBackEnable(false);
         ButterKnife.bind(this);
-        initTabHost();
-        GangUpInvite(this);
         init();
+        initTab(savedInstanceState);
+        GangUpInvite();
+        mHandler.sendEmptyMessageDelayed(0, 500);
     }
 
-    private void initTabHost() {
-        TabBean home = new TabBean(HomeFragment.class, R.string.home, R.drawable.selector_home_tab);
-        TabBean rebate = new TabBean(RebateFragment.class, R.string.rebate, R.drawable.selector_earn_tab);
-        TabBean Find = new TabBean(FocusFragment.class, R.string.news, R.drawable.selector_hot_tab);
-        TabBean ticket = new TabBean(CouponsFragment.class, R.string.coupons, R.drawable.selector_coupons_tab);
-        TabBean user = new TabBean(UserFragment.class, R.string.mine, R.drawable.selector_user_tab);
-        mTabs.add(home);
-        mTabs.add(rebate);
-        mTabs.add(Find);
-        mTabs.add(ticket);
-        mTabs.add(user);
-        mMainTabHost.setup(this, getSupportFragmentManager(), R.id.main_realContent);
-        for (TabBean tab : mTabs) {
-            TabHost.TabSpec tabSpec = mMainTabHost.newTabSpec(getString(tab.title));
-            tabSpec.setIndicator(buildIndicator(tab));
-            mMainTabHost.addTab(tabSpec, tab.fragment, null);
+    private void initTab(Bundle savedInstanceState) {
+        mHomeTab = (RelativeLayout) findViewById(R.id.home_tab);
+        mEarnTab = (RelativeLayout) findViewById(R.id.earn_tab);
+        mDailyTab = (RelativeLayout) findViewById(R.id.daily_tab);
+        mCouponsTab = (RelativeLayout) findViewById(R.id.coupons_tab);
+        mUserTab = (RelativeLayout) findViewById(R.id.user_tab);
+
+        mTextHome = (TextView) findViewById(R.id.text_home);
+        mTextEarn = (TextView) findViewById(R.id.text_earn);
+        mTextDaily = (TextView) findViewById(R.id.text_daily);
+        mTextCoupons = (TextView) findViewById(R.id.text_coupons);
+        mTextUser = (TextView) findViewById(R.id.text_user);
+
+        mImageHome = (ImageView) findViewById(R.id.image_home);
+        mImageEarn = (ImageView) findViewById(R.id.image_earn);
+        mImageDaily = (ImageView) findViewById(R.id.image_daily);
+        mImageCoupons = (ImageView) findViewById(R.id.image_coupons);
+        mImageUser = (ImageView) findViewById(R.id.image_user);
+
+        mFragmentManager = getSupportFragmentManager();
+        mTransaction = mFragmentManager.beginTransaction();
+
+        mHomeFragment = (HomeFragment) mFragmentManager.findFragmentByTag("mHomeFragment");
+        mRebateFragment = (RebateFragment) mFragmentManager.findFragmentByTag("mRebateFragment");
+        mDailyFragment = (DailyFragment) mFragmentManager.findFragmentByTag("mDailyFragment");
+        mCouponsFragment = (CouponsFragment) mFragmentManager.findFragmentByTag("mCouponsFragment");
+        mUserFragment = (UserFragment) mFragmentManager.findFragmentByTag("mUserFragment");
+
+        mHomeTab.setOnClickListener(this);
+        mEarnTab.setOnClickListener(this);
+        mDailyTab.setOnClickListener(this);
+        mCouponsTab.setOnClickListener(this);
+        mUserTab.setOnClickListener(this);
+
+        onClick(mHomeTab);
+    }
+
+    @Override
+    public void onClick(View v) {
+        preTab = currentTab;
+        switch (v.getId()) {
+            case R.id.home_tab:
+                currentTab = 0;
+                switchButton(currentTab);
+                break;
+            case R.id.earn_tab:
+                currentTab = 1;
+                switchButton(currentTab);
+                break;
+            case R.id.daily_tab:
+                currentTab = 2;
+                switchButton(currentTab);
+                break;
+            case R.id.coupons_tab:
+                currentTab = 3;
+                switchButton(currentTab);
+                break;
+            case R.id.user_tab:
+                currentTab = 4;
+                switchButton(currentTab);
+                break;
         }
-        mMainTabHost.getTabWidget().setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
-        mMainTabHost.setOnTabChangedListener(this);
-        mMainTabHost.setCurrentTab(0);
+        onCheckedChanged(v.getId());
     }
 
-    private View buildIndicator(TabBean tab) {
-        View view = View.inflate(this, R.layout.tab_indicator, null);
-        BGABadgeLinearLayout bgaBadgeLinearLayout = view.findViewById(R.id.tab_indicator_root);
-        ImageView bgaBadgeImageView = view.findViewById(R.id.tab_indicator_icon);
-        TextView textView = view.findViewById(R.id.tab_indicator_txt);
-        bgaBadgeImageView.setBackgroundResource(tab.icon);
-        textView.setText(getString(tab.title));
-        mBGABadgeLinearLayouts.add(bgaBadgeLinearLayout);
-        return view;
+    public void switchButton(int position) {
+        switch (position) {
+            case 0:
+                mTextHome.setSelected(true);
+                mImageHome.setSelected(true);
+                mTextEarn.setSelected(false);
+                mImageEarn.setSelected(false);
+                mTextDaily.setSelected(false);
+                mImageDaily.setSelected(false);
+                mTextCoupons.setSelected(false);
+                mImageCoupons.setSelected(false);
+                mTextUser.setSelected(false);
+                mImageUser.setSelected(false);
+                break;
+            case 1:
+                mTextHome.setSelected(false);
+                mImageHome.setSelected(false);
+                mTextEarn.setSelected(true);
+                mImageEarn.setSelected(true);
+                mTextDaily.setSelected(false);
+                mImageDaily.setSelected(false);
+                mTextCoupons.setSelected(false);
+                mImageCoupons.setSelected(false);
+                mTextUser.setSelected(false);
+                mImageUser.setSelected(false);
+                break;
+            case 2:
+                mTextHome.setSelected(false);
+                mImageHome.setSelected(false);
+                mTextEarn.setSelected(false);
+                mImageEarn.setSelected(false);
+                mTextDaily.setSelected(true);
+                mImageDaily.setSelected(true);
+                mTextCoupons.setSelected(false);
+                mImageCoupons.setSelected(false);
+                mTextUser.setSelected(false);
+                mImageUser.setSelected(false);
+
+                break;
+            case 3:
+                mTextHome.setSelected(false);
+                mImageHome.setSelected(false);
+                mTextEarn.setSelected(false);
+                mImageEarn.setSelected(false);
+                mTextDaily.setSelected(false);
+                mImageDaily.setSelected(false);
+                mTextCoupons.setSelected(true);
+                mImageCoupons.setSelected(true);
+                mTextUser.setSelected(false);
+                mImageUser.setSelected(false);
+                break;
+            case 4:
+                mTextHome.setSelected(false);
+                mImageHome.setSelected(false);
+                mTextEarn.setSelected(false);
+                mImageEarn.setSelected(false);
+                mTextDaily.setSelected(false);
+                mImageDaily.setSelected(false);
+                mTextCoupons.setSelected(false);
+                mImageCoupons.setSelected(false);
+                mTextUser.setSelected(true);
+                mImageUser.setSelected(true);
+                break;
+        }
     }
 
+
+    public void onCheckedChanged(int checkedId) {
+        mTransaction = mFragmentManager.beginTransaction();
+        if (mHomeFragment != null) {
+            mTransaction.hide(mHomeFragment);
+        }
+        if (mRebateFragment != null) {
+            mTransaction.hide(mRebateFragment);
+        }
+        if (mDailyFragment != null) {
+            mTransaction.hide(mDailyFragment);
+        }
+        if (mCouponsFragment != null) {
+            mTransaction.hide(mCouponsFragment);
+        }
+        if (mUserFragment != null) {
+            mTransaction.hide(mUserFragment);
+        }
+        if (checkedId == R.id.home_tab) {
+            if (mHomeFragment == null) {
+                mHomeFragment = new HomeFragment();
+                mTransaction.add(R.id.main_realContent, mHomeFragment, "mHomeFragment");
+            } else {
+                mTransaction.show(mHomeFragment);
+            }
+        } else if (checkedId == R.id.earn_tab) {
+            if (mRebateFragment == null) {
+                mRebateFragment = new RebateFragment();
+                mTransaction.add(R.id.main_realContent, mRebateFragment, "mRebateFragment");
+            } else {
+                mTransaction.show(mRebateFragment);
+            }
+        } else if (checkedId == R.id.daily_tab) {
+            if (mDailyFragment == null) {
+                mDailyFragment = new DailyFragment();
+                mTransaction.add(R.id.main_realContent, mDailyFragment, "mDailyFragment");
+            } else {
+                mTransaction.show(mDailyFragment);
+            }
+        } else if (checkedId == R.id.coupons_tab) {
+            if (mCouponsFragment == null) {
+                mCouponsFragment = new CouponsFragment();
+                mTransaction.add(R.id.main_realContent, mCouponsFragment, "mCouponsFragment");
+            } else {
+                mTransaction.show(mCouponsFragment);
+            }
+        } else if (checkedId == R.id.user_tab) {
+            if (mUserFragment == null) {
+                mUserFragment = new UserFragment();
+                mTransaction.add(R.id.main_realContent, mUserFragment, "mUserFragment");
+            } else {
+                mTransaction.show(mUserFragment);
+            }
+        }
+        mTransaction.commit();
+    }
+
+
+    /**
+     * RxBus注册 绑定手机号事件（三方登陆后必须绑定手机号的逻辑）
+     */
     private void init() {
         mBindPhoneDisposable = RxBus.getDefault().toObservable(ForceBindPhoneEvent.class).subscribe(new Consumer<ForceBindPhoneEvent>() {
             @Override
@@ -118,36 +317,32 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mMainTabHost.getCurrentTab() != 0) {
-            mMainTabHost.setCurrentTab(0);
-            return;
-        }
-        if (System.currentTimeMillis() - mExitTime <= 2000) {
-            ExitApplication.getInstance().exit();
-        } else {
-            Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
-            mExitTime = System.currentTimeMillis();
-        }
-    }
-
-    @Override
-    public void onTabChanged(String s) {
-        preTab = currentTab;
-        currentTab = mMainTabHost.getCurrentTab();
-    }
 
     public void restoreToPreTab() {
-        if (!SettingUtils.isLogin(this)) {
-            if (preTab == mTabs.size() - 1)
-                preTab = 0;
+        if (!SettingUtils.isLogin(this) && preTab == 4) {
+            preTab = 0;
         }
-        mMainTabHost.setCurrentTab(preTab);
+        setCurrentPosition(preTab);
     }
 
     public void setCurrentPosition(int index) {
-        mMainTabHost.setCurrentTab(index);
+        switch (index) {
+            case 0:
+                onClick(mHomeTab);
+                break;
+            case 1:
+                onClick(mEarnTab);
+                break;
+            case 2:
+                onClick(mDailyTab);
+                break;
+            case 3:
+                onClick(mCouponsTab);
+                break;
+            case 4:
+                onClick(mUserTab);
+                break;
+        }
     }
 
     @Override
@@ -155,14 +350,12 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         LogUtils.e(TextUtils.isEmpty(msg) ? "" : msg);
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    public void GangUpInvite(final Context context) {
+    /**
+     * 商品口令的逻辑实现
+     */
+    public void GangUpInvite() {
         try {
-            ClipboardManager clipboard = (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+            ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
             //无数据时直接返回
             if (!clipboard.hasPrimaryClip()) {
                 return;
@@ -209,6 +402,26 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         return true;
     }
 
+    private void showNewHandIntroduce() {
+        if (SettingUtils.isFristInstall(MainActivity.this)) {
+            SettingUtils.setFristInstall(MainActivity.this, false);
+            NewHandIntroduceDialog dialog = new NewHandIntroduceDialog(MainActivity.this);
+            dialog.setVisibility(1, View.VISIBLE);
+            dialog.show();
+            SettingUtils.setIntroduceLastShowDate(MainActivity.this, Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        } else if (DateDefUtils.isCanShowIntroduceToDay(MainActivity.this)) {
+            NewHandIntroduceDialog dialog = new NewHandIntroduceDialog(MainActivity.this);
+            dialog.setVisibility(0, View.VISIBLE);
+            dialog.show();
+            SettingUtils.setIntroduceLastShowDate(MainActivity.this, Calendar.getInstance().get(Calendar.DAY_OF_YEAR));
+        }
+    }
+
+    /**
+     * 0元赚商品类型 口令数据获取
+     *
+     * @param httpResult
+     */
     @Override
     public void onGetZeroEarnGoodsCommandResult(final GoodsCommandHttpEntity httpResult) {
         if (httpResult.code == Constant.HttpResult.SUCCEED) {
@@ -235,6 +448,11 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
             LogUtils.e("请求出错");
     }
 
+    /**
+     * 返利商品类型 口令数据获取
+     *
+     * @param result
+     */
     @Override
     public void onGetRebateGoodsCommandResult(final HttpLiCaiDetailEntity result) {
         if (result.code == Constant.HttpResult.SUCCEED) {
@@ -262,6 +480,60 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
     }
 
     @Override
+    public void onGetExitCommandResult(GoodsCommandHttpEntity httpResult) {
+        if (httpResult.code == Constant.HttpResult.SUCCEED) {
+            showExitDialog(httpResult);
+        } else {
+            ExitApplication.getInstance().exit();//请求失败就退出
+        }
+    }
+
+    @Override
+    public void onGetExitCommandError() {
+        ExitApplication.getInstance().exit();//请求失败就退出
+    }
+
+    private void showExitDialog(final GoodsCommandHttpEntity httpResult) {
+        float totalIncome = SettingUtils.getTotalIncome(MainActivity.this);
+        ExitDialog exitDialog = new ExitDialog(MainActivity.this);
+        SpannableString spannableString = new SpannableString("您已成功赚取" + totalIncome + "元，继续加油赚钱吧!");
+        spannableString.setSpan(new ForegroundColorSpan(Color.parseColor("#fc3135")), 6, 6 + String.valueOf(totalIncome).length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        exitDialog.init("确定退出" + getString(R.string.app_name) + "?", spannableString, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HomeGoodsDetailActivity.class);
+                intent.putExtra(Constant.Activity.Data, httpResult.reward.id);
+                Utils.StartActivity(MainActivity.this, intent);
+            }
+        }, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ExitApplication.getInstance().exit();
+            }
+        });
+        exitDialog.setGoods(httpResult);
+        exitDialog.show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (currentTab != 0) {
+            onClick(mHomeTab);
+            return;
+        }
+        if (SettingUtils.isLogin(MainActivity.this)) {
+            mPresenter.getOutReward();
+        } else {
+            if (System.currentTimeMillis() - mExitTime <= 2000) {
+                ExitApplication.getInstance().exit();
+            } else {
+                Toast.makeText(this, R.string.exit, Toast.LENGTH_SHORT).show();
+            }
+            mExitTime = System.currentTimeMillis();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mCommandDialog != null) {
@@ -271,4 +543,5 @@ public class MainActivity extends MVPBaseActivity<MainContract.View, MainPresent
         if (mBindPhoneDisposable != null)
             mBindPhoneDisposable.dispose();
     }
+
 }

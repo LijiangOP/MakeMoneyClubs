@@ -52,6 +52,6 @@ public class HomeGoodsDetailContract {
 
         void uploadImages(RequestBody type, Map<String, RequestBody> file);
 
-        void CommitWanted(ArrayList<String> uploadImages, ArrayList<String> jsons, int Id);
+        void CommitWanted(ArrayList<String> uploadImages, ArrayList<String> jsons, String imei, int Id);
     }
 }

@@ -1,14 +1,16 @@
 package com.zhengdao.zqb.view.adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 
@@ -52,7 +54,7 @@ public class KindOfWantedDetailAdapter extends RecyclerView.Adapter {
         mHolder.mFullScreen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPopWindow(mHolder.mImage,entity.picture);
+                showPopWindow(mHolder.mImage, entity.picture);
             }
         });
     }
@@ -82,11 +84,14 @@ public class KindOfWantedDetailAdapter extends RecyclerView.Adapter {
     }
 
     public void backgroundAlpha(float bgAlpha) {
-        Activity context = (Activity) mContext;
-        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        context.getWindow().addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND);
-        context.getWindow().setAttributes(lp);
+        WindowManager mWindowManager = (WindowManager) mContext.getSystemService(Context.WINDOW_SERVICE);
+        View mDarkView = new View(mContext);
+        mDarkView.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+        mDarkView.setBackgroundColor(Color.parseColor("#a0000000"));
+        DisplayMetrics dm = new DisplayMetrics();
+        mWindowManager.getDefaultDisplay().getMetrics(dm);
+        int mScreenWidth = dm.widthPixels;
+        int mScreenHeight = dm.heightPixels;
     }
 
     @Override

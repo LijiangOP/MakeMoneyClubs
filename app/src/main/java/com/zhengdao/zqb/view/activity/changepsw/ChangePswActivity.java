@@ -70,7 +70,7 @@ public class ChangePswActivity extends MVPBaseActivity<ChangePswContract.View, C
         if (!TextUtils.isEmpty(mStringAccount)) {
             SpannableString spannableString = new SpannableString("请为您的帐号\n" + mStringAccount + "\n设置一个新登录密码");
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#333333"));
-            RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.5f);
+            RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.2f);
             spannableString.setSpan(colorSpan, 6, 7 + mStringAccount.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(sizeSpan, 6, 7 + mStringAccount.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mTvHint.setText(spannableString);
@@ -81,7 +81,7 @@ public class ChangePswActivity extends MVPBaseActivity<ChangePswContract.View, C
             else
                 spannableString = new SpannableString("请为您的帐号\n" + account + "\n设置一个新登录密码");
             ForegroundColorSpan colorSpan = new ForegroundColorSpan(Color.parseColor("#333333"));
-            RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.5f);
+            RelativeSizeSpan sizeSpan = new RelativeSizeSpan(1.2f);
             spannableString.setSpan(colorSpan, 6, 7 + account.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(sizeSpan, 6, 7 + account.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             mTvHint.setText(spannableString);

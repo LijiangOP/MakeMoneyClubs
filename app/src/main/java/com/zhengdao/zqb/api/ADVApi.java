@@ -1,8 +1,13 @@
 package com.zhengdao.zqb.api;
 
 import com.zhengdao.zqb.entity.BaiDuApiAdvEntity;
+import com.zhengdao.zqb.entity.JinChengAdvHttpResult;
 
+import okhttp3.RequestBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.Query;
 import rx.Observable;
 
@@ -19,4 +24,7 @@ public interface ADVApi {
                                               @Query("client_ip") String client_ip, @Query("client_ua") String client_ua, @Query("nt") String nt,
                                               @Query("no") String no, @Query("n") String n, @Query("an") String an);
 
+    @Headers("Content-Type:application/json; charset=UTF-8")
+    @POST("http://icm001.oicp.net:9999/105003")
+    Observable<JinChengAdvHttpResult> getJinChengAdv(@Body RequestBody data);
 }

@@ -271,12 +271,12 @@ public class HomeGoodsDetailPresenter extends BasePresenterImpl<HomeGoodsDetailC
     }
 
     @Override
-    public void CommitWanted(ArrayList<String> uploadImages, ArrayList<String> jsons, int Id) {
+    public void CommitWanted(ArrayList<String> uploadImages, ArrayList<String> jsons, String imei, int Id) {
         String taskInfo = "";
         if (jsons != null && jsons.size() > 0)
             taskInfo = jsons.toString();
         Subscription subscribe = RetrofitManager.getInstance().noCache().create(HomeApi.class)
-                .CommitWantedQVU(uploadImages, taskInfo, SettingUtils.getUserToken(mView.getContext()), Id)
+                .CommitWantedQVU(uploadImages, taskInfo, SettingUtils.getUserToken(mView.getContext()), imei, Id)
                 .subscribeOn(Schedulers.io())
                 .doOnSubscribe(new Action0() {
                     @Override

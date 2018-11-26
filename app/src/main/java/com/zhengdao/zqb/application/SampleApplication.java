@@ -19,7 +19,7 @@ public class SampleApplication extends TinkerApplication {
      * 参数4：tinkerLoadVerifyFlag 加载dex或者lib是否验证md5，默认为false
      */
     public SampleApplication() {
-        super(ShareConstants.TINKER_ENABLE_ALL, "com.zhengdao.zqb.application.ClientAppLike",
+        super(ShareConstants.TINKER_ENABLE_ALL,"com.zhengdao.zqb.application.ClientAppLike",
                 "com.tencent.tinker.loader.TinkerLoader", false);
     }
 

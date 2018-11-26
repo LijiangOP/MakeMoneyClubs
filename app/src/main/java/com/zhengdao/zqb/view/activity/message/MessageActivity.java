@@ -103,7 +103,7 @@ public class MessageActivity extends MVPBaseActivity<MessageContract.View, Messa
     @Override
     public void ReLogin() {
         ToastUtil.showToast(this, "登录超时,请重新登录");
-        startActivity(new Intent(this, LoginActivity.class));
+        startActivityForResult(new Intent(this, LoginActivity.class), REQUESTCODE);
     }
 
     @Override

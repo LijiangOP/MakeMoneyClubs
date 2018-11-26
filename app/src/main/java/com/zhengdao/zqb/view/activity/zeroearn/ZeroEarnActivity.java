@@ -144,7 +144,7 @@ public class ZeroEarnActivity extends MVPBaseActivity<ZeroEarnContract.View, Zer
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.re_synthesize:
-                doSynthesize();
+                mPresenter.getDataWithBaseSearch("order", "desc", -1);//综合排序
                 break;
             case R.id.re_hot:
                 changeArrow(1);
@@ -158,6 +158,9 @@ public class ZeroEarnActivity extends MVPBaseActivity<ZeroEarnContract.View, Zer
         }
     }
 
+    /**
+     * 下拉选择框 （8.1 去掉）
+     */
     private void doSynthesize() {
         try {
             View contentView = LayoutInflater.from(this).inflate(R.layout.popup_earn_fragment_synthesize, null);

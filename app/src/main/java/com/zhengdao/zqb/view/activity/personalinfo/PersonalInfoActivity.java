@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
 import com.bigkoo.pickerview.TimePickerView;
 import com.bumptech.glide.Glide;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.yalantis.ucrop.UCrop;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
@@ -53,8 +54,7 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+import rx.functions.Action1;
 
 public class PersonalInfoActivity extends MVPBaseActivity<PersonalInfoContract.View, PersonalInfoPresenter> implements PersonalInfoContract.View, View.OnClickListener {
 
@@ -187,13 +187,19 @@ public class PersonalInfoActivity extends MVPBaseActivity<PersonalInfoContract.V
     }
 
     private void doSelectPhoto() {
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            startActivityForResult(intent, ACTION_CHOOSE);
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-        }
+        RxPermissions rxPermissions = new RxPermissions(PersonalInfoActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, ACTION_CHOOSE);
+                } catch (Exception ex) {
+                    LogUtils.e(ex.getMessage());
+                }
+            }
+        });
     }
 
     private void doSelectSex() {
@@ -326,12 +332,17 @@ public class PersonalInfoActivity extends MVPBaseActivity<PersonalInfoContract.V
     }
 
     //选择或拍照完成后跳转切图界面
-    public void cropImage(Uri uri, Uri cropUri) throws Exception {
-        methodRequiresTwoPermission();
-        UCrop.of(uri, cropUri)
-                .withAspectRatio(9, 9)
-                .withMaxResultSize(mMaxWidth, mMaxHeight)
-                .start(PersonalInfoActivity.this);
+    public void cropImage(final Uri uri, final Uri cropUri) throws Exception {
+        RxPermissions rxPermissions = new RxPermissions(PersonalInfoActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                UCrop.of(uri, cropUri)
+                        .withAspectRatio(9, 9)
+                        .withMaxResultSize(mMaxWidth, mMaxHeight)
+                        .start(PersonalInfoActivity.this);
+            }
+        });
     }
 
     //上传图片
@@ -413,16 +424,6 @@ public class PersonalInfoActivity extends MVPBaseActivity<PersonalInfoContract.V
             RxBus.getDefault().post(new UpDataUserInfoEvent());
         } else {
             ToastUtil.showToast(this, TextUtils.isEmpty(httpResult.msg) ? "" : httpResult.msg);
-        }
-    }
-
-    private static final int RC_CAMERA_AND_LOCATION = 001;
-
-    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
-    private void methodRequiresTwoPermission() {
-        String[] perms = {Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.MOUNT_UNMOUNT_FILESYSTEMS};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "下列权限未获权，是否开启", RC_CAMERA_AND_LOCATION, perms);
         }
     }
 

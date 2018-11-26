@@ -9,6 +9,19 @@
 
     <include layout="@layout/white_title_bar"/>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_fbfaee"
+        android:drawableLeft="@drawable/notice_red"
+        android:drawablePadding="5dp"
+        android:paddingBottom="9dp"
+        android:paddingLeft="18dp"
+        android:paddingTop="9dp"
+        android:text="@string/bind_alipay_hint"
+        android:textColor="@color/color_fc3135"
+        android:textSize="14sp"/>
+
     <LinearLayout
         style="@style/ll_user_info_01"
         android:layout_marginTop="10dp"

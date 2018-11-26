@@ -23,4 +23,43 @@ public class DateDefUtils {
             return false;
         }
     }
+
+    public static boolean isCanShowRedPacketToDay(Context context) {
+
+        int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+
+        int lastShowDat = SettingUtils.getAliuPayLastShowDat(context);
+
+        if (dayOfYear > lastShowDat) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isCanShowRecommendRewardToDay(Context context) {
+
+        int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+
+        int lastShowDat = SettingUtils.getRecommendRewardLastShowDat(context);
+
+        if (dayOfYear > lastShowDat) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public static boolean isCanShowIntroduceToDay(Context context) {
+
+        int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+
+        int lastShowDat = SettingUtils.getIntroduceLastShowDat(context);
+
+        if (dayOfYear > lastShowDat) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

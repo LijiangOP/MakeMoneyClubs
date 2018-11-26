@@ -6,9 +6,9 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
+    android:layout_marginBottom="5dp"
     android:gravity="center"
     android:orientation="vertical"
-    android:layout_marginBottom="5dp"
     app:badge_bgColor="@color/color_main"
     app:badge_gravity="rightTop"
     app:badge_horizontalMargin="20dp"
@@ -18,13 +18,13 @@
         android:id="@+id/tab_indicator_icon"
         android:layout_width="23dp"
         android:layout_height="23dp"
-        android:layout_marginTop="5dp"
-        />
+        android:layout_marginTop="5dp"/>
 
     <TextView
         android:id="@+id/tab_indicator_txt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp"
         android:layout_marginTop="2dp"
         android:textColor="@color/selector_bottom_navigate"
         android:textSize="12sp"/>

@@ -56,12 +56,23 @@ public class RewardTicketAdapter extends RecyclerView.Adapter {
             RewardTicketEntity entity = mData.get(position);
             SpannableString spannableString;
             int value = new Double(entity.quota).intValue();
-            if (entity.type == 1) {
-                spannableString = new SpannableString(value + "M");
-                mViewHolder.mTvType.setText("流量券");
-            } else {
-                spannableString = new SpannableString(value + "元");
-                mViewHolder.mTvType.setText("话费券");
+            switch (entity.type) {
+                case 1:
+                    spannableString = new SpannableString(value + "M");
+                    mViewHolder.mTvType.setText("流量券");
+                    break;
+                case 2:
+                    spannableString = new SpannableString(value + "元");
+                    mViewHolder.mTvType.setText("话费券");
+                    break;
+                case 3:
+                    spannableString = new SpannableString(value + "元");
+                    mViewHolder.mTvType.setText("现金券");
+                    break;
+                default:
+                    spannableString = new SpannableString("");
+                    mViewHolder.mTvType.setText("");
+                    break;
             }
             spannableString.setSpan(new RelativeSizeSpan(0.5f), String.valueOf(value).length(), spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
             spannableString.setSpan(new StyleSpan(Typeface.BOLD), 0, spannableString.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);

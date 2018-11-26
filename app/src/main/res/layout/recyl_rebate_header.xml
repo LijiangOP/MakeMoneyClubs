@@ -36,7 +36,7 @@
             android:gravity="center"
             android:text="计算器"
             android:textColor="@color/color_292929"
-            android:textSize="11sp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_guide"
@@ -48,7 +48,7 @@
             android:gravity="center"
             android:text="新手指引"
             android:textColor="@color/color_292929"
-            android:textSize="11sp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_info_input"
@@ -60,7 +60,7 @@
             android:gravity="center"
             android:text="信息录入"
             android:textColor="@color/color_292929"
-            android:textSize="11sp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_records"
@@ -72,7 +72,7 @@
             android:gravity="center"
             android:text="返利记录"
             android:textColor="@color/color_292929"
-            android:textSize="11sp"/>
+            android:textSize="12sp"/>
 
         <TextView
             android:id="@+id/tv_service"
@@ -84,7 +84,7 @@
             android:gravity="center"
             android:text="联系客服"
             android:textColor="@color/color_292929"
-            android:textSize="11sp"/>
+            android:textSize="12sp"/>
 
     </LinearLayout>
 

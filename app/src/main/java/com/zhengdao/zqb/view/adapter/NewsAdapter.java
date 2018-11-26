@@ -1,9 +1,12 @@
 package com.zhengdao.zqb.view.adapter;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -17,6 +20,9 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.anzhi.sdk.ad.main.AzNativeExpressView;
+import com.anzhi.sdk.ad.manage.AnzhiNativeAdCallBack;
+import com.anzhi.sdk.ad.manage.NativeExpressViewData;
 import com.baidu.mobads.AdView;
 import com.baidu.mobads.AdViewListener;
 import com.bumptech.glide.Glide;
@@ -32,6 +38,7 @@ import com.zhengdao.zqb.entity.NewsDetailEntity;
 import com.zhengdao.zqb.utils.AdvertisementUtils;
 import com.zhengdao.zqb.utils.AppUtils;
 import com.zhengdao.zqb.utils.BaiDuAPiAdvUtils;
+import com.zhengdao.zqb.utils.DensityUtil;
 import com.zhengdao.zqb.utils.DownloadUtils;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.TimeUtils;
@@ -58,10 +65,11 @@ import static com.zhengdao.zqb.utils.AdvertisementUtils.TencentAdv.getAdInfo;
 public class NewsAdapter extends RecyclerView.Adapter {
 
     private CallBack               mCallBack;
-    private Context                mContext;
+    private Activity               mContext;
     private List<NewsDetailEntity> mData;
     private BaiduAdvHolder         mBaiduAdvHolder;
     private APIViewHolder          mAdViewHolder;
+    private ANZHIViewHolder        mANZHIViewHolder;
     private boolean                isAPiAdvShow;
     private String                 mShow_type;
     private String                 mDown_url;
@@ -83,7 +91,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
         void onApiDownLoadStart(ArrayList<String> i_rpt, String clickid, String fileName);
     }
 
-    public NewsAdapter(Context context, List<NewsDetailEntity> data, CallBack callBack) {
+    public NewsAdapter(Activity context, List<NewsDetailEntity> data, CallBack callBack) {
         this.mCallBack = callBack;
         this.mContext = context;
         this.mData = data;
@@ -91,21 +99,24 @@ public class NewsAdapter extends RecyclerView.Adapter {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (viewType == 2) {
+        if (viewType == 2) {//一张图片
             return new OnePicHolder(View.inflate(mContext, R.layout.item_news_one_pic, null));
-        } else if (viewType == 3) {
+        } else if (viewType == 3) {//三张图片
             return new ThreePicHolder(View.inflate(mContext, R.layout.item_news_three_pic, null));
-        } else if (viewType == 9) {
+        } else if (viewType == 9) {//app下载
             return new AppDataHolder(View.inflate(mContext, R.layout.item_news_download_app, null));
-        } else if (viewType == 10) {
+        } else if (viewType == 10) {//百度、腾讯广告
             return new BaiduAdvHolder(View.inflate(mContext, R.layout.item_news_adv, null));
-        } else if (viewType == 11) {
+        } else if (viewType == 11) {//API广告
             return new APIViewHolder(View.inflate(mContext, R.layout.item_news_adview_item, null));
-        } else {
+        } else if (viewType == 12) {//安智广告
+            return new ANZHIViewHolder(View.inflate(mContext, R.layout.item_news_adv, null));
+        } else {//没有图片
             return new NoPicHolder(View.inflate(mContext, R.layout.item_news_no_pic, null));
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         final NewsDetailEntity entity = mData.get(position);
@@ -258,6 +269,11 @@ public class NewsAdapter extends RecyclerView.Adapter {
                     mAdViewHolder = (APIViewHolder) holder;
                     initAPIAdv(position);
                     break;
+                //安智广告
+                case 12:
+                    mANZHIViewHolder = (ANZHIViewHolder) holder;
+                    //                    initANZHIAdv(position, 4);
+                    break;
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -274,7 +290,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * 百度 腾讯SDK广告
+     * 初始化百度 腾讯SDK广告
      *
      * @param entity
      */
@@ -397,7 +413,7 @@ public class NewsAdapter extends RecyclerView.Adapter {
     }
 
     /**
-     * API广告
+     * 初始化API广告
      *
      * @param position
      */
@@ -593,6 +609,60 @@ public class NewsAdapter extends RecyclerView.Adapter {
         return value;
     }
 
+    /**
+     * 初始化安智广告
+     *
+     * @param position
+     */
+    private void initANZHIAdv(int position, int count) {
+        AzNativeExpressView advView = new AzNativeExpressView(mContext, "9f346d3926df57f95e7f8c2c7a37dc8a", "1374", new AnzhiNativeAdCallBack() {
+            @Override
+            public void onReceiveAd(NativeExpressViewData nativeExpressViewData) {
+                LogUtils.i("---安智渲染⼴告成功---");
+            }
+
+            @Override
+            public void onAdFail(String s) {
+                LogUtils.e("---安智加载⼴告失败---" + s);
+            }
+
+            @Override
+            public void onRenderFail(NativeExpressViewData nativeExpressViewData) {
+                LogUtils.e("---安智渲染⼴告失败---");
+            }
+
+            @Override
+            public void onCloseAd(NativeExpressViewData nativeExpressViewData) {
+                LogUtils.e("---安智广告被关闭---");
+            }
+
+            @Override
+            public void onAdClik(NativeExpressViewData nativeExpressViewData) {
+                LogUtils.e("---安智广告被点击---");
+
+            }
+
+            @Override
+            public void onAdExposure(NativeExpressViewData nativeExpressViewData) {
+                LogUtils.e("---安智广告展示---");
+
+            }
+
+            @Override
+            public void onADLoaded(List<NativeExpressViewData> list) {
+                LogUtils.i("---安智广告加载成功---");
+                if (list != null && list.size() > 0) {
+                    NativeExpressViewData nativeExpressViewData = list.get(0);
+                    if (mANZHIViewHolder.mFlContainer != null)
+                        nativeExpressViewData.bindView(mANZHIViewHolder.mFlContainer);
+                }
+            }
+        }, count);
+        int[] screenSize = DensityUtil.getScreenSize(mContext);
+        advView.setSize(screenSize[0], 300);
+        advView.loadAd();
+    }
+
     @Override
     public int getItemCount() {
         return mData == null ? 0 : mData.size();
@@ -703,6 +773,16 @@ public class NewsAdapter extends RecyclerView.Adapter {
         FrameLayout    mFlItem;
 
         public APIViewHolder(View inflate) {
+            super(inflate);
+            ButterKnife.bind(this, inflate);
+        }
+    }
+
+    class ANZHIViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.fl_container)
+        FrameLayout mFlContainer;
+
+        public ANZHIViewHolder(View inflate) {
             super(inflate);
             ButterKnife.bind(this, inflate);
         }

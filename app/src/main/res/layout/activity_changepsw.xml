@@ -14,9 +14,10 @@
         android:background="@color/white"
         android:gravity="center"
         android:paddingBottom="20dp"
+        android:lineSpacingExtra="5dp"
         android:paddingTop="20dp"
         android:textColor="@color/text_999999"
-        android:textSize="13sp"/>
+        android:textSize="15sp"/>
 
     <LinearLayout
         style="@style/ll_user_info"
@@ -39,7 +40,7 @@
             android:textColor="@color/text_333333"
             android:textColorHint="@color/color_8f8f8f"
             android:textCursorDrawable="@drawable/cursor_color"
-            android:textSize="14sp"/>
+            android:textSize="15sp"/>
 
         <ImageView
             android:id="@+id/iv_clear"

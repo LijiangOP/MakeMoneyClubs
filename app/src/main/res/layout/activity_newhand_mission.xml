@@ -33,7 +33,7 @@
                     android:gravity="center_horizontal"
                     android:text="获得奖励"
                     android:textColor="@color/text_333333"
-                    android:textSize="14sp"
+                    android:textSize="@dimen/official_list_title"
                     />
 
                 <TextView
@@ -53,7 +53,7 @@
                     android:gravity="center_horizontal"
                     android:text="完成任务，赚取更多奖励"
                     android:textColor="@color/color_b3b3b3"
-                    android:textSize="11sp"/>
+                    android:textSize="@dimen/official_list_desc"/>
             </LinearLayout>
 
             <com.kennyc.view.MultiStateView

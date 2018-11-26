@@ -87,4 +87,26 @@ public class DownloadUtils {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 下载APK  金橙广告
+     *
+     * @param context
+     * @param url     下载url
+     * @param d_rpt   开始下载上报数据
+     * @param dc_rpt  下载完成上报数据
+     */
+    public static void downLoadApk(Context context, String url, ArrayList<String> d_rpt, ArrayList<String> dc_rpt) {
+        try {
+            Intent intent = new Intent(context, ApiApkDownloadService.class);
+            intent.putExtra(Constant.Activity.Data, url);
+            intent.putStringArrayListExtra(Constant.Activity.Data1, d_rpt);
+            intent.putStringArrayListExtra(Constant.Activity.Data2, dc_rpt);
+            intent.putExtra(Constant.Activity.Type, 2);
+            context.startService(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

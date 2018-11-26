@@ -37,7 +37,7 @@
                         android:drawableTop="@drawable/custom_wx"
                         android:text="微信咨询"
                         android:textColor="@color/text_333333"
-                        android:textSize="11sp"/>
+                        android:textSize="@dimen/official_list_desc"/>
                 </RelativeLayout>
 
                 <View
@@ -60,7 +60,7 @@
                         android:drawableTop="@drawable/custom_qq"
                         android:text="QQ咨询"
                         android:textColor="@color/text_333333"
-                        android:textSize="11sp"/>
+                        android:textSize="@dimen/official_list_desc"/>
                 </RelativeLayout>
 
                 <View
@@ -83,7 +83,7 @@
                         android:drawableTop="@drawable/custom_business"
                         android:text="商务合作"
                         android:textColor="@color/text_333333"
-                        android:textSize="11sp"/>
+                        android:textSize="@dimen/official_list_desc"/>
                 </RelativeLayout>
             </LinearLayout>
 
@@ -95,7 +95,7 @@
                 android:layout_marginTop="20dp"
                 android:text="时间：9:00-18:00"
                 android:textColor="@color/text_333333"
-                android:textSize="11sp"/>
+                android:textSize="@dimen/official_list_desc"/>
 
             <TextView
                 android:id="@+id/tv_guess_you_like"

@@ -1,6 +1,7 @@
 package com.zhengdao.zqb.view.activity.marketcommentdetail;
 
 
+import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.customview.BigImageDialog;
@@ -45,6 +47,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import rx.functions.Action1;
 
 public class MarketCommentDetailActivity extends MVPBaseActivity<MarketCommentDetailContract.View, MarketCommentDetailPresenter> implements MarketCommentDetailContract.View, View.OnClickListener, HomeDetailAddPicAdapter.CallBack {
 
@@ -249,13 +252,19 @@ public class MarketCommentDetailActivity extends MVPBaseActivity<MarketCommentDe
     @Override
     public void onPicAdd(int position) {
         mCurrentPosition = position;
-        try {
-            Intent intent = new Intent(Intent.ACTION_PICK);
-            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-            startActivityForResult(intent, ACTION_CHOOSE);
-        } catch (Exception ex) {
-            LogUtils.e(ex.getMessage());
-        }
+        RxPermissions rxPermissions = new RxPermissions(MarketCommentDetailActivity.this);
+        rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+            @Override
+            public void call(Boolean aBoolean) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_PICK);
+                    intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                    startActivityForResult(intent, ACTION_CHOOSE);
+                } catch (Exception ex) {
+                    LogUtils.e(ex.getMessage());
+                }
+            }
+        });
     }
 
     @Override

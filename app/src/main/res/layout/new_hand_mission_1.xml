@@ -12,6 +12,6 @@
         android:paddingLeft="15dp"
         android:text="新手任务"
         android:textColor="@color/text_999999"
-        android:textSize="12sp"/>
+        android:textSize="@dimen/official_list_title_1"/>
 
 </LinearLayout>

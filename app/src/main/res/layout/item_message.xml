@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textColor="@color/color_393939"
-            android:textSize="13sp"/>
+            android:textSize="@dimen/official_list_title"/>
 
         <TextView
             android:id="@+id/tv_item_message_time"
@@ -32,7 +32,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginLeft="5dp"
             android:textColor="@color/color_858585"
-            android:textSize="12sp"/>
+            android:textSize="@dimen/official_list_title_1"/>
     </LinearLayout>
 
     <TextView
@@ -45,7 +45,7 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:textColor="@color/text_999999"
-        android:textSize="13sp"/>
+        android:textSize="@dimen/official_list_title_1"/>
 
     <TextView
         android:id="@+id/tv_item_message_type"
@@ -54,5 +54,5 @@
         android:layout_marginBottom="5dp"
         android:paddingLeft="10dp"
         android:textColor="@color/color_858585"
-        android:textSize="11sp"/>
+        android:textSize="@dimen/official_list_title_1"/>
 </LinearLayout>

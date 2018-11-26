@@ -1,35 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    >
+    android:clipChildren="false">
+
     <FrameLayout
         android:id="@+id/main_realContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        />
+        android:layout_height="match_parent"
+        android:layout_above="@+id/ll_tab"/>
 
-    <View
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/color_f4f4f4"/>
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/home_tab_bg1"/>
 
-    <com.zhengdao.zqb.customview.FragmentTabHost
-        android:id="@+id/main_tabHost"
+    <LinearLayout
+        android:id="@+id/ll_tab"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/main_tabHost_height"
-        android:layout_marginBottom="2dp"
-        android:background="#ffffff">
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
 
-        <FrameLayout
-            android:id="@android:id/tabcontent"
+        <RelativeLayout
+            android:id="@+id/home_tab"
             android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_weight="0">
-        </FrameLayout>
-    </com.zhengdao.zqb.customview.FragmentTabHost>
-</LinearLayout>
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/text_home"
+                style="@style/home_bottom_tab_tv"
+                android:text="首页"/>
+
+            <ImageView
+                android:id="@+id/image_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text_home"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/selector_home_tab"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/earn_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/text_earn"
+                style="@style/home_bottom_tab_tv"
+                android:text="返利"/>
+
+            <ImageView
+                android:id="@+id/image_earn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text_earn"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/selector_earn_tab"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/daily_tab"
+            android:layout_width="0dp"
+            android:layout_height="75dp"
+            android:layout_gravity="bottom"
+            android:layout_weight="1"
+            android:background="@drawable/home_tab_bg">
+
+            <TextView
+                android:id="@+id/text_daily"
+                style="@style/home_bottom_tab_tv"
+                android:text="每日任务"/>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_above="@+id/text_daily"
+                >
+
+                <ImageView
+                    android:id="@+id/image_daily"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:src="@drawable/icon_everyday_all"/>
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/coupons_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            >
+
+            <TextView
+                android:id="@+id/text_coupons"
+                style="@style/home_bottom_tab_tv"
+                android:text="优惠券"/>
+
+            <ImageView
+                android:id="@+id/image_coupons"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text_coupons"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/selector_coupons_tab"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/user_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/text_user"
+                style="@style/home_bottom_tab_tv"
+                android:text="我的"/>
+
+            <ImageView
+                android:id="@+id/image_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_above="@+id/text_user"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/selector_user_tab"/>
+        </RelativeLayout>
+    </LinearLayout>
+</RelativeLayout>
 

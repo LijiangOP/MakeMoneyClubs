@@ -300,4 +300,12 @@ public interface UserApi {
     @POST("user/clickAdvertReward")
     Observable<HttpResult> getSeeAdvReward(@Field("token") String token, @Field("address") Integer address, @Field("type") Integer type);
 
+    /**
+     * 获取点击广告奖励
+     *
+     * @return
+     */
+    @GET("newbieTask/receiveReward")
+    Observable<HttpResult> getReward(@Query("token") String token, @Query("type") Integer type);
+
 }

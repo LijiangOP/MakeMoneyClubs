@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.text.Html;
 import android.text.SpannableString;
@@ -94,8 +95,8 @@ public class LicaiDetailActivity extends MVPBaseActivity<LicaiDetailContract.Vie
     private String            mStringSpecialRemind;
     private String            mStringRiskHint;
     private PopupWindow       mPopupWindow;
-    private WantedShareDialog mShareDialog;
     private String            mStringShare;
+    private WantedShareDialog mShareDialog;
 
 
     @Override
@@ -206,8 +207,7 @@ public class LicaiDetailActivity extends MVPBaseActivity<LicaiDetailContract.Vie
 
     private void doShare() {
         if (!TextUtils.isEmpty(mStringShare)) {
-            if (mShareDialog == null)
-                mShareDialog = new WantedShareDialog(this);
+            mShareDialog = new WantedShareDialog(this);
             mShareDialog.initView(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -263,6 +263,7 @@ public class LicaiDetailActivity extends MVPBaseActivity<LicaiDetailContract.Vie
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void showResult(HttpLiCaiDetailEntity result) {
         if (result.code == Constant.HttpResult.SUCCEED) {
@@ -334,6 +335,7 @@ public class LicaiDetailActivity extends MVPBaseActivity<LicaiDetailContract.Vie
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addKeyword(String keyword) {
         FluidLayout.LayoutParams params = new FluidLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -342,7 +344,7 @@ public class LicaiDetailActivity extends MVPBaseActivity<LicaiDetailContract.Vie
         params.setMargins(0, 10, 25, 0);
         TextView textView = new TextView(LicaiDetailActivity.this);
         textView.setText(keyword);
-        textView.setTextSize(10);
+        textView.setTextSize(12);
         textView.setTextColor(getResources().getColor(R.color.color_6f717f));
         textView.setBackground(getResources().getDrawable(R.drawable.shape3));
         textView.setPadding(10, 3, 10, 3);

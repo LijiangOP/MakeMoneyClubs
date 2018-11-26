@@ -5,11 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.zhengdao.zqb.application.ClientAppLike;
-import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.utils.AppUtils;
 import com.zhengdao.zqb.utils.FileUtils;
 
 import java.io.File;
+
+import static com.zhengdao.zqb.application.ClientAppLike.APK_FILE_NAME;
 
 /**
  * @Author lijiangop
@@ -18,6 +19,6 @@ import java.io.File;
 public class AppUpdateNotificationReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
-        AppUtils.install(ClientAppLike.getContext(), new File(FileUtils.getDownloadPath(Constant.Download.APK_FILE_NAME)));
+        AppUtils.install(ClientAppLike.getContext(), new File(FileUtils.getDownloadPath(APK_FILE_NAME)));
     }
 }

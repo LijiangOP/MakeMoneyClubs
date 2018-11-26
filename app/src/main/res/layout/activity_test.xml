@@ -1,70 +1,197 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+    <include layout="@layout/title_bar_more_three_point"/>
 
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsingToolbar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fitsSystemWindows="true"
-            app:collapsedTitleTextAppearance="@style/collapsing_text_view"
-            app:contentScrim="?attr/colorPrimary"
-            app:expandedTitleGravity="center"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <include layout="@layout/coupons_top_bg"/>
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/fragment_title_height"
-                android:background="#00ffffff"
-                android:gravity="center"
-                app:contentInsetLeft="0dp"
-                app:contentInsetStart="0dp"
-                app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay"
-                app:theme="@style/ToolbarTheme"
-                app:titleTextColor="@color/white"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-        <include layout="@layout/coupons_select_part"/>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <FrameLayout
+    <com.kennyc.view.MultiStateView
+        android:id="@+id/multiStateView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_marginTop="1dp"
+        android:background="@color/color_f5f5f5"
+        app:msv_emptyView="@layout/layout_empty"
+        app:msv_errorView="@layout/layout_error"
+        app:msv_loadingView="@layout/layout_loading">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/mRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <View
-            android:id="@+id/mask"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#80000000"/>
+            android:orientation="vertical">
 
-        <com.zhengdao.zqb.customview.DropdownListView
-            android:id="@+id/dropdownType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-    </FrameLayout>
+            <android.support.v4.widget.NestedScrollView
+                android:id="@+id/scrollView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:fillViewport="true"
+                >
 
-</android.support.design.widget.CoordinatorLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="7dp"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="10dp"
+                            android:text="领取条件及限制"
+                            android:textColor="@color/color_fd5a5e"
+                            android:textSize="@dimen/official_list_title"/>
+
+                        <TextView
+                            android:id="@+id/tv_wanted_limit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="5dp"
+                            android:paddingBottom="10dp"
+                            android:paddingLeft="13dp"
+                            android:paddingRight="10dp"
+                            android:textColor="@color/color_333333"
+                            android:textIsSelectable="true"
+                            android:textSize="@dimen/official_list_title"
+                            />
+
+                        <RelativeLayout
+                            android:id="@+id/re_task_link"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:paddingBottom="5dp"
+                            android:paddingTop="5dp">
+
+                            <TextView
+                                android:id="@+id/tv_task_link"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="13sp"
+                                android:background="@drawable/selector_login_btn"
+                                android:clickable="true"
+                                android:gravity="center"
+                                android:paddingBottom="5dp"
+                                android:paddingLeft="35dp"
+                                android:paddingRight="35dp"
+                                android:paddingTop="5dp"
+                                android:text="前 往 任 务 链 接"
+                                android:textColor="@color/white"
+                                android:textSize="@dimen/official_list_title"
+                                android:textStyle="bold"/>
+                        </RelativeLayout>
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@color/white"
+                            android:lineSpacingExtra="2dp"
+                            android:paddingBottom="7dp"
+                            android:paddingLeft="13dp"
+                            android:paddingTop="10dp"
+                            android:text="流程说明"
+                            android:textColor="@color/color_fd5a5e"
+                            android:textSize="@dimen/official_list_title"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycle_flow"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:background="@color/white"
+                                android:lineSpacingExtra="2dp"
+                                android:paddingBottom="7dp"
+                                android:paddingLeft="13dp"
+                                android:paddingTop="10dp"
+                                android:text="免责声明"
+                                android:textColor="@color/color_fd5a5e"
+                                android:textSize="@dimen/official_list_title"
+                                />
+
+                            <TextView
+                                android:id="@+id/tv_statement"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@color/white"
+                                android:lineSpacingExtra="5dp"
+                                android:paddingBottom="10dp"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="10dp"
+                                android:paddingTop="5dp"
+                                android:text="@string/app_statement"
+                                android:textColor="@color/color_333333"
+                                android:textIsSelectable="true"
+                                android:textSize="@dimen/official_list_title"/>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_fc3135"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
+
+                <TextView
+                    android:id="@+id/tv_get"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="领取悬赏令"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/official_reb_bottom"/>
+
+                <cn.iwgang.countdownview.CountdownView
+                    android:id="@+id/countDownView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingBottom="1dp"
+                    android:visibility="gone"
+                    app:isShowHour="true"
+                    app:isShowMinute="true"
+                    app:isShowSecond="true"
+                    app:suffixDay="天"
+                    app:suffixHour="时"
+                    app:suffixMinute="分"
+                    app:suffixSecond="秒）"
+                    app:suffixTextColor="@color/white"
+                    app:suffixTextSize="12sp"
+                    app:timeTextColor="@color/white"
+                    app:timeTextSize="@dimen/home_detail_bottom_button"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.kennyc.view.MultiStateView>
+</LinearLayout>

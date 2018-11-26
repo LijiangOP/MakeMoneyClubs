@@ -159,10 +159,7 @@ public class BindNewPhonePresenter extends BasePresenterImpl<BindNewPhoneContrac
         Subscription subscribe = Observable.create(new Observable.OnSubscribe<UserInfo>() {
             @Override
             public void call(Subscriber<? super UserInfo> subscriber) {
-                SettingUtils.setLoginState(mView.getContext(), true);
-                SettingUtils.setPhoneNum(mView.getContext(), bean.phone);
-                SettingUtils.setUserToken(mView.getContext(), bean.token);
-                SettingUtils.setAccount(mView.getContext(), bean.userName);
+                SettingUtils.SaveAfterLogin(mView.getContext(), bean);
                 subscriber.onNext(bean);
                 subscriber.onCompleted();
             }

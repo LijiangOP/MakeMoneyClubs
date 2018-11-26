@@ -6,7 +6,7 @@ import java.util.Date;
 
 /**
  * @Author lijiangop
- * @CreateTime 2018/6/14 16:02
+ * @CreateTime 2018/8/20 0020 17:14
  */
 public class TimeUtils {
     private final static long minute = 60 * 1000;// 1分钟

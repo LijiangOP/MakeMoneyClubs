@@ -12,8 +12,7 @@
         android:gravity="center"
         android:paddingTop="21dp"
         android:text="温馨提醒"
-        android:textColor="#030303"
-        android:textSize="15sp"/>
+        style="@style/common_dialog_title"/>
 
     <TextView
         android:id="@+id/tv_content"
@@ -23,8 +22,8 @@
         android:layout_marginBottom="28dp"
         android:layout_marginTop="28dp"
         android:text="目前充值功能仅对悬赏主开放！"
-        android:textColor="#030303"
-        android:textSize="14sp"/>
+        style="@style/common_dialog_content"
+        android:textSize="15sp"/>
 
     <View
         android:layout_width="match_parent"
@@ -40,7 +39,7 @@
         android:paddingTop="15dp"
         android:text="我知道了"
         android:textColor="#61c5fe"
-        android:textSize="15sp"
+        android:textSize="18sp"
         />
 </LinearLayout>
 

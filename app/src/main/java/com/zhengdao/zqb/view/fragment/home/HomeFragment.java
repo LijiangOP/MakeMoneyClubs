@@ -1,12 +1,15 @@
 package com.zhengdao.zqb.view.fragment.home;
 
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.text.Spanned;
@@ -27,16 +30,22 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import com.zhengdao.zqb.R;
 import com.zhengdao.zqb.config.Constant;
 import com.zhengdao.zqb.customview.ActivityWindow;
+import com.zhengdao.zqb.customview.DragFloatButton;
+import com.zhengdao.zqb.customview.ExitDialog;
 import com.zhengdao.zqb.customview.RewardWindow;
 import com.zhengdao.zqb.customview.UpdataProgressWindow;
 import com.zhengdao.zqb.customview.UpdataWindow;
 import com.zhengdao.zqb.entity.AnnouncementBean;
 import com.zhengdao.zqb.entity.BannerBean;
+import com.zhengdao.zqb.entity.DictionaryHttpEntity;
+import com.zhengdao.zqb.entity.DictionaryValue;
 import com.zhengdao.zqb.entity.EarnEntity;
+import com.zhengdao.zqb.entity.GoodsCommandHttpEntity;
 import com.zhengdao.zqb.entity.HomeInfo;
 import com.zhengdao.zqb.entity.HomeItemBean;
 import com.zhengdao.zqb.entity.HomeItemEntity;
 import com.zhengdao.zqb.entity.MessageEntity;
+import com.zhengdao.zqb.entity.ScreenLoadEntity;
 import com.zhengdao.zqb.entity.SurveyHttpResult;
 import com.zhengdao.zqb.entity.UpdateInfoEntity;
 import com.zhengdao.zqb.entity.UserHomeBean;
@@ -45,22 +54,28 @@ import com.zhengdao.zqb.entity.WelfareHttpData;
 import com.zhengdao.zqb.event.ClearRedPointEvent;
 import com.zhengdao.zqb.event.IsShowProgressEvent;
 import com.zhengdao.zqb.mvp.MVPBaseFragment;
+import com.zhengdao.zqb.utils.DateDefUtils;
 import com.zhengdao.zqb.utils.LogUtils;
 import com.zhengdao.zqb.utils.MyDateUtils;
 import com.zhengdao.zqb.utils.RxBus;
 import com.zhengdao.zqb.utils.SettingUtils;
 import com.zhengdao.zqb.utils.ToastUtil;
+import com.zhengdao.zqb.utils.Utils;
 import com.zhengdao.zqb.utils.ViewUtils;
 import com.zhengdao.zqb.utils.update.UpdateUtil;
 import com.zhengdao.zqb.view.activity.customservice.CustomServiceActivity;
+import com.zhengdao.zqb.view.activity.homegoodsdetail.HomeGoodsDetailActivity;
 import com.zhengdao.zqb.view.activity.login.LoginActivity;
 import com.zhengdao.zqb.view.activity.message.MessageActivity;
+import com.zhengdao.zqb.view.activity.questionsurvery.QuestionSurveryActivty;
 import com.zhengdao.zqb.view.activity.webview.WebViewActivity;
 import com.zhengdao.zqb.view.activity.welfareget.WelfareGetActivity;
 import com.zhengdao.zqb.view.adapter.HomeFragmentAdapter;
+import com.zhengdao.zqb.view.adapter.WantedSelectedAdapter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -95,6 +110,8 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
     ImageButton          mIbHomeService;
     @BindView(R.id.rl_home_title)
     RelativeLayout       mRlHomeTitle;
+    @BindView(R.id.drag_button)
+    DragFloatButton      mDragButton;
 
     private UpdateUtil              mUpdateUtil;
     private boolean                 mMustUpdate;
@@ -102,7 +119,6 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
     private ArrayList<HomeItemBean> mData;
     private HomeFragmentAdapter     mAdapter;
     private long    mCurrentAskDataTime = 0;
-    private int     mCurrentPage        = 1;
     private boolean mIsHasNext          = false;
     private RewardWindow         mRewardDialog;//完成悬赏后,弹出的获取奖励弹框
     private UpdataWindow         mUpdataWindow;//APP更新提示弹窗
@@ -128,6 +144,7 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
             }
         }
     };
+    private HomeItemBean mItemHeadBean;
 
     @Override
     protected View getFragmentView() {
@@ -138,7 +155,7 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
 
     @Override
     protected void initView() {
-        StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);
+        StatusBarUtil.setTransparentForImageViewInFragment(getActivity(), null);//设置banner中图片渲染至系统状态栏
         mBannerHeight = getActivity().getResources().getDimensionPixelOffset(R.dimen.home_banner_height);
         mSwiperefreshlayout.setOnRefreshListener(new OnRefreshListener() {
             @Override
@@ -148,12 +165,10 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
             }
         });
         mSwiperefreshlayout.setOnLoadmoreListener(new OnLoadmoreListener() {
-
             @Override
             public void onLoadmore(RefreshLayout refreshlayout) {
                 if (mIsHasNext) {
-                    mCurrentPage++;
-                    mPresenter.getMore(mCurrentPage);
+                    mPresenter.getMoreData();
                 }
                 refreshlayout.finishLoadmore();
             }
@@ -189,12 +204,18 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         mUpdateUtil = new UpdateUtil(getContext(), this);
         mUpdateUtil.checkUpdate();
         //活动弹窗
-        if (SettingUtils.isFristInstall(getActivity())) {
+        if (SettingUtils.isFristInstall(getActivity()))//第一次安装才能领取
             mPresenter.getWelfareData();
-            SettingUtils.setFristInstall(getActivity(), false);
-        }
+        //获取用户个人数据(主要是使用用户的任务奖励数据)
         if (SettingUtils.isLogin(getActivity()))
             mPresenter.getUserData();
+        //今天还未点击,获取支付宝红包
+        if (DateDefUtils.isCanShowRedPacketToDay(getActivity()))
+            mPresenter.getAliPayRedPacket("ZFB_REWARD");
+        //登录,未领取任务,获取推荐悬赏
+        boolean value = SettingUtils.isLogin(getActivity()) && DateDefUtils.isCanShowRecommendRewardToDay(getActivity()) && SettingUtils.getReceiveCount(getActivity()) == 0;
+        if (value || !SettingUtils.isLogin(getActivity()))
+            mPresenter.getRecommendReward();
     }
 
     private RecyclerView.OnScrollListener mOnScrollListener = new RecyclerView.OnScrollListener() {
@@ -211,7 +232,12 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         }
     };
 
-    private void setColor(int dy) {//当前高度
+    /**
+     * 根据RecycleView高度,显示顶部控件
+     *
+     * @param dy RecycleView当前高度
+     */
+    private void setColor(int dy) {
         try {
             dy = Math.abs(dy);
             if (dy <= 0) {
@@ -236,7 +262,6 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
 
     private void initHomeData() {
         mIsHasNext = true;//翻页
-        mCurrentPage = 1;//翻页
         mPresenter.initData();//获取首页数据
         mPresenter.getMessageCount();//获取消息计数
     }
@@ -250,10 +275,15 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         mCurrentAskDataTime = System.currentTimeMillis();
     }
 
+    /**
+     * 首页的数据返回处理
+     *
+     * @param result
+     */
     @Override
     public void buildData(HomeInfo result) {
+        hideProgress();
         if (result.code == Constant.HttpResult.SUCCEED) {
-            hideProgress();
             if (result == null) {
                 mMsvHomeFragment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
                 mSwiperefreshlayout.finishLoadmoreWithNoMoreData();
@@ -264,23 +294,22 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
             mData.clear();
             mIsHasNext = result.newsRewards.hasNextPage;
             //头部条目
-            HomeItemBean itemHeadBean = new HomeItemBean();
-            String game_state = TextUtils.isEmpty(result.GAME_STATE) ? "" : result.GAME_STATE;
-            itemHeadBean.isShowGame = game_state.equals("0") ? true : false;
-            itemHeadBean.type = 0;
+            mItemHeadBean = new HomeItemBean();
+            mItemHeadBean.menus = result.menus;
+            mItemHeadBean.type = 0;
             //banner
             List<BannerBean> bannerList = result.adverts;
             List<AnnouncementBean> notice = result.platformMsg;
             if (bannerList != null) {
-                itemHeadBean.bannerList = bannerList;
+                mItemHeadBean.bannerList = bannerList;
             }
             //marqueen view
             ArrayList<TextView> views = buildmarqueeList(notice);
-            itemHeadBean.marqueeList = views;
-            itemHeadBean.notice = notice;
+            mItemHeadBean.marqueeList = views;
+            mItemHeadBean.notice = notice;
             //imageview
-            itemHeadBean.invitationBanner = result.invitationBanner;
-            mData.add(itemHeadBean);
+            mItemHeadBean.invitationBanner = result.invitationBanner;
+            mData.add(mItemHeadBean);
             //商品模块
             if (result.newsRewards != null) {
                 List<HomeItemEntity> list = result.newsRewards.list;
@@ -297,17 +326,33 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
                         itemlicaiBean.money = entity.money;
                         itemlicaiBean.picture = entity.picture;
                         itemlicaiBean.title = entity.title;
+                        itemlicaiBean.name = entity.name;
                         itemlicaiBean.discount = entity.discount;
                         itemlicaiBean.lowerTime = entity.lowerTime;
                         mData.add(itemlicaiBean);
                     }
+                } else if (!TextUtils.isEmpty(SettingUtils.getUserToken(getActivity()))) {//登录状态下,悬赏已经全部完成,未完成任务无
+                    HomeItemBean homeItemBean = new HomeItemBean();
+                    homeItemBean.type = 3;
+                    mData.add(homeItemBean);
+                } else {//未登录状态,悬赏任务无
+                    HomeItemBean homeItemBean = new HomeItemBean();
+                    homeItemBean.type = 4;
+                    mData.add(homeItemBean);
                 }
             }
             mMsvHomeFragment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
             if (mAdapter == null) {
                 mAdapter = new HomeFragmentAdapter(getActivity(), mData, this);
                 mRvHome.setAdapter(mAdapter);
-                mRvHome.setLayoutManager(new LinearLayoutManager(getActivity()));
+                GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 2);
+                gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                    @Override
+                    public int getSpanSize(int position) {
+                        return mAdapter.getItemViewType(position) == 2 ? 1 : 2;
+                    }
+                });
+                mRvHome.setLayoutManager(gridLayoutManager);
             } else
                 mAdapter.notifyDataSetChanged();
             //1.3.2版本漏掉的
@@ -323,8 +368,14 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
             mMsvHomeFragment.setViewState(MultiStateView.VIEW_STATE_ERROR);
     }
 
+    /**
+     * 下拉加载下一页的数据返回处理
+     *
+     * @param result
+     */
     @Override
     public void onGetMoreData(EarnEntity result) {
+        hideProgress();
         if (result.code == Constant.HttpResult.SUCCEED) {
             if (result.rewards != null) {
                 mIsHasNext = result.rewards.hasNextPage;
@@ -342,6 +393,7 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
                         itemlicaiBean.money = entity.money;
                         itemlicaiBean.picture = entity.picture;
                         itemlicaiBean.title = entity.title;
+                        itemlicaiBean.name = entity.name;
                         itemlicaiBean.discount = entity.discount;
                         mData.add(itemlicaiBean);
                     }
@@ -358,6 +410,69 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         }
     }
 
+    /**
+     * 刷新商品条目
+     *
+     * @param result
+     */
+    @Override
+    public void onRefreshZeroEarn(EarnEntity result) {
+        hideProgress();
+        if (result.code == Constant.HttpResult.SUCCEED) {
+            if (result == null) {
+                mMsvHomeFragment.setViewState(MultiStateView.VIEW_STATE_EMPTY);
+                mSwiperefreshlayout.finishLoadmoreWithNoMoreData();
+                return;
+            }
+            if (mData != null)
+                mData.clear();
+            if (mItemHeadBean != null)
+                mData.add(mItemHeadBean);
+            if (result.rewards != null) {
+                mIsHasNext = result.rewards.hasNextPage;
+                if (result.rewards.list != null && result.rewards.list.size() > 0) {
+                    ArrayList<HomeItemEntity> list = result.rewards.list;
+                    for (HomeItemEntity entity : list) {
+                        HomeItemBean itemlicaiBean = new HomeItemBean();
+                        itemlicaiBean.type = 2;
+                        itemlicaiBean.goodsType = entity.type;
+                        itemlicaiBean.createTime = entity.createTime;
+                        itemlicaiBean.id = entity.id;
+                        itemlicaiBean.joincount = entity.joincount;
+                        itemlicaiBean.isOwn = entity.isOwn;
+                        itemlicaiBean.keyword = entity.keyword;
+                        itemlicaiBean.money = entity.money;
+                        itemlicaiBean.picture = entity.picture;
+                        itemlicaiBean.name = entity.name;
+                        itemlicaiBean.title = entity.title;
+                        itemlicaiBean.discount = entity.discount;
+                        mData.add(itemlicaiBean);
+                    }
+                    if (mAdapter != null)
+                        mAdapter.notifyDataSetChanged();
+                }
+            } else {//未登录状态,悬赏任务无
+                HomeItemBean homeItemBean = new HomeItemBean();
+                homeItemBean.type = 4;
+                mData.add(homeItemBean);
+            }
+            mMsvHomeFragment.setViewState(MultiStateView.VIEW_STATE_CONTENT);
+            if (mAdapter != null)
+                mAdapter.notifyDataSetChanged();
+            if (mIsHasNext) {
+                mSwiperefreshlayout.resetNoMoreData();
+            } else {
+                mSwiperefreshlayout.finishLoadmoreWithNoMoreData();
+            }
+        }
+    }
+
+    /**
+     * 创建跑马灯数据
+     *
+     * @param bannerList
+     * @return
+     */
     private ArrayList<TextView> buildmarqueeList(List<AnnouncementBean> bannerList) {
         ArrayList<TextView> views = new ArrayList<>();
         for (AnnouncementBean bean : bannerList) {
@@ -368,7 +483,8 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
                 String min = MyDateUtils.HomeformatTime(agoTime);
                 String format = new DecimalFormat("#0.00").format(bean.inAmount == null ? 0 : bean.inAmount);
                 String nickName = TextUtils.isEmpty(bean.nickName) ? "" : bean.nickName;
-                SpannableString spannableString = new SpannableString(nickName + " " + min + "前完成任务获得赏金" + format + "元");
+                nickName = nickName.length() > 3 ? nickName.substring(0, 3) + "..." : nickName;
+                SpannableString spannableString = new SpannableString(nickName + " " + min + "前获得赏金" + format + "元");
                 spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.color_00b9fd)), 0, nickName.length(), Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 spannableString.setSpan(new ForegroundColorSpan(getResources().getColor(R.color.main)), spannableString.length() - format.length() - 1, spannableString.length() - 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
                 textView.setText(spannableString);
@@ -453,6 +569,11 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         mRewardDialog.show();
     }
 
+    /**
+     * 获取消息数目的数据返回处理
+     *
+     * @param httpResult
+     */
     @Override
     public void onMessageCountGet(MessageEntity httpResult) {
         try {
@@ -468,17 +589,89 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         }
     }
 
+    /**
+     * 支护宝红包接口
+     *
+     * @param result
+     * @param key
+     */
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case GET_WELFARE:
-                if (resultCode == RESULT_OK) {
-                    if (data != null) {
-                        startActivity(new Intent(getActivity(), WelfareGetActivity.class));
-                    }
+    public void onDictionaryDataGet(DictionaryHttpEntity result, String key) {
+        try {
+            if (result.code == Constant.HttpResult.SUCCEED) {
+                if (result.types != null && result.types.size() > 0) {
+                    final DictionaryValue dictionaryValue = result.types.get(0);
+                    if (dictionaryValue != null && dictionaryValue.state == 0) {
+                        mDragButton.init(getActivity());
+                        mDragButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                try {
+                                    if (dictionaryValue != null && !TextUtils.isEmpty(dictionaryValue.value)) {
+                                        int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                                        SettingUtils.setAliPayLastShowDate(getActivity(), dayOfYear);
+                                        Uri uri;
+                                        if (checkAliPayIsInstall(getActivity())) {
+                                            uri = Uri.parse(dictionaryValue.value);
+                                        } else {
+                                            uri = Uri.parse("https://mobile.alipay.com/index.htm");
+                                        }
+                                        Intent four = new Intent(Intent.ACTION_VIEW, uri);
+                                        getActivity().startActivity(four);
+                                        mDragButton.setVisibility(View.GONE);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        mDragButton.setVisibility(View.VISIBLE);
+                    } else
+                        mDragButton.setVisibility(View.GONE);
                 }
-                break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private boolean checkAliPayIsInstall(Context context) {
+        Uri uri = Uri.parse("alipays://platformapi/startApp");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        ComponentName componentName = intent.resolveActivity(context.getPackageManager());
+        return componentName != null;
+    }
+
+    /**
+     * 推荐悬赏
+     *
+     * @param httpResult
+     */
+    @Override
+    public void onGetReCommandResult(final GoodsCommandHttpEntity httpResult) {
+        if (httpResult.code == Constant.HttpResult.SUCCEED) {
+            final ExitDialog exitDialog = new ExitDialog(getActivity());
+            SpannableString spannableString = new SpannableString("推荐一个优质悬赏给您");
+            exitDialog.init("温馨提示", spannableString, "马上赚钱", new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                    SettingUtils.setRecommendRewardLastShowDate(getActivity(), dayOfYear);
+                    Intent intent = new Intent(getActivity(), HomeGoodsDetailActivity.class);
+                    intent.putExtra(Constant.Activity.Data, httpResult.reward.id);
+                    Utils.StartActivity(getActivity(), intent);
+                    exitDialog.dismiss();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int dayOfYear = Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
+                    SettingUtils.setRecommendRewardLastShowDate(getActivity(), dayOfYear);
+                    exitDialog.dismiss();
+                }
+            });
+            exitDialog.setGoods(httpResult);
+            exitDialog.show();
         }
     }
 
@@ -530,50 +723,54 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
      * @param bean
      */
     public void showUpdateDialog(final Version bean) {
-        int updateInstall = bean.updateInstall;
-        mMustUpdate = updateInstall == 0 ? false : updateInstall == 1 ? true : false;
-        String insideVersion = "" + bean.insideVersion;
-        if (insideVersion != null) {
-            if (insideVersion.equals(SettingUtils.getIgnoreVersion(getContext())))
-                return;
+        try {
+            int updateInstall = bean.updateInstall;
+            mMustUpdate = updateInstall == 0 ? false : updateInstall == 1 ? true : false;
+            String insideVersion = "" + bean.insideVersion;
+            if (insideVersion != null) {
+                if (insideVersion.equals(SettingUtils.getIgnoreVersion(getContext())))
+                    return;
+            }
+            if (mUpdataWindow == null) {
+                mUpdataWindow = new UpdataWindow(getActivity());
+                mUpdataWindow.setCanceledOnTouchOutside(false);
+                mUpdataWindow.setCancelable(false);
+            }
+            mUpdataWindow.setPosition(0, -100);
+            if (mMustUpdate) {
+                mUpdataWindow.initContentView(bean.clientVersion, bean.cotent, true, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mUpdataWindow.dismiss();
+                        mUpdateUtil.update(bean, mMustUpdate);
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mUpdataWindow.dismiss();
+                        getActivity().finish();
+                    }
+                });
+            } else {
+                mUpdataWindow.initContentView(bean.clientVersion, bean.cotent, false, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mUpdataWindow.dismiss();
+                        mUpdateUtil.update(bean, mMustUpdate);
+                    }
+                }, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        SettingUtils.setIgnoreVersion(getContext(), "" + bean.insideVersion);
+                        ToastUtil.showToastWithGravity(getContext(), "已忽略当前版本更新！\n你可以到 设置-->关于-->版本更新 手动更新", Gravity.CENTER);
+                        mUpdataWindow.dismiss();
+                    }
+                });
+            }
+            mUpdataWindow.show();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        if (mUpdataWindow == null) {
-            mUpdataWindow = new UpdataWindow(getActivity());
-            mUpdataWindow.setCanceledOnTouchOutside(false);
-            mUpdataWindow.setCancelable(false);
-        }
-        mUpdataWindow.setPosition(0, -100);
-        if (mMustUpdate) {
-            mUpdataWindow.initContentView(bean.clientVersion, bean.cotent, true, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mUpdataWindow.dismiss();
-                    mUpdateUtil.update(bean, mMustUpdate);
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mUpdataWindow.dismiss();
-                    getActivity().finish();
-                }
-            });
-        } else {
-            mUpdataWindow.initContentView(bean.clientVersion, bean.cotent, false, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mUpdataWindow.dismiss();
-                    mUpdateUtil.update(bean, mMustUpdate);
-                }
-            }, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    SettingUtils.setIgnoreVersion(getContext(), "" + bean.insideVersion);
-                    ToastUtil.showToastWithGravity(getContext(), "已忽略当前版本更新！\n你可以到 设置-->关于-->版本更新 手动更新", Gravity.CENTER);
-                    mUpdataWindow.dismiss();
-                }
-            });
-        }
-        mUpdataWindow.show();
     }
 
     /**
@@ -590,7 +787,7 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
     }
 
     /**
-     * 问卷点差点击回调
+     * 问卷调查点击回调
      */
     @Override
     public void onItemCallBack() {
@@ -600,6 +797,22 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
             mPresenter.getSurveyLink();
     }
 
+    @Override
+    public void onSelectionClick(String order, String desc, int i) {
+        mPresenter.getDataWithBaseSearch(order, desc, i);
+    }
+
+    @Override
+    public void doSelect() {
+        mPresenter.getSelectTypeData();
+    }
+
+
+    /**
+     * 获取问卷调查页面链接的数据返回处理
+     *
+     * @param httpResult
+     */
     @Override
     public void onSurveyLinkGet(SurveyHttpResult httpResult) {
         if (httpResult == null) {
@@ -613,6 +826,11 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
                 survey.putExtra(Constant.WebView.URL, httpResult.url);
                 startActivity(survey);
             }
+        } else if (httpResult.code == Constant.HttpResult.FAILD) {
+            Intent survery = new Intent(getActivity(), QuestionSurveryActivty.class);
+            survery.putExtra(Constant.Activity.Skip, "survey");
+            Utils.StartActivity(getActivity(), survery);
+            ToastUtil.showToast(getActivity(), "请完善用户信息");
         } else if (httpResult.code == Constant.HttpResult.RELOGIN) {
             ToastUtil.showToast(getActivity(), "登录超时,请重新登录");
             startActivity(new Intent(getActivity(), LoginActivity.class));
@@ -621,6 +839,48 @@ public class HomeFragment extends MVPBaseFragment<HomeContract.View, HomePresent
         }
     }
 
+    private int mCategory = -1;
+
+    /**
+     * 筛选条件的数据获取返回
+     *
+     * @param result
+     */
+    @Override
+    public void showSelectTypeView(ScreenLoadEntity result) {
+        if (result.code == Constant.HttpResult.SUCCEED) {
+            if (result.rewardType != null && mAdapter != null) {
+                mAdapter.setRewardType(result.rewardType, new WantedSelectedAdapter.ItemSelectedCallBack() {
+                    @Override
+                    public void wantedItemIsSelected(int id) {
+                        mCategory = id;
+                        mPresenter.getDataWithFilter(-1, mCategory);
+                    }
+                }, mCategory);
+            }
+        } else {
+            LogUtils.e(TextUtils.isEmpty(result.msg) ? "数据加载失败" : result.msg);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case GET_WELFARE:
+                if (resultCode == RESULT_OK) {
+                    if (data != null) {
+                        startActivity(new Intent(getActivity(), WelfareGetActivity.class));
+                    }
+                }
+                break;
+        }
+    }
+
+
+    /**
+     * RecycleView的子条目装饰
+     */
     public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
 
         private int space;

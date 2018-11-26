@@ -56,4 +56,13 @@ public interface MissionApi {
     @POST("recommend/shareFriend")
     Observable<HttpResult> getShareReward(@Field("token") String token);
 
+    /**
+     * 获取福利分享奖励
+     *
+     * @param token
+     * @return
+     */
+    @GET("userInfo/luckDraw")
+    Observable<HttpResult> getWelfareShareReward(@Query("token") String token);
+
 }

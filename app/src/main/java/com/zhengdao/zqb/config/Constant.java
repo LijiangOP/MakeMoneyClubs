@@ -17,27 +17,36 @@ public class Constant {
      */
     public class Url {
         //        public static final String BASEURL = "http://192.168.1.105:8088/zqb/";//本地测试
-        //        public static final String BASEURL = "http://myweb.iok.la:19616/zqb/";//本地测试映射
+        //        public static final String BASEURL = "http://myweb.iok.la:19616/";//本地测试映射
         public static final String BASEURL = "http://app.zqb88.cn/"; //线上URL
     }
 
     public class SP {
-        public static final String IS_FRIST_INSTALL   = "is_frist_install";
-        public static final String IS_LOGIN           = "isLogin";
-        public static final String USER_ID            = "user_id";
-        public static final String USER_TOKEN         = "userToken";
-        public static final String IMG_SETTING        = "OnlyWifiLoadImg";
-        public static final String PHONE_NUM          = "phoneNum";
-        public static final String ACCOUNT            = "account";
-        public static final String ALIPAYACCOUNT      = "alipayaccount";
-        public static final String MESSAGECOUNT       = "messagecount";
-        public static final String REWARDMESSAGECOUNT = "rewardmessagecount";
-        public static final String ACCOUNTTYPE        = "accounttype";
-        public static final String CURRENTCALENDAR    = "currentcalendar";
-        public static final String IGNORE             = "IGNORE";
-        public static final String WECHAT_TOKEN       = "wechat_token";
-        public static final String REFRESH_TOKEN      = "refresh_token";
-        public static final String WECHAT_OPEN_ID     = "wechat_open_id";
+        public static final String IS_FRIST_INSTALL                  = "is_frist_install";
+        public static final String IS_LOGIN                          = "isLogin";
+        public static final String USER_ID                           = "user_id";
+        public static final String USER_TOKEN                        = "userToken";
+        public static final String IMG_SETTING                       = "OnlyWifiLoadImg";
+        public static final String PHONE_NUM                         = "phoneNum";
+        public static final String TOTAL_INCOME                      = "total_income";
+        public static final String ACCOUNT                           = "account";
+        public static final String ALIPAYACCOUNT                     = "alipayaccount";
+        public static final String MESSAGECOUNT                      = "messagecount";
+        public static final String REWARDMESSAGECOUNT                = "rewardmessagecount";
+        public static final String ACCOUNTTYPE                       = "accounttype";
+        public static final String CURRENTCALENDAR                   = "currentcalendar";
+        public static final String CURRENT_ALIPAY_CALENDAR           = "current_alipay_calendar";
+        public static final String CURRENT_RECOMMEND_REWARD_CALENDAR = "current_recommend_reward_calendar";
+        public static final String CURRENT_INTRODUCE_CALENDAR        = "current_introduce_calendar";
+        public static final String RECEIVE_COUNT                     = "receive_count";
+        public static final String IGNORE                            = "IGNORE";
+        public static final String WECHAT_TOKEN                      = "wechat_token";
+        public static final String REFRESH_TOKEN                     = "refresh_token";
+        public static final String WECHAT_OPEN_ID                    = "wechat_open_id";
+        //三属性
+        public static final String USER_ADDRESS_SET                  = "user_address_set";
+        public static final String USER_SEX                          = "user_sex";
+        public static final String USER_BIRTHDAY                     = "user_birthday";
     }
 
     public class Third {
@@ -63,14 +72,13 @@ public class Constant {
     }
 
     public class Download {
-        public static final String APK_FILE_NAME = "zqb.apk";
-        public static final String ID            = "id";
-        public static final String URL           = "url";
-        public static final String MD5           = "MD5";
-        public static final String POSITION      = "position";
-        public static final String FILE_NAME     = "file_name";
-        public static final String MUST_UPDATE   = "MUST_UPDATE";
-        public static final String PACKAGE_NAME  = "package_name";
+        public static final String ID           = "id";
+        public static final String URL          = "url";
+        public static final String MD5          = "MD5";
+        public static final String POSITION     = "position";
+        public static final String FILE_NAME    = "file_name";
+        public static final String MUST_UPDATE  = "MUST_UPDATE";
+        public static final String PACKAGE_NAME = "package_name";
     }
 
     public class HttpResult {
@@ -165,20 +173,29 @@ public class Constant {
     }
 
     public class WechatReq {
-        public static final String Loginstate = "diandi_wx_login";
-        public static final String Bindstate  = "diandi_wx_bind";
-        public static final String DailyShare = "daily_share";
+        public static final String Loginstate                 = "diandi_wx_login";
+        public static final String Bindstate                  = "diandi_wx_bind";
+        public static final String DailyShare                 = "daily_share";
+        public static final String WelfareShare               = "welfareshare";
+        public static final String WELFARESHARE_WECHAT_CIRCLE = "welfareshare_wechat_circle";
+        public static final String WELFARESHARE_WECHAT        = "welfareshare_wechat";
+        public static final String WELFARESHARE_QQ_CIRCLE     = "welfareshare_qq_circle";
+        public static final String WELFARESHARE_QQ            = "welfareshare_qq";
     }
 
     public class BaiDuAdv {
-        public static final String UserCenterTop    = "5818459";//个人中心横幅图文
-        public static final String UserCenterBottom = "5818258";//首页横幅图片
-        public static final String Rebate           = "5818460";//返利横幅图文
-        public static final String Splash           = "5822817";//首页开屏广告
-        public static final String PicAndText       = "5846013";//横幅图文类型（看点模块）
-        public static final String PicAndText1      = "5850868 ";//横幅图文类型（看点模块）
-        public static final String PicAndText2      = "5850869";//横幅图文类型（看点模块）
-        public static final String PicAndText3      = "5850871";//横幅图文类型（看点模块）
+        public static final String UserCenterTop          = "5818459";//个人中心横幅图文
+        public static final String UserCenterBottom       = "5818258";//首页横幅图片
+        public static final String Rebate                 = "5818460";//返利横幅图文
+        public static final String Splash                 = "5822817";//首页开屏广告
+        public static final String Text1                  = "5850871";//文字广告
+        public static final String Text2                  = "5927414";//文字广告
+        public static final String Text3                  = "5927415";//文字广告
+        public static final String PicAndText             = "5846013";//横幅图文类型（看点模块）
+        public static final String PicAndText1            = "5850868 ";//横幅图文类型（看点模块）
+        public static final String PicAndText2            = "5850869";//横幅图文类型（看点模块）
+        public static final String ContentAlliance        = "https://cpu.baidu.com/1001/c4636b86?scid=16003";//内容联盟url
+        public static final String ContentAllianceReplace = "http://app.zqb88.cn//zhaoshang";//内容联盟位置的替换url
     }
 
     public class AdvPosition {
@@ -214,16 +231,18 @@ public class Constant {
 
     public class TencentAdv {
         public static final String advTenCent_APPID             = "1106869363";
-        public static final String advTenCent_ADV_BANNER_ID     = "9090731496993684";
         public static final String advTenCent_ADV_SPLASH_ID     = "8020739466098663";
+        public static final String advTenCent_ADV_BANNER_ID     = "9090731496993684";
         public static final String advTenCent_ADV_ORIGINAL_ID_1 = "6010439476391602";
         public static final String advTenCent_ADV_ORIGINAL_ID_2 = "6080033477977274";
         public static final String advTenCent_ADV_ORIGINAL_ID_3 = "4020130418751845";
     }
 
     public class App {
-        public static final int Zqb   = 1;
-        public static final int Wlgfl = 2;
+        public static final int Zqb      = 1;
+        public static final int Wlgfl    = 2;
+        public static final int Wlgfl_hy = 3;
+        public static final int Lczj     = 4;
     }
 
     public class ADVIEW {
@@ -232,18 +251,26 @@ public class Constant {
     }
 
     public class Coupons {
-        public static final int TaoBao  = 0;
-        public static final int JinDong = 1;
-        public static final int Head    = 7;
-        public static final int Empty   = 8;
+        public static final int TaoBao   = 0;
+        public static final int JinDong  = 1;
+        public static final int PingDD   = 2;
+        public static final int SuNingYG = 3;
+        public static final int WangYiKL = 4;
+
+        public static final int Head  = 7;
+        public static final int Empty = 8;
     }
 
     /**
      * 闲玩
      */
     public class XianWan {
-        public static final String Appid     = "1860";
-        public static final String AppSecret = "348tylimpc3u3hfb";
+        //赚钱吧
+        public static final String Appid      = "1860";
+        public static final String AppSecret  = "348tylimpc3u3hfb";
+        //兼职呗
+        public static final String Appid1     = "2010";
+        public static final String AppSecret1 = "uiwf16rkxk89gujy";
     }
 
     /**
@@ -251,5 +278,40 @@ public class Constant {
      */
     public class APIADV {
         public static final String ACCOUNT = "AD058";
+    }
+
+    public class AnZhiAdv {
+        public static final String AppKey       = "9f346d3926df57f95e7f8c2c7a37dc8a";
+        public static final String AdvId_Banner = "1375";
+        public static final String AdvId_Native = "1374";
+
+    }
+
+    public class Flow {
+        public static final int LeftMargin = 100;
+    }
+
+    public class YouLe {
+        /**
+         * https://wx.iskyshow.cn/youle-api/page/index.html#/FansCenter?channel_id=259357&user_code=862630032882681&post_type=3&keycode=c5f26f566f42410148b02fba1bd56e92&app_user_id=1
+         */
+        public static final String BASE_URL         = "https://wx.iskyshow.cn/youle-api/page/index.html#/FansCenter?";
+        public static final String YOULE_KEY        = "a0a1d410-x55-4240-9b7d-51b669678900";
+        public static final String YOULE_CHANNEL_ID = "259357";
+        public static final String YOUELE_APPSECRET = "YLUAT1809";
+    }
+
+    public class XiangWan {
+        public static final String BASE_URL = "http://ifsapp.pceggs.com/Pages/IntegralWall/IW_Awall_adList.aspx?";
+        public static final String PID      = "10009";
+        public static final String APP_KEY  = "ZQBXW8_TXW_10009";
+    }
+
+    public class Vivo {
+        public static final String POS_ID = "457f67fea7c74ede99dedd0e38a605df";
+    }
+
+    public class TouTiaoAdv {
+        public static final String XinXiLiu = "904272638";
     }
 }

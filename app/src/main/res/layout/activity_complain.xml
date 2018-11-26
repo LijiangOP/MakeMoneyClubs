@@ -26,7 +26,7 @@
                 android:paddingTop="10dp"
                 android:text="您举报的问题类型"
                 android:textColor="@color/text_999999"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/official_list_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:layout_weight="1"
                     android:text="悬赏不合理，根本无法达到要求。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -80,7 +80,7 @@
                     android:layout_weight="1"
                     android:text="悬赏描述与实际操作过程不符，有隐藏步骤等。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -108,7 +108,7 @@
                     android:layout_weight="1"
                     android:text="分类不清或其他违规。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -136,7 +136,7 @@
                     android:layout_weight="1"
                     android:text="联系悬赏主无任何回应。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -164,7 +164,7 @@
                     android:layout_weight="1"
                     android:text="悬赏主要求私下交易。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -192,7 +192,7 @@
                     android:layout_weight="1"
                     android:text="关键词与实际不符。"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <LinearLayout
@@ -220,7 +220,7 @@
                     android:layout_weight="1"
                     android:text="其他问题"
                     android:textColor="@color/text_333333"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
             </LinearLayout>
 
             <TextView
@@ -231,7 +231,7 @@
                 android:paddingTop="10dp"
                 android:text="补充举报原因详细说明"
                 android:textColor="@color/text_999999"
-                android:textSize="12sp"/>
+                android:textSize="@dimen/official_list_desc"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -256,7 +256,7 @@
                     android:minHeight="80dp"
                     android:textColor="@color/text_333333"
                     android:textColorHint="@color/text_input_hint"
-                    android:textSize="12sp"/>
+                    android:textSize="@dimen/official_list_title"/>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -270,21 +270,21 @@
                         android:layout_height="wrap_content"
                         android:text="0"
                         android:textColor="@color/text_333333"
-                        android:textSize="13sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="/"
                         android:textColor="@color/text_input_hint"
-                        android:textSize="13sp"/>
+                        android:textSize="@dimen/official_list_title"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="250"
                         android:textColor="@color/text_input_hint"
-                        android:textSize="13sp"/>
+                        android:textSize="@dimen/official_list_title"/>
                 </LinearLayout>
             </LinearLayout>
             <View

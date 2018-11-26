@@ -2,9 +2,11 @@ package com.zhengdao.zqb.view.activity.webview;
 
 
 import android.Manifest;
+import android.app.Service;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Bundle;
@@ -23,6 +25,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.kennyc.view.MultiStateView;
+import com.tbruyelle.rxpermissions.RxPermissions;
 import com.tencent.connect.share.QQShare;
 import com.tencent.connect.share.QzoneShare;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -50,10 +53,8 @@ import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
-import pub.devrel.easypermissions.AfterPermissionGranted;
-import pub.devrel.easypermissions.EasyPermissions;
+import rx.functions.Action1;
 
-import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebViewPresenter> implements WebViewContract.View {
     @BindView(R.id.progressbar)
@@ -70,17 +71,17 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
     private String mUrl;
     private File   mFileDir;
 
-    private Disposable mDisposable1;
-    private Disposable mDisposable2;
+    private Disposable          mDisposable1;
+    private Disposable          mDisposable2;
     private CompositeDisposable mDisposables = new CompositeDisposable();
-    private WeChatQRCodeDialog mWeChatQRCodeDialog;
-    private int                mCurrentType;
-    private Bundle             params;
-    private String             mNickName;
-    private String             mStringShareUrl;
-    private String             mStringShareIcon;
-    private String             mStringSharePhone;
-    private IUiListener        mUiListener;
+    private WeChatQRCodeDialog  mWeChatQRCodeDialog;
+    private int                 mCurrentType;
+    private Bundle              params;
+    private String              mNickName;
+    private String              mStringShareUrl;
+    private String              mStringShareIcon;
+    private String              mStringSharePhone;
+    private IUiListener         mUiListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -211,7 +212,13 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
         mWeChatQRCodeDialog.setSaveListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                doSavePic("wechat_share.jpg");
+                RxPermissions rxPermissions = new RxPermissions(WebViewActivity.this);
+                rxPermissions.request(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE).subscribe(new Action1<Boolean>() {
+                    @Override
+                    public void call(Boolean aBoolean) {
+                        doSavePic("wechat_share.jpg");
+                    }
+                });
                 mWeChatQRCodeDialog.dismiss();
             }
         });
@@ -219,7 +226,6 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
     }
 
     private void doSavePic(String fileName) {
-        methodRequiresTwoPermission();
         if (Environment.getExternalStorageState().equals(Environment.MEDIA_UNMOUNTED)) {
             ToastUtil.showToast(WebViewActivity.this, "未发现内部存储,无法保存");
         } else {
@@ -244,16 +250,6 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
                 LogUtils.e(ex.getMessage());
                 ToastUtil.showToast(WebViewActivity.this, "保存失败");
             }
-        }
-    }
-
-    private static final int RC_CAMERA_AND_LOCATION = 001;
-
-    @AfterPermissionGranted(RC_CAMERA_AND_LOCATION)
-    private void methodRequiresTwoPermission() {
-        String[] perms = {WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE};
-        if (!EasyPermissions.hasPermissions(this, perms)) {
-            EasyPermissions.requestPermissions(this, "下列权限未获权，是否开启", RC_CAMERA_AND_LOCATION, perms);
         }
     }
 
@@ -324,11 +320,26 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && mWebview.canGoBack()) {
-            mWebview.goBack();
-            return true;
-        } else {
-            onBackPressed();
+        AudioManager am = (AudioManager) getSystemService(Service.AUDIO_SERVICE);
+        switch (keyCode) {
+            case KeyEvent.KEYCODE_VOLUME_UP:
+                am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, AudioManager.FLAG_SHOW_UI);
+                am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+                break;
+            case KeyEvent.KEYCODE_VOLUME_DOWN:
+                am.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, AudioManager.FLAG_SHOW_UI);
+                am.adjustStreamVolume(AudioManager.STREAM_DTMF, AudioManager.ADJUST_RAISE, 0);
+                break;
+            case KeyEvent.KEYCODE_BACK:
+                if (mWebview.canGoBack()) {
+                    mWebview.goBack();
+                    return true;
+                } else {
+                    onBackPressed();
+                }
+                break;
+            default:
+                break;
         }
         return super.onKeyDown(keyCode, event);
     }
@@ -339,5 +350,4 @@ public class WebViewActivity extends MVPBaseActivity<WebViewContract.View, WebVi
         if (mPresenter != null)
             mPresenter.unsubcrible();
     }
-
 }
